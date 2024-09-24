@@ -4,11 +4,22 @@
 
 package frc.robot.subsystems.wrist;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.logfields.LogFieldsTable;
+import frc.robot.Robot;
+import frc.robot.subsystems.wrist.io.WristIO;
+import frc.robot.subsystems.wrist.io.WristIOSparkMax;
 
-public class Wrist extends SubsystemBase {
+public class Wrist extends SubsystemBase{
+    private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
+    private final WristIO io = Robot.isSimulation()? new WristIOSim(fieldsTable) : new WristIOSparkMax(fieldsTable);
+    
+    private final PIDController wristPIDcontroller = new PIDController(KP, KI, KD);
+
   /** Creates a new Wrist. */
   public Wrist() {
+
   }
 
   @Override
