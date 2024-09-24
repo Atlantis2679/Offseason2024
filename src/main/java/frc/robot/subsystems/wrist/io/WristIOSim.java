@@ -1,8 +1,34 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.wrist.io;
 
-/** Add your docs here. */
-public class WristIOSim {}
+import static frc.robot.subsystems.wrist.WristConstants.*;
+
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import frc.lib.logfields.LogFieldsTable;
+
+public class WristIOSim extends WristIO {
+    private final SingleJointedArmSim wristMotor = new SingleJointedArmSim(
+            DCMotor.getNEO(2),
+            JOINT_GEAR_RATIO,
+            WRIST_JKG_METERS_SQUARED,
+            0,
+            Math.toRadians(WRIST_TURNING_MIN_DEGREES),
+            Math.toRadians(WRIST_TURNING_MAX_DEGREES),
+            true,
+            0);
+
+    @Override
+    protected double getWristAngleDegrees() {
+        return Math.toDegrees(wristMotor.getAngleRads());
+    }
+
+    @Override
+    public void setSpeed(double speed) {
+        Logger.recordOutput("set speed", speed);
+        wristMotor.setInputVoltage(speed);
+    }
+
+    public WristIOSim(LogFieldsTable logFieldsTable) {
+        super(logFieldsTable);
+    }
+}
