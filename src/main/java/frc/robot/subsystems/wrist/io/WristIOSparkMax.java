@@ -9,7 +9,7 @@ import frc.lib.logfields.LogFieldsTable;
 
 /** Add your docs here. */
 public class WristIOSparkMax extends WristIO {
-    private final Spark
+    private final SparkMa
     protected WristIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
     }
