@@ -6,12 +6,10 @@ import static frc.robot.RobotMap.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-
 public class IntakeIOSparkMax extends IntakeIO {
-    private final CANSparkMax rightVerticalRollerMotor = new CANSparkMax(CANBUS.RIGHT_VERTICAL_ROLLER_ID, MotorType.kBrushless);
-    private final CANSparkMax leftVerticalRollerMotor = new CANSparkMax(CANBUS.LEFT_VERTICAL_ROLLER_ID, MotorType.kBrushless);
-    private final CANSparkMax HorizontalRollerMotor = new CANSparkMax(CANBUS.HORIZONTAL_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax rightVerticalRollerMotor = new CANSparkMax(Canbus.RIGHT_VERTICAL_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax leftVerticalRollerMotor = new CANSparkMax(Canbus.LEFT_VERTICAL_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax horizontalRollerMotor = new CANSparkMax(Canbus.HORIZONTAL_ROLLER_ID, MotorType.kBrushless);
 
 
     public IntakeIOSparkMax(LogFieldsTable fieldsTable) {
@@ -20,22 +18,20 @@ public class IntakeIOSparkMax extends IntakeIO {
     }
     
     @Override
-    public void setHorizontalRollersSpeed(){
-        HorizontalRollerMotor.set(1);
+    public void setRollerSpeed(double rollersIntakeSpeed){
+        horizontalRollerMotor.set(rollersIntakeSpeed);
+        rightVerticalRollerMotor.set(rollersIntakeSpeed);
     }
 
-    @Override
-    public void setVerticalRollersSpeed(){
-        rightVerticalRollerMotor.set(1);
+        @Override
+    public void setRollerSpeedVoltage(double rollersIntakeSpeedVoltage){
+        horizontalRollerMotor.setVoltage(rollersIntakeSpeedVoltage);
+        rightVerticalRollerMotor.setVoltage(rollersIntakeSpeedVoltage);
     }
 
-
-    @Override
-    public double getHorizontalRollersSpeed(){
-        return 1.0;
+    public void stop(){
+        horizontalRollerMotor.stopMotor();
+        rightVerticalRollerMotor.stopMotor();
     }
 
-    @Override
-    public void getVerticalRollersSpeed(){
-    }
 }
