@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.wpilibj2.command.Command;
+
 /** Add your docs here. */
 public class ShooterCommands {
     private final Shooter shooter;
@@ -11,4 +13,7 @@ public class ShooterCommands {
     public ShooterCommands(Shooter shooter) {
         this.shooter = shooter;
     }
+    // public Command reachSpeed(double upperRollerSpeed, double lowerRollerSpeed){
+        
+    // }
 }
