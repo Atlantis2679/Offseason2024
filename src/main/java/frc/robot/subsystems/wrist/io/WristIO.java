@@ -13,7 +13,7 @@ import frc.lib.logfields.LogFieldsTable;
 public abstract class WristIO extends IOBase {
 
     public final DoubleSupplier wristAngleDegrees = fields.addDouble("wristAngleDegrees", this::getWristAngleDegrees);
- 
+
     protected WristIO(LogFieldsTable fieldsTable) {
         super(fieldsTable);
     }
@@ -23,5 +23,7 @@ public abstract class WristIO extends IOBase {
 
     // Outputs
     public abstract void setSpeed(double wristSpeed);
+
+    public abstract void setVoltage(double wristVoltage);
 
 }

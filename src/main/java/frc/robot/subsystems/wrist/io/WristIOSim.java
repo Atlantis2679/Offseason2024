@@ -2,6 +2,8 @@ package frc.robot.subsystems.wrist.io;
 
 import static frc.robot.subsystems.wrist.WristConstants.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.lib.logfields.LogFieldsTable;
@@ -30,5 +32,11 @@ public class WristIOSim extends WristIO {
 
     public WristIOSim(LogFieldsTable logFieldsTable) {
         super(logFieldsTable);
+    }
+
+    @Override
+    public void setVoltage(double wristVoltage) {
+        Logger.recordOutput("set voltage", wristVoltage);
+        wristMotor.setInputVoltage(wristVoltage);
     }
 }

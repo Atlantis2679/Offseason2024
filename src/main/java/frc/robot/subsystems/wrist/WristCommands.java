@@ -9,4 +9,5 @@ import frc.robot.subsystems.wrist.Wrist;
 
 /** Add your docs here. */
 public class WristCommands {
-}
+
+    }
