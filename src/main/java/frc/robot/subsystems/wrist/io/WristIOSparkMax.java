@@ -6,17 +6,19 @@ package frc.robot.subsystems.wrist.io;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel;
+import static frc.robot.RobotMap.Wrist.*;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.lib.logfields.LogFieldsTable;
 
 /** Add your docs here. */
 public class WristIOSparkMax extends WristIO {
-    private final CANSparkMax wristMotorLeft = new CANSparkMax(0, MotorType.kBrushless);
-    private final CANSparkMax wristMotorRight = new CANSparkMax(0, MotorType.kBrushless);
-    private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(0);
-    protected WristIOSparkMax(LogFieldsTable fieldsTable) {
+    private final CANSparkMax wristMotorLeft = new CANSparkMax(WRIST_LEFT_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkMax wristMotorRight = new CANSparkMax(WRIST_RIGHT_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
+    private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(0                                                                                                                                                                                                                                                     );
+
+    public WristIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
         wristMotorRight.follow(wristMotorLeft);
         wristMotorLeft.setSmartCurrentLimit(25);
@@ -25,11 +27,16 @@ public class WristIOSparkMax extends WristIO {
 
     @Override
     public double getWristAngleDegrees() {
-        return(wristEncoder.getAbsolutePosition()) * 360;
+        return (wristEncoder.getAbsolutePosition()) * 360;
     }
+
     @Override
     public void setSpeed(double speed) {
         wristMotorLeft.set(speed);
     }
 
+    @Override
+    public void setVoltage(double voltage) {
+        wristMotorLeft.setVoltage(voltage);
+    }
 }

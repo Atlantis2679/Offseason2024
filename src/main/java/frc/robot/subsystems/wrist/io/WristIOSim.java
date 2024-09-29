@@ -33,4 +33,10 @@ public class WristIOSim extends WristIO {
     public WristIOSim(LogFieldsTable logFieldsTable) {
         super(logFieldsTable);
     }
+
+    @Override
+    public void setVoltage(double wristVoltage) {
+        Logger.recordOutput("set voltage", wristVoltage);
+        wristMotor.setInputVoltage(wristVoltage);
+    }
 }
