@@ -4,11 +4,23 @@
 
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+
 /** Add your docs here. */
 public class ShooterCommands {
     private final Shooter shooter;
 
     public ShooterCommands(Shooter shooter) {
         this.shooter = shooter;
+    }
+
+    public void reachSpeed(double targetSpeedRPM) {
+        PIDController pid = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
+        targetSpeedRPM = MathUtil.clamp(ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE, targetSpeedRPM);
+        while(shooter.getUpperRollerSpeedRPM() != targetSpeedRPM || shooter.getLowerRollerSpeedRPM() != targetSpeedRPM) {
+            shooter.setSpeed(pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM), pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM));
+        }
+        pid.close();
     }
 }
