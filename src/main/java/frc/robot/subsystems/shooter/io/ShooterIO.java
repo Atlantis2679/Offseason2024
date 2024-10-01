@@ -20,9 +20,9 @@ public abstract class ShooterIO extends IOBase{
 
     // INPUTS
 
-    protected abstract double getUpperRollerRPM();
+    protected abstract double getUpperRollerSpeedRPM();
 
-    protected abstract double getLowerEncoderRPM();
+    protected abstract double getLowerRollerSpeedRPM();
     
 
     // OUTPUT
