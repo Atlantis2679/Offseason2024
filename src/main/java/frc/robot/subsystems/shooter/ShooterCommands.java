@@ -15,12 +15,9 @@ public class ShooterCommands {
         this.shooter = shooter;
     }
 
-    public void reachSpeed(double targetSpeedRPM) {
-        PIDController pid = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
+    public void reachSpeed(double targetSpeedRPM, PIDController pid) {
         targetSpeedRPM = MathUtil.clamp(ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE, targetSpeedRPM);
-        while(shooter.getUpperRollerSpeedRPM() != targetSpeedRPM || shooter.getLowerRollerSpeedRPM() != targetSpeedRPM) {
-            shooter.setSpeed(pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM), pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM));
-        }
-        pid.close();
+        shooter.setSpeed(pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM),
+                pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM));
     }
 }
