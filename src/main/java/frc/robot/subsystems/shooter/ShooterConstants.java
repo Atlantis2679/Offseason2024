@@ -9,5 +9,8 @@ public final class ShooterConstants {
     public static final int MAX_VOLTAGE = 0;
 
     public static final int ROLLER_CURRENT_LIMIT = 30;
+    public static final int kP = 1;
+    public static final int kD = 0;
+    public static final int kI = 0;
 
 }
