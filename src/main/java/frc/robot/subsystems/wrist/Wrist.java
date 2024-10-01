@@ -4,21 +4,19 @@
 
 package frc.robot.subsystems.wrist;
 
-import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
-import frc.lib.tuneables.Tuneable;
+import frc.lib.tuneables.TuneableBuilder;
 import frc.lib.tuneables.extensions.TuneableArmFeedforward;
 import frc.lib.tuneables.extensions.TuneableTrapezoidProfile;
 import frc.robot.Robot;
 import frc.robot.subsystems.wrist.io.WristIO;
 import frc.robot.subsystems.wrist.io.WristIOSparkMax;
 import frc.robot.utils.PrimitiveRotationalSensorHelper;
-import frc.robot.subsystems.wrist.WristConstants;
 import frc.robot.subsystems.wrist.WristConstants.IsAtAngle;
 import frc.robot.subsystems.wrist.io.WristIOSim;
 
@@ -37,9 +35,8 @@ public class Wrist extends SubsystemBase {
       WristConstants.KD);
 
   private final TuneableArmFeedforward feedForwardWrist = Robot.isSimulation()
-      ? new TuneableArmFeedforward(WristConstants.SIM_KS, WristConstants.SIM_KG, WristConstants.SIM_KV,
-          WristConstants.SIM_KA)
-      : new TuneableArmFeedforward(WristConstants.KS, WristConstants.KG, WristConstants.KV, WristConstants.KA);
+      ? new TuneableArmFeedforward(WristConstants.SIM_KG, WristConstants.SIM_KV, WristConstants.SIM_KA)
+      : new TuneableArmFeedforward(WristConstants.KG, WristConstants.KV, WristConstants.KA);
 
   /** Creates a new Wrist. */
   public Wrist() {
@@ -51,10 +48,6 @@ public class Wrist extends SubsystemBase {
 
   public void setSpeed(double speed) {
     io.setSpeed(speed);
-  }
-
-  public void setVoltage(double voltage) {
-    io.setVoltage(voltage);
   }
 
   public double getWristAngleDegrees() {
@@ -81,7 +74,7 @@ public class Wrist extends SubsystemBase {
 
   public double calculateFeedforward(double wristDesiredAngleDegrees, double wristDesiredVelocity, boolean usePID) {
     fieldsTable.recordOutput("desired angle degrees", wristDesiredAngleDegrees);
-    double voltage = feedForwardWrist.calculate(Math.toRadians(wristDesiredVelocity), wristDesiredVelocity);
+    double voltage = feedForwardWrist.calculate(Math.toRadians(wristDesiredAngleDegrees), wristDesiredVelocity);
 
     if(usePID) {
       voltage += wristPIDcontroller.calculate(getAbsoluteAngle(), wristDesiredAngleDegrees);
@@ -111,7 +104,16 @@ public class Wrist extends SubsystemBase {
   }
 
   public void stop() {
-    setVoltage(0);
+    setWristVoltage(0);
   }
 
+  public void initialTuneable(TuneableBuilder builder) {
+    builder.addChild("Wrist PID", wristPIDcontroller);
+
+    builder.addChild("Wrist feedforward", feedForwardWrist);
+
+    builder.addChild("Trapezoid profile", trapezoidProfile);
+
+    builder.addChild("wrist angle degrees", wristAngleDegreesHelper);  
+  }
 }

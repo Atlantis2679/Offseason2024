@@ -35,8 +35,8 @@ public class WristIOSim extends WristIO {
     }
 
     @Override
-    public void setVoltage(double wristVoltage) {
-        Logger.recordOutput("set voltage", wristVoltage);
-        wristMotor.setInputVoltage(wristVoltage);
+    public void setSpeed(double speed) {
+        Logger.recordOutput("set speed", speed);
+        wristMotor.setInput(speed);
     }
 }
