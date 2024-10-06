@@ -8,22 +8,24 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.valueholders.ValueHolder;
-import frc.robot.subsystems.wrist.Wrist;
 
 /** Add your docs here. */
-public class WristCommands {
+public class WristCommands extends Command{
     private final Wrist wrist;
 
+    public WristCommands(Wrist wrist) {
+        this.wrist = wrist;
+        this.addRequirements(wrist); 
+    }
+
     public Command MoveToAngle(double desiredAngleDeg){
-        ValueHolder<TrapezoidProfile.State> refrenceState = new ValueHolder<TrapezoidProfile.State>(null);
+        ValueHolder<TrapezoidProfile.State> referenceState = new ValueHolder<TrapezoidProfile.State>(null);
         return wrist.runOnce(() -> {
             wrist.resetPID();
-            refrenceState.set(new TrapezoidProfile.State(wrist.getAbsoluteAngle(), 0));
+            referenceState.set(new TrapezoidProfile.State(wrist.getAbsoluteAngle(), 0));
         }).andThen(() -> {
-            
-            double voltage = wrist.calculateFeedforward(refrenceState.get().position, refrenceState.get().velocity, true) + refrenceState.get().velocity;
+            double voltage = wrist.calculateFeedforward(referenceState.get().position, referenceState.get().velocity, true) + referenceState.get().velocity;
             wrist.setWristVoltage(voltage);
         });
     }
@@ -39,5 +41,4 @@ public class WristCommands {
     }
  
 
-    }
 }
