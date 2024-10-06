@@ -18,10 +18,11 @@ public class ShooterCommands extends Command{
     }
 
     public Command reachSpeed(double targetSpeedRPM, PIDController pid) {
-        return shooter.runOnce(() -> {
-            shooter.setSpeed(
-                pid.calculate(shooter.getUpperRollerSpeedRPM(), MathUtil.clamp(targetSpeedRPM, ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE)),
-                pid.calculate(shooter.getLowerRollerSpeedRPM(), MathUtil.clamp(targetSpeedRPM, ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE)));
-        });
+        double targetClampedSpeedRPM = MathUtil.clamp(targetSpeedRPM, ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE);
+        return shooter.run(() -> {
+            shooter.setVoltage(
+                pid.calculate(shooter.getUpperRollerSpeedRPM(), targetClampedSpeedRPM),
+                pid.calculate(shooter.getLowerRollerSpeedRPM(), targetClampedSpeedRPM));
+        }).until(() -> shooter.getUpperRollerSpeedRPM() == targetClampedSpeedRPM && shooter.getLowerRollerSpeedRPM() == targetClampedSpeedRPM);
     }
 }
