@@ -29,10 +29,14 @@ public class WristConstants {
 
     public static final double WRIST_ANGLE_OFFSET_DEGREES = 0;
 
+    public static final double KS = 0;
+    // We suggest to keep KS at 0
     public static final double KA = 0;
     public static final double KV = 0;
     public static final double KG = 0;
 
+    public static final double SIM_KS = 0;
+    // We suggest to keep KS at 0
     public static final double SIM_KA = 0;
     public static final double SIM_KV = 0;
     public static final double SIM_KG = 0;
