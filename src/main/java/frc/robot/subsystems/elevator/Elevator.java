@@ -1,6 +1,7 @@
 package frc.robot.subsystems.elevator;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.subsystems.elevator.io.ElevatorIO;
@@ -21,15 +22,28 @@ public class Elevator extends SubsystemBase {
     } 
 
     public void setSpeed(double speed, boolean isGoingDown){
-        speed = isGoingDown ? 
+        speed = isGoingDown ? -speed:speed;
+        double leftSpeed = (isElevatorLeftDown()&&isGoingDown)?0:speed;
+        double rightSpeed = (isElevatorRightDown()&&isGoingDown)?0:speed;
+        setSpeedLeft(leftSpeed);
+        setSpeedRight(rightSpeed);
 
+        SmartDashboard.putNumber("speed", speed);
+        fieldsTable.recordOutput("elevatorSpeed", speed);
     }
 
     public void stop(){
-        io.setSpeedLeft(0);
-        io.setSpeedRight(0);
+        setSpeedLeft(0);
+        setSpeedRight(0);
     }
 
+    public boolean isElevatorRightDown(){
+        return io.isElevatorRightDown.getAsBoolean();
+    }
+
+    public boolean isElevatorLeftDown(){
+        return io.isElevatorLeftDown.getAsBoolean();
+    }
 
     
 }

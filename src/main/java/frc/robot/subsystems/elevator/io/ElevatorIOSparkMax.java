@@ -34,7 +34,8 @@ public class ElevatorIOSparkMax extends ElevatorIO {
     public void setSpeedLeft(double speed) {
         motorLeft.set(speed);
     }
-
+    
+    @Override
     public boolean getLeftLimitSwitchValue() {
         return !leftLimitSwitch.get();
     }
