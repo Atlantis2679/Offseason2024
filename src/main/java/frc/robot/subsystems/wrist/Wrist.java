@@ -19,6 +19,7 @@ import frc.robot.subsystems.wrist.io.WristIOSparkMax;
 import frc.robot.utils.PrimitiveRotationalSensorHelper;
 import frc.robot.subsystems.wrist.WristConstants.IsAtAngle;
 import frc.robot.subsystems.wrist.io.WristIOSim;
+import static frc.robot.subsystems.wrist.WristConstants.*;
 
 public class Wrist extends SubsystemBase {
   private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
@@ -28,22 +29,20 @@ public class Wrist extends SubsystemBase {
   private final PrimitiveRotationalSensorHelper wristAngleDegreesHelper;
 
   private final TuneableTrapezoidProfile trapezoidProfile = new TuneableTrapezoidProfile(
-      new TrapezoidProfile.Constraints(WristConstants.WRIST_MAX_VELOCITY_DEG_SECOND,
-          WristConstants.WRIST_MAX_ACCELERATION_DEG_SECOND));
+      new TrapezoidProfile.Constraints(WRIST_MAX_VELOCITY_DEG_SECOND, WRIST_MAX_ACCELERATION_DEG_SECOND));
 
-  private final PIDController wristPIDcontroller = new PIDController(WristConstants.KP, WristConstants.KI,
-      WristConstants.KD);
+  private final PIDController wristPIDcontroller = new PIDController(KP, KI, KD);
 
   private final TuneableArmFeedforward feedForwardWrist = Robot.isSimulation()
-      ? new TuneableArmFeedforward(WristConstants.SIM_KG, WristConstants.SIM_KV, WristConstants.SIM_KA)
-      : new TuneableArmFeedforward(WristConstants.KG, WristConstants.KV, WristConstants.KA);
+      ? new TuneableArmFeedforward(SIM_KA, SIM_KG, SIM_KV, SIM_KA)
+      : new TuneableArmFeedforward(KS, KG, KV, KA);
 
   /** Creates a new Wrist. */
   public Wrist() {
     fieldsTable.update();
     wristAngleDegreesHelper = new PrimitiveRotationalSensorHelper(io.wristAngleDegrees.getAsDouble(),
-        WristConstants.WRIST_ANGLE_OFFSET_DEGREES);
-    wristAngleDegreesHelper.enableContinousWrap(WristConstants.UPPER_BOUND_WRAP, 360);
+        WRIST_ANGLE_OFFSET_DEGREES);
+    wristAngleDegreesHelper.enableContinousWrap(UPPER_BOUND_WRAP, 360);
   }
 
   public void setSpeed(double speed) {
@@ -63,7 +62,7 @@ public class Wrist extends SubsystemBase {
 
   public void setWristVoltage(double voltage) {
     fieldsTable.recordOutput("Demand Voltage", voltage);
-    voltage = MathUtil.clamp(voltage, -WristConstants.WRIST_VOLTAGE_LIMIT, WristConstants.WRIST_VOLTAGE_LIMIT);
+    voltage = MathUtil.clamp(voltage, -WRIST_VOLTAGE_LIMIT, WRIST_VOLTAGE_LIMIT);
     fieldsTable.recordOutput("Real voltage", voltage);
     io.setVoltage(voltage);
   }
