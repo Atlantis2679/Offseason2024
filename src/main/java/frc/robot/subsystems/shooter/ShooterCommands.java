@@ -16,7 +16,7 @@ public class ShooterCommands {
     }
 
     public void reachSpeed(double targetSpeedRPM, PIDController pid) {
-        targetSpeedRPM = MathUtil.clamp(ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE, targetSpeedRPM);
+        targetSpeedRPM = MathUtil.clamp(targetSpeedRPM, ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE);
         shooter.setSpeed(pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM),
                 pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM));
     }
