@@ -12,7 +12,7 @@ public class IntakeCommands {
     this.intake = intake;
   }
 
-  public Command takeIn(){
+  public Command takeIn(){//collect
 
     return intake.runEnd(() -> intake.setRollerSpeed(IntakeConstants.INTAKE_ROLLER_SPEED), intake::stop);
   }
