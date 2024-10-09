@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 
 /** Add your docs here. */
 public final class ShooterConstants {
-    public static final int MAX_VOLTAGE = 0;
+    public static final int MAX_VOLTAGE = 12;
 
     public static final int ROLLER_CURRENT_LIMIT = 30;
 
@@ -16,8 +19,10 @@ public final class ShooterConstants {
     public static final int kD = 0;
     public static final int kI = 0;
 
-    // sim
-    public static final LinearSystem LINEAR_SYSTEM = new LinearSystem<>(null, null, null, null);
-    public static final double GERAING = 0;
+    // sim:
+    public static final double momentOfInertia = 0.00032;
+    public static final double GERAING = 1;
+    public static final LinearSystem<N1, N1, N1> LINEAR_SYSTEM = LinearSystemId.createFlywheelSystem(DCMotor.getNEO(1),
+            momentOfInertia, GERAING);
 
 }
