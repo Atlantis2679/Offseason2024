@@ -10,9 +10,11 @@ import frc.lib.logfields.IOBase;
 import frc.lib.logfields.LogFieldsTable;
 
 /** Add your docs here. */
-public abstract class ShooterIO extends IOBase{
-    public final DoubleSupplier upperRollerSpeedRPM = fields.addDouble(null, null);
-    public final DoubleSupplier lowerRollerSpeedRPM = fields.addDouble(null, null);
+public abstract class ShooterIO extends IOBase {
+    public final DoubleSupplier upperRollerSpeedRPM = fields.addDouble("upperRollerSpeedRPM",
+            () -> getUpperRollerSpeedRPM());
+    public final DoubleSupplier lowerRollerSpeedRPM = fields.addDouble("lowerRollerSpeedRPM",
+            () -> getLowerRollerSpeedRPM());
 
     public ShooterIO(LogFieldsTable fieldsTable) {
         super(fieldsTable);
@@ -23,7 +25,6 @@ public abstract class ShooterIO extends IOBase{
     protected abstract double getUpperRollerSpeedRPM();
 
     protected abstract double getLowerRollerSpeedRPM();
-    
 
     // OUTPUT
 

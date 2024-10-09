@@ -4,28 +4,42 @@
 
 package frc.robot.subsystems.shooter;
 
+import java.util.Random;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.subsystems.shooter.io.ShooterIO;
+import frc.robot.subsystems.shooter.io.ShooterIOSim;
 import frc.robot.subsystems.shooter.io.ShooterIOSparkMax;
 
 public class Shooter extends SubsystemBase {
   private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
-
-  private final ShooterIO io = new ShooterIOSparkMax(fieldsTable);
+  private ShooterIO io;
 
   public Shooter() {
     fieldsTable.update();
+    if (RobotBase.isReal()) {
+      io = new ShooterIOSparkMax(fieldsTable);
+    } else {
+      io = new ShooterIOSim(fieldsTable);
+    }
   }
 
   @Override
   public void periodic() {
+    fieldsTable.recordOutput("Speed", getUpperRollerSpeedRPM());
+    fieldsTable.recordOutput("alive", Math.random());
   }
 
   public void setVoltage(double upperRollerVoltage, double lowerRollerVoltage) {
-    io.setUpperRollerVoltage(MathUtil.clamp(upperRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
-    io.setLowerRollerVoltage(MathUtil.clamp(lowerRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
+    Random random = new Random();
+    fieldsTable.recordOutput("Random", random.nextInt());
+    io.setUpperRollerVoltage(
+        MathUtil.clamp(upperRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
+    io.setLowerRollerVoltage(
+        MathUtil.clamp(lowerRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
   }
 
   public void stop() {
@@ -39,6 +53,4 @@ public class Shooter extends SubsystemBase {
   public double getLowerRollerSpeedRPM() {
     return io.lowerRollerSpeedRPM.getAsDouble();
   }
-
-
 }

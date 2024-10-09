@@ -1,15 +1,8 @@
 package frc.robot.subsystems.shooter.io;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-
 import frc.lib.logfields.LogFieldsTable;
-import frc.robot.RobotMap.CANBUS;
 import frc.robot.subsystems.shooter.ShooterConstants;
 
 public class ShooterIOSim extends ShooterIO {

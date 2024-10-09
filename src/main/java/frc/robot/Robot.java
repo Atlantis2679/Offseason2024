@@ -15,11 +15,15 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.logfields.LogFieldsTable;
 import frc.lib.tuneables.TuneablesManager;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterCommands;
 
 public class Robot extends LoggedRobot {
     private Command autonomousCommand;
@@ -157,6 +161,9 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void simulationInit() {
+        Shooter shooter = new Shooter();
+        ShooterCommands commands = new ShooterCommands(shooter);
+        SmartDashboard.putData("test!", commands.reachSpeed(50, new PIDController(1, 0, 0)));
     }
 
     @Override
