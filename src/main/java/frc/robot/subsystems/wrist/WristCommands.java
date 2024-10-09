@@ -25,6 +25,7 @@ public class WristCommands extends Command{
             wrist.resetPID();
             referenceState.set(new TrapezoidProfile.State(wrist.getAbsoluteAngle(), 0));
         }).andThen(() -> {
+            referenceState.set(wrist.calculateTrapezoidProfile(0.02, referenceState.get(), new TrapezoidProfile.State(desiredAngleDeg, 0)));
             double voltage = wrist.calculateFeedforward(referenceState.get().position, referenceState.get().velocity, true) + referenceState.get().velocity;
             wrist.setWristVoltage(voltage);
         });
