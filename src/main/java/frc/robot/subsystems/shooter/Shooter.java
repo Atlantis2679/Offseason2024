@@ -23,13 +23,13 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
   }
 
-  public void setSpeed(double upperRollerSpeed, double lowerRollerSpeed) {
-    io.setUpperRollerVoltage(MathUtil.clamp(upperRollerSpeed, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
-    io.setLowerRollerVoltage(MathUtil.clamp(lowerRollerSpeed, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
+  public void setVoltage(double upperRollerVoltage, double lowerRollerVoltage) {
+    io.setUpperRollerVoltage(MathUtil.clamp(upperRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
+    io.setLowerRollerVoltage(MathUtil.clamp(lowerRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
   }
 
   public void stop() {
-    setSpeed(0, 0);
+    setVoltage(0, 0);
   }
 
   public double getUpperRollerSpeedRPM() {
