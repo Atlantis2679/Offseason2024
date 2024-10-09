@@ -13,7 +13,7 @@ public abstract class IntakeIO extends IOBase{
 
     public abstract void setRollerSpeed(double rollersSpeed);
 
-    public abstract void setRollerSpeedVoltage(double rollersSpeedVoltage);
+    public abstract void setRollerVoltage(double rollersVoltage);
 
     public abstract void stop();
 }

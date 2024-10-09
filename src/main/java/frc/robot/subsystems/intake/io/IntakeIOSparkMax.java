@@ -25,12 +25,12 @@ public class IntakeIOSparkMax extends IntakeIO {
         rightVerticalRollerMotor.set(rollersSpeed);
     }
 
-        @Override
-    public void setRollerSpeedVoltage(double rollersSpeedVoltage){
-        horizontalRollerMotor.setVoltage(rollersSpeedVoltage);
-        rightVerticalRollerMotor.setVoltage(rollersSpeedVoltage);
+    @Override
+    public void setRollerVoltage(double rollersVoltage){
+        horizontalRollerMotor.setVoltage(rollersVoltage);
+        rightVerticalRollerMotor.setVoltage(rollersVoltage);
     }
-
+    @Override
     public void stop(){
         horizontalRollerMotor.stopMotor();
         rightVerticalRollerMotor.stopMotor();

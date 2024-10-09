@@ -30,8 +30,8 @@ public class Intake extends SubsystemBase {
     intakeIO.setRollerSpeed(speed);
   }
 
-  public void setRollerSpeedVoltage(double voltage){
-    intakeIO.setRollerSpeedVoltage(voltage);
+  public void setRollerVoltage(double voltage){
+    intakeIO.setRollerVoltage(voltage);
   }
 
   public void stop(){

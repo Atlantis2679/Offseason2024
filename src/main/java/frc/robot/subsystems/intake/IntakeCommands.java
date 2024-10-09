@@ -12,15 +12,19 @@ public class IntakeCommands {
     this.intake = intake;
   }
 
-  public Command takeIn(){//collect
+  public Command collect(){
 
     return intake.runEnd(() -> intake.setRollerSpeed(IntakeConstants.INTAKE_ROLLER_SPEED), intake::stop);
   }
   
 
-  public Command takeInVoltage(){
+  public Command collectVoltage(){
 
-    return intake.runEnd(() -> intake.setRollerSpeedVoltage(IntakeConstants.INTAKE_ROLLER_SPEED_VOLTAGE), intake::stop);
+    return intake.runEnd(() -> intake.setRollerVoltage(IntakeConstants.INTAKE_ROLLER_SPEED_VOLTAGE), intake::stop);
   }
 
+  public Command manualController(double value){
+
+    return intake.runEnd(() -> intake.setRollerSpeed(value),intake::stop);
+  }
 }
