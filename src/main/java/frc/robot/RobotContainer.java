@@ -13,7 +13,7 @@ public class RobotContainer {
         Wrist wrist = new Wrist();
         WristCommands wristCNDS = new WristCommands(wrist);
         configureBindings();
-        wrist.setDefaultCommand(wristCNDS.MoveToAngle(OperatorController.getLeftX()));
+        wrist.setDefaultCommand(wristCNDS.MoveToAngle(OperatorController.getLeftX()*100));
     }
 
     private void configureBindings() {
