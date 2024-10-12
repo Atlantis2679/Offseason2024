@@ -18,6 +18,7 @@ import frc.robot.subsystems.swerve.io.GyroIO;
 import frc.robot.subsystems.swerve.io.GyroIONavX;
 import frc.robot.subsystems.swerve.io.GyroIOSim;
 import frc.robot.subsystems.swerve.poseEstimator.PoseEstimatorWithVision;
+import frc.robot.utils.BuiltInAccelerometerLogged;
 import frc.robot.utils.LocalADStarAK;
 import frc.robot.utils.RotationalSensorHelper;
 import frc.lib.logfields.LogFieldsTable;
@@ -50,6 +51,9 @@ public class Swerve extends SubsystemBase implements Tuneable {
     private final GyroIO gyroIO = Robot.isSimulation()
             ? new GyroIOSim(fieldsTable.getSubTable("Gyro"))
             : new GyroIONavX(fieldsTable.getSubTable("Gyro"));
+
+    private final BuiltInAccelerometerLogged builtInAccelerometer = new BuiltInAccelerometerLogged(
+            fieldsTable.getSubTable("RoboRio Accelerometer"));
 
     // Should be FL, FR, BL, BR
     private final SwerveModule[] modules = {
@@ -137,6 +141,8 @@ public class Swerve extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
+        builtInAccelerometer.getX(); // to avoid unused variable warning.
+
         for (SwerveModule module : modules) {
             module.periodic();
         }
@@ -176,7 +182,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
         SmartDashboard.putBoolean("isRedAlliance", getIsRedAlliance());
         fieldsTable.recordOutput("is red alliance", getIsRedAlliance());
         fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : null);
-        fieldsTable.recordOutput("is moving:", gyroIO.isMoving.getAsBoolean());
+        fieldsTable.recordOutput("is moving", gyroIO.isMoving.getAsBoolean());
 
         if (gyroIO.isMoving.getAsBoolean() || !gyroIO.isConnected.getAsBoolean()) {
             poseEstimator.update(gyroYawHelperCCW.getMeasuredAngle(), getModulesPositions());
