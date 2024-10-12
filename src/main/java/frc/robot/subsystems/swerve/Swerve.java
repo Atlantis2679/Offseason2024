@@ -52,6 +52,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
             ? new GyroIOSim(fieldsTable.getSubTable("Gyro"))
             : new GyroIONavX(fieldsTable.getSubTable("Gyro"));
 
+    @SuppressWarnings("unused")
     private final BuiltInAccelerometerLogged builtInAccelerometer = new BuiltInAccelerometerLogged(
             fieldsTable.getSubTable("RoboRio Accelerometer"));
 
@@ -141,8 +142,6 @@ public class Swerve extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
-        builtInAccelerometer.getX(); // to avoid unused variable warning.
-
         for (SwerveModule module : modules) {
             module.periodic();
         }
