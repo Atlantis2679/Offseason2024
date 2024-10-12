@@ -13,13 +13,16 @@ import frc.lib.logfields.LogFieldsTable;
 import frc.robot.Robot;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.photonvision.PhotonUtils;
 
+import static frc.robot.RobotMap.*;
 import static frc.robot.subsystems.swerve.poseEstimator.PoseEstimatorConstants.*;
 
 public class PoseEstimatorWithVision {
-    private final VisionAprilTagsIO visionIO;
+    private final Map<String, VisionAprilTagsIO> visionCameras = new HashMap<>();
     private final SwerveDrivePoseEstimator poseEstimator;
     private final LogFieldsTable fieldsTable;
 
@@ -29,14 +32,17 @@ public class PoseEstimatorWithVision {
             AprilTagFieldLayout tagsLayout = AprilTagFieldLayout
                     .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
 
-            visionIO = Robot.isSimulation()
-                    ? new VisionAprilTagsIOSim(fieldsTable)
-                    : new VisionAprilTagsIOPhoton(fieldsTable, tagsLayout);
-                    
+            if (Robot.isReal()) {
+                visionCameras.put(FRONT_LEFT_CAMERA_NAME + " Photon",
+                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_LEFT_CAMERA_NAME, tagsLayout));
+                visionCameras.put(FRONT_RIGHT_CAMERA_NAME + "Photon",
+                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_RIGHT_CAMERA_NAME, tagsLayout));
+            }
         } catch (IOException e) {
             DriverStation.reportError("AprilTagFieldLayout blew up", e.getStackTrace());
             throw new RuntimeException(e);
         }
+
         this.fieldsTable = fieldsTable;
 
         poseEstimator = new SwerveDrivePoseEstimator(
@@ -50,23 +56,24 @@ public class PoseEstimatorWithVision {
 
     public void update(Rotation2d gyroMeasurmentCCW, SwerveModulePosition[] modulesPositions) {
         poseEstimator.update(gyroMeasurmentCCW, modulesPositions);
-        double visionToEstimateDifferenceMeters = getVisionToEstimateDifferenceMeters();
-        fieldsTable.recordOutput("Vision To Estimate Difference", visionToEstimateDifferenceMeters);
 
-        if (visionIO.hasNewRobotPose.getAsBoolean()) {
-            fieldsTable.recordOutput("Vision Pose3d", visionIO.poseEstimate.get());
-            fieldsTable.recordOutput("Vision Pose2d", visionIO.poseEstimate.get().toPose2d());
+        visionCameras.forEach((cameraName, visionIO) -> {
+            if (visionIO.hasNewRobotPose.getAsBoolean()) {
+                fieldsTable.recordOutput(cameraName + "/Pose3d", visionIO.poseEstimate.get());
+                fieldsTable.recordOutput(cameraName + "/Pose2d", visionIO.poseEstimate.get().toPose2d());
 
-            if (visionToEstimateDifferenceMeters < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M) {
-                poseEstimator.addVisionMeasurement(visionIO.poseEstimate.get().toPose2d(),
-                        visionIO.cameraTimestampSeconds.getAsDouble());
+                double visionToEstimateDifference = PhotonUtils.getDistanceToPose(
+                        visionIO.poseEstimate.get().toPose2d(),
+                        poseEstimator.getEstimatedPosition());
+
+                if (visionToEstimateDifference < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M) {
+                    poseEstimator.addVisionMeasurement(
+                            visionIO.poseEstimate.get().toPose2d(),
+                            visionIO.cameraTimestampSeconds.getAsDouble());
+                }
             }
-        }
-    }
+        });
 
-    private double getVisionToEstimateDifferenceMeters() {
-        return PhotonUtils.getDistanceToPose(visionIO.poseEstimate.get().toPose2d(),
-                poseEstimator.getEstimatedPosition());
     }
 
     public void resetPosition(Rotation2d gyroMeasurmentCCW, SwerveModulePosition[] modulesPositions, Pose2d newPose) {

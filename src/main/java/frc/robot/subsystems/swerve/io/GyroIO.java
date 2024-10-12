@@ -8,8 +8,8 @@ import frc.lib.logfields.IOBase;
 
 public abstract class GyroIO extends IOBase{
     public final DoubleSupplier yawDegreesCW = fields.addDouble("yawDegreesCW", this::getYawDegreesCW);
-    public final BooleanSupplier isConnected = fields.addBoolean("isConnected", this::isConnected);
-    public final BooleanSupplier isMoving = fields.addBoolean("isMoving", this::isMoving);
+    public final BooleanSupplier isConnected = fields.addBoolean("isConnected", this::getIsConnected);
+    public final BooleanSupplier isMoving = fields.addBoolean("isMoving", this::getIsMoving);
     
     public GyroIO(LogFieldsTable fieldsTable) {
         super(fieldsTable);
@@ -19,7 +19,7 @@ public abstract class GyroIO extends IOBase{
 
     protected abstract double getYawDegreesCW();
 
-    protected abstract boolean isConnected();
+    protected abstract boolean getIsConnected();
 
-    protected abstract boolean isMoving();
+    protected abstract boolean getIsMoving();
 }

@@ -93,9 +93,10 @@ public class Swerve extends SubsystemBase implements Tuneable {
     private final LoggedDashboardChooser<Boolean> isRedAlliance = new LoggedDashboardChooser<>("alliance");
 
     public Swerve() {
-        isRedAlliance.addDefaultOption("red", true);
-        isRedAlliance.addDefaultOption("blue", false);
         fieldsTable.update();
+
+        isRedAlliance.addDefaultOption("blue", false);
+        isRedAlliance.addOption("red", true);
 
         gyroYawHelperCCW = new RotationalSensorHelper(
                 Rotation2d.fromDegrees(gyroIO.isConnected.getAsBoolean() ? -gyroIO.yawDegreesCW.getAsDouble() : 0));
@@ -173,17 +174,17 @@ public class Swerve extends SubsystemBase implements Tuneable {
         fieldsTable.recordOutput("Robot Yaw Radians CCW", getYawCCW().getRadians());
         fieldsTable.recordOutput("Yaw Degrees CW", -getYawCCW().getDegrees());
         SmartDashboard.putBoolean("isRedAlliance", getIsRedAlliance());
+        fieldsTable.recordOutput("is red alliance", getIsRedAlliance());
         fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : null);
-        fieldsTable.recordOutput("is moving:",gyroIO.isMoving.getAsBoolean());
+        fieldsTable.recordOutput("is moving:", gyroIO.isMoving.getAsBoolean());
 
-            if(gyroIO.isMoving.getAsBoolean()){
-               //if the robot ain't mooving, don't update poseEstimator
-               poseEstimator.update(gyroYawHelperCCW.getMeasuredAngle(), getModulesPositions());
-               callbacksOnPoseUpdate.forEach(callback -> {
-                   callback.accept(getPose(), getIsRedAlliance());
-               });
-            }
-    } 
+        if (gyroIO.isMoving.getAsBoolean() || !gyroIO.isConnected.getAsBoolean()) {
+            poseEstimator.update(gyroYawHelperCCW.getMeasuredAngle(), getModulesPositions());
+            callbacksOnPoseUpdate.forEach(callback -> {
+                callback.accept(getPose(), getIsRedAlliance());
+            });
+        }
+    }
 
     public void drive(double forward, double sidewaysRightPositive, double angularVelocityCW, boolean isFieldRelative) {
         ChassisSpeeds desiredChassisSpeeds;
@@ -192,19 +193,11 @@ public class Swerve extends SubsystemBase implements Tuneable {
         double sidewaysLeftPositive = -sidewaysRightPositive;
 
         if (isFieldRelative) {
-            if (getIsRedAlliance()) {
-                desiredChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                        -forward,
-                        -sidewaysLeftPositive,
-                        angularVelocityCCW,
-                        getYawCCW());
-            } else {
-                desiredChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                        forward,
-                        sidewaysLeftPositive,
-                        angularVelocityCCW,
-                        getYawCCW());
-            }
+            desiredChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                    getIsRedAlliance() ? -forward : forward,
+                    getIsRedAlliance() ? -sidewaysLeftPositive : sidewaysLeftPositive,
+                    angularVelocityCCW,
+                    getYawCCW());
         } else {
             desiredChassisSpeeds = new ChassisSpeeds(
                     forward,
@@ -233,12 +226,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
 
     public void setModulesState(SwerveModuleState[] moduleStates, boolean preventJittering, boolean optimizeState,
             boolean useVoltage) {
-        fieldsTable.recordOutput(
-                "Module Desired States",
-                moduleStates[0],
-                moduleStates[1],
-                moduleStates[2],
-                moduleStates[3]);
+        fieldsTable.recordOutput("Module Desired States", moduleStates);
 
         for (SwerveModule module : modules) {
             module.setDesiredState(moduleStates[module.getModuleNumber()], preventJittering, optimizeState, useVoltage);
@@ -259,17 +247,14 @@ public class Swerve extends SubsystemBase implements Tuneable {
     }
 
     public void resetYaw() {
-        if (getIsRedAlliance())
-            setYawDegreesCW(180);
-        else
-            setYawDegreesCW(0);
+        setYawDegreesCW(getIsRedAlliance() ? 180 : 0);
     }
 
     public Pose2d getPose() {
         return poseEstimator.getPose();
     }
 
-    public void requestResetModulesToAbsolute() {
+    public void queueResetModulesToAbsolute() {
         for (SwerveModule module : modules) {
             module.queueResetToAbsolute();
         }
@@ -298,14 +283,15 @@ public class Swerve extends SubsystemBase implements Tuneable {
     }
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
-        return swerveKinematics.toChassisSpeeds(modules[0].getModuleState(),
+        return swerveKinematics.toChassisSpeeds(
+                modules[0].getModuleState(),
                 modules[1].getModuleState(),
                 modules[2].getModuleState(),
                 modules[3].getModuleState());
     }
 
     public boolean getIsRedAlliance() {
-        return isRedAlliance.get() != null ? isRedAlliance.get().booleanValue() : true;
+        return isRedAlliance.get() != null && isRedAlliance.get().booleanValue();
     }
 
     @Override
@@ -355,6 +341,6 @@ public class Swerve extends SubsystemBase implements Tuneable {
             }
         }).ignoringDisable(true));
 
-        builder.addChild("reset to absolute", new InstantCommand(this::requestResetModulesToAbsolute));
+        builder.addChild("reset to absolute", new InstantCommand(this::queueResetModulesToAbsolute));
     }
 }

@@ -15,14 +15,14 @@ import frc.lib.logfields.LogFieldsTable;
 
 public abstract class VisionAprilTagsIO extends IOBase {
     public final Supplier<Pose3d> poseEstimate = fields.addObject("poseEstimate", this::getRobotPose);
-    public final DoubleSupplier cameraTimestampSeconds = fields.addDouble("cameraTimestamp", this::getRobotPoseTimestampSeconds);
+    public final DoubleSupplier cameraTimestampSeconds = fields.addDouble("cameraTimestampSeconds", this::getCameraTimestampSeconds);
     public final BooleanSupplier hasNewRobotPose = fields.addBoolean("hasNewRobotPose", this::getHasNewRobotPose);
     
     protected VisionAprilTagsIO(LogFieldsTable fieldsTable){
         super(fieldsTable);
     }
 
-    protected abstract double getRobotPoseTimestampSeconds();
+    protected abstract double getCameraTimestampSeconds();
 
     protected abstract Pose3d getRobotPose();
 

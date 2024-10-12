@@ -15,7 +15,6 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
 import frc.lib.logfields.LogFieldsTable;
-import frc.robot.RobotMap;
 
 public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     PhotonPoseEstimator photonPoseEstimator;
@@ -23,10 +22,10 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     private PhotonPipelineResult photonPipelineResult;
     Optional<EstimatedRobotPose> photonEstimatorResult;
 
-    public VisionAprilTagsIOPhoton(LogFieldsTable fieldsTable, AprilTagFieldLayout tagLayout) {
+    public VisionAprilTagsIOPhoton(LogFieldsTable fieldsTable, String cameraName, AprilTagFieldLayout tagLayout) {
         super(fieldsTable);
 
-        camera = new PhotonCamera(RobotMap.FRONT_CAMERA_NAME);
+        camera = new PhotonCamera(cameraName);
         photonPoseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera,
                 PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM);
     }
@@ -38,7 +37,7 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     }
 
     @Override
-    protected double getRobotPoseTimestampSeconds() {
+    protected double getCameraTimestampSeconds() {
         return photonPipelineResult.getTimestampSeconds();
 
     }

@@ -13,12 +13,12 @@ public class GyroIOSim extends GyroIO{
     }
 
     @Override
-    protected boolean isConnected() {
+    protected boolean getIsConnected() {
         return false;
     }
 
     @Override
-    protected boolean isMoving(){
+    protected boolean getIsMoving(){
         return true;
     }
 }

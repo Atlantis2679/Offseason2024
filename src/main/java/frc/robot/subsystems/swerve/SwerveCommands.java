@@ -81,9 +81,7 @@ public class SwerveCommands {
                     : targetPoseBlueAlliance;
 
             PathPlannerPath path = new PathPlannerPath(
-                    PathPlannerPath.bezierFromPoses(
-                            swerve.getPose(),
-                            targetPose),
+                    PathPlannerPath.bezierFromPoses(swerve.getPose(), targetPose),
                     new PathConstraints(DriveToPose.MAX_VELOCITY_MPS, DriveToPose.MAX_ACCELERATION_MPS,
                             DriveToPose.MAX_ANGULAR_VELOCITY_RPS, DriveToPose.MAX_ANGULAR_ACCELERATION_RPS),
                     new GoalEndState(DriveToPose.GOAL_VELOCITY, targetPose.getRotation(), DriveToPose.ROTATE_FAST));
