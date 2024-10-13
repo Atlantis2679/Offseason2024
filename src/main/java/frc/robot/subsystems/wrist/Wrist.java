@@ -26,6 +26,8 @@ public class Wrist extends SubsystemBase {
 
   private final WristIO io = Robot.isSimulation() ? new WristIOSim(fieldsTable) : new WristIOSparkMax(fieldsTable);
 
+  private final WristVisualizer wristVisualizer = new WristVisualizer(fieldsTable, "Visualizer");
+
   private final PrimitiveRotationalSensorHelper wristAngleDegreesHelper;
 
   private final TuneableTrapezoidProfile trapezoidProfile = new TuneableTrapezoidProfile(
@@ -58,6 +60,7 @@ public class Wrist extends SubsystemBase {
     // This method will be called once per scheduler run
     wristAngleDegreesHelper.update(io.wristAngleDegrees.getAsDouble());
     fieldsTable.recordOutput("Wrist Angle Degrees", getWristAngleDegrees());
+    wristVisualizer.update(getAbsoluteAngleDegrees());
   }
 
   public void setWristVoltage(double voltage) {
@@ -67,16 +70,17 @@ public class Wrist extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
-  public double getAbsoluteAngle() {
+  public double getAbsoluteAngleDegrees() {
     return wristAngleDegreesHelper.getAngle();
   }
 
   public double calculateFeedforward(double wristDesiredAngleDegrees, double wristDesiredVelocity, boolean usePID) {
     fieldsTable.recordOutput("desired angle degrees", wristDesiredAngleDegrees);
+    fieldsTable.recordOutput("Desired velocity", wristDesiredVelocity);
     double voltage = feedForwardWrist.calculate(Math.toRadians(wristDesiredAngleDegrees), wristDesiredVelocity);
 
     if(usePID) {
-      voltage += wristPIDcontroller.calculate(getAbsoluteAngle(), wristDesiredAngleDegrees);
+      voltage += wristPIDcontroller.calculate(getAbsoluteAngleDegrees(), wristDesiredAngleDegrees);
     }
     
     fieldsTable.recordOutput("feedforward result", voltage);
@@ -96,7 +100,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public boolean isAtAngle(double desiredAngle) {
-    if(desiredAngle - getAbsoluteAngle() < IsAtAngle.MAX_WRIST_ANGLE_DEVAITION && desiredAngle - getAbsoluteAngle() > IsAtAngle.MIN_WRIST_ANGLE_DEVAITION) {
+    if(desiredAngle - getAbsoluteAngleDegrees() < IsAtAngle.MAX_WRIST_ANGLE_DEVAITION && desiredAngle - getAbsoluteAngleDegrees() > IsAtAngle.MIN_WRIST_ANGLE_DEVAITION) {
       return true;
     }
     return false;
