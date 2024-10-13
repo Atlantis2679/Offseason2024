@@ -10,7 +10,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
+import frc.lib.tuneables.Tuneable;
 import frc.lib.tuneables.TuneableBuilder;
+import frc.lib.tuneables.TuneablesManager;
 import frc.lib.tuneables.extensions.TuneableArmFeedforward;
 import frc.lib.tuneables.extensions.TuneableTrapezoidProfile;
 import frc.robot.Robot;
@@ -21,7 +23,7 @@ import frc.robot.subsystems.wrist.WristConstants.IsAtAngle;
 import frc.robot.subsystems.wrist.io.WristIOSim;
 import static frc.robot.subsystems.wrist.WristConstants.*;
 
-public class Wrist extends SubsystemBase {
+public class Wrist extends SubsystemBase implements Tuneable {
   private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
 
   private final WristIO io = Robot.isSimulation() ? new WristIOSim(fieldsTable) : new WristIOSparkMax(fieldsTable);
@@ -45,6 +47,7 @@ public class Wrist extends SubsystemBase {
     wristAngleDegreesHelper = new PrimitiveRotationalSensorHelper(io.wristAngleDegrees.getAsDouble(),
         WRIST_ANGLE_OFFSET_DEGREES);
     wristAngleDegreesHelper.enableContinousWrap(UPPER_BOUND_WRAP, 360);
+    TuneablesManager.add("Wrist", feedForwardWrist);
   }
 
   public void setSpeed(double speed) {
@@ -110,7 +113,8 @@ public class Wrist extends SubsystemBase {
     setWristVoltage(0);
   }
 
-  public void initialTuneable(TuneableBuilder builder) {
+  @Override
+  public void initTuneable(TuneableBuilder builder) {
     builder.addChild("Wrist PID", wristPIDcontroller);
 
     builder.addChild("Wrist feedforward", feedForwardWrist);

@@ -13,9 +13,9 @@ public class WristConstants {
     public static final double WRIST_TURNING_MAX_DEGREES = 100;
 
     // Angle PID
-    public static final double KP = 0;
-    public static final double KI = 0;
-    public static final double KD = 0;
+    public static final double KP = 0.5;
+    public static final double KI = 0.01;
+    public static final double KD = 0.1;
 
 
     public class IsAtAngle {
@@ -38,9 +38,9 @@ public class WristConstants {
 
     public static final double SIM_KS = 0;
     // We suggest to keep KS at 0
-    public static final double SIM_KA = 4;
-    public static final double SIM_KV = 3;
-    public static final double SIM_KG = 5;
+    public static final double SIM_KA = 0;
+    public static final double SIM_KV = 0;
+    public static final double SIM_KG = 0.1;
 
     public static final double WRIST_VOLTAGE_LIMIT = 10;
 

@@ -2,8 +2,6 @@ package frc.robot.subsystems.wrist.io;
 
 import static frc.robot.subsystems.wrist.WristConstants.*;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.lib.logfields.LogFieldsTable;
@@ -18,6 +16,11 @@ public class WristIOSim extends WristIO {
             Math.toRadians(WRIST_TURNING_MAX_DEGREES),
             false,
             0);
+
+    @Override
+    protected void periodicBeforeFields() {
+        wristMotor.update(0.02);
+    }
 
     @Override
     protected double getWristAngleDegrees() {
