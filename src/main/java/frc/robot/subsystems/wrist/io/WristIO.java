@@ -11,7 +11,6 @@ import frc.lib.logfields.LogFieldsTable;
 
 /** Add your docs here. */
 public abstract class WristIO extends IOBase {
-
     public final DoubleSupplier wristAngleDegrees = fields.addDouble("wristAngleDegrees", this::getWristAngleDegrees);
 
     protected WristIO(LogFieldsTable fieldsTable) {
@@ -22,8 +21,5 @@ public abstract class WristIO extends IOBase {
     protected abstract double getWristAngleDegrees();
 
     // Outputs
-    public abstract void setSpeed(double wristSpeed);
-
-    public abstract void setVoltage(double wristVoltage);
-
+    public abstract void setVoltage(double voltage);
 }
