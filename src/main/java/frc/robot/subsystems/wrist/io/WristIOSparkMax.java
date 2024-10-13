@@ -7,32 +7,31 @@ package frc.robot.subsystems.wrist.io;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel;
-import static frc.robot.RobotMap.Wrist.*;
+import static frc.robot.RobotMap.*;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.lib.logfields.LogFieldsTable;
+import static frc.robot.subsystems.wrist.WristConstants.*;
 
 /** Add your docs here. */
 public class WristIOSparkMax extends WristIO {
-    private final CANSparkMax wristMotorLeft = new CANSparkMax(WRIST_LEFT_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final CANSparkMax wristMotorRight = new CANSparkMax(WRIST_RIGHT_MOTOR_ID, CANSparkLowLevel.MotorType.kBrushless);
-    private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(0                                                                                                                                                                                                                                                     );
+    private final CANSparkMax wristMotorLeft = new CANSparkMax(CANBUS.WRIST_LEFT_MOTOR_ID,
+            CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkMax wristMotorRight = new CANSparkMax(CANBUS.WRIST_RIGHT_MOTOR_ID,
+            CANSparkLowLevel.MotorType.kBrushless);
+    private final DutyCycleEncoder wristEncoder = new DutyCycleEncoder(DIO.WRIST_ENCODER_ID);
 
     public WristIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
         wristMotorRight.follow(wristMotorLeft);
-        wristMotorLeft.setSmartCurrentLimit(25);
+        wristMotorLeft.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
         wristMotorLeft.setIdleMode(IdleMode.kBrake);
+        wristEncoder.setDistancePerRotation(360);
     }
 
     @Override
     public double getWristAngleDegrees() {
-        return (wristEncoder.getAbsolutePosition()) * 360;
-    }
-
-    @Override
-    public void setSpeed(double speed) {
-        wristMotorLeft.set(speed);
+        return wristEncoder.getAbsolutePosition();
     }
 
     @Override

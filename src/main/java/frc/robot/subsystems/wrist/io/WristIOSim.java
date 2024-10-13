@@ -11,10 +11,10 @@ public class WristIOSim extends WristIO {
             DCMotor.getNEO(2),
             JOINT_GEAR_RATIO,
             WRIST_JKG_METERS_SQUARED,
-            1,
+            2,
             Math.toRadians(WRIST_TURNING_MIN_DEGREES),
             Math.toRadians(WRIST_TURNING_MAX_DEGREES),
-            false,
+            true,
             0);
 
     @Override
@@ -34,10 +34,5 @@ public class WristIOSim extends WristIO {
 
     public WristIOSim(LogFieldsTable logFieldsTable) {
         super(logFieldsTable);
-    }
-
-    @Override
-    public void setSpeed(double speed) {
-        wristMotor.setInputVoltage(speed / 12);
     }
 }
