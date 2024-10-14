@@ -14,8 +14,8 @@ public class RobotMap {
     }
        
     public static class CANBUS {
-        public final static int WRIST_LEFT_MOTOR_ID = 0;
-        public final static int WRIST_RIGHT_MOTOR_ID = 0;
+        public final static int PIVOT_LEFT_MOTOR_ID = 0;
+        public final static int PIVOT_RIGHT_MOTOR_ID = 0;
       
         public class ModuleFL {
             public final static int DRIVE_MOTOR_ID = 20;
@@ -43,6 +43,6 @@ public class RobotMap {
     }
   
     public static class DIO {
-        public final static int WRIST_ENCODER_ID = 0;
+        public final static int PIVOT_ENCODER_ID = 0;
     }
 }
