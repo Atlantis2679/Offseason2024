@@ -22,9 +22,11 @@ public class Shooter extends SubsystemBase implements Tuneable {
     private final LogFieldsTable fieldsTable = new LogFieldsTable("Shooter");
     private ShooterIO io = !Robot.isSimulation() ? new ShooterIOSparkMax(fieldsTable) : new ShooterIOSim(fieldsTable);
 
-    private PIDController pidUpper = Robot.isSimulation() ? new PIDController(kPSim, kISim, kDSim)
+    private PIDController pidUpper = Robot.isSimulation()
+            ? new PIDController(kPSim, kISim, kDSim)
             : new PIDController(kP, kI, kD);
-    private PIDController pidLower = Robot.isSimulation() ? new PIDController(kPSim, kISim, kDSim)
+    private PIDController pidLower = Robot.isSimulation()
+            ? new PIDController(kPSim, kISim, kDSim)
             : new PIDController(kP, kI, kD);
 
     private TuneableSimpleMotorFeedforward upperFeedforward = Robot.isSimulation()
@@ -42,13 +44,13 @@ public class Shooter extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("upperRollerSpeedRPM", getUpperRollerSpeedRPM());
-        fieldsTable.recordOutput("lowerRollerSpeedRPM", getLowerRollerSpeedRPM());
+        fieldsTable.recordOutput("upper roller speed RPM", getUpperRollerSpeedRPM());
+        fieldsTable.recordOutput("lower roller speed RPM", getLowerRollerSpeedRPM());
     }
 
     public void setVoltage(double upperRollerVoltage, double lowerRollerVoltage) {
-        fieldsTable.recordOutput("upperRollerVolatgeDemend", upperRollerVoltage);
-        fieldsTable.recordOutput("lowerRollerVolatgeDemend", lowerRollerVoltage);
+        fieldsTable.recordOutput("upper roller voltage demend", upperRollerVoltage);
+        fieldsTable.recordOutput("lower roller voltage demend", lowerRollerVoltage);
         io.setUpperRollerVoltage(
                 MathUtil.clamp(upperRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
         io.setLowerRollerVoltage(

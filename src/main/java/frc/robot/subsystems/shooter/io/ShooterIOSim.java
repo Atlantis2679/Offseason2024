@@ -10,11 +10,9 @@ public class ShooterIOSim extends ShooterIO {
             ShooterConstants.GERAING);
     private final FlywheelSim lowerRollorSim = new FlywheelSim(ShooterConstants.LINEAR_SYSTEM, DCMotor.getNEO(1),
             ShooterConstants.GERAING);
-    private LogFieldsTable fieldsTable;
 
     public ShooterIOSim(LogFieldsTable fieldsTable) {
         super(fieldsTable);
-        this.fieldsTable = fieldsTable;
     }
 
     @Override
@@ -35,13 +33,11 @@ public class ShooterIOSim extends ShooterIO {
 
     @Override
     public void setUpperRollerVoltage(double voltage) {
-        fieldsTable.recordOutput("upperRollerSpeedRPMSim", getUpperRollerSpeedRPM());
         upperRollorSim.setInputVoltage(voltage);
     }
 
     @Override
     public void setLowerRollerVoltage(double voltage) {
-        fieldsTable.recordOutput("lowerRollerSpeedRPMSim", getLowerRollerSpeedRPM());
         lowerRollorSim.setInputVoltage(voltage);
     }
 
