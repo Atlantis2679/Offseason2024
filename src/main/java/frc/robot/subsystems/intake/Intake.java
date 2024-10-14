@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         if (shouldStop) {
-            setRollerSpeed(0,0);
+            setRollerSpeed(0, 0);
         }
     }
 
@@ -49,18 +49,19 @@ public class Intake extends SubsystemBase {
         verticalSpeed = speedLimiter.calculate(verticalSpeed);
 
         fieldsTable.recordOutput("horizontal rollers actual speed", horizontalSpeed);
-        intakeIO.setHorizontalRollerSpeed(horizontalSpeed);        
+        intakeIO.setHorizontalRollerSpeed(horizontalSpeed);
         fieldsTable.recordOutput("vertical rollers actual speed", verticalSpeed);
         intakeIO.setHorizontalRollerSpeed(verticalSpeed);
     }
 
     public void stop() {
+        shouldStop = false;
+
         fieldsTable.recordOutput("horizontal rollers demand speed", 0.0);
         fieldsTable.recordOutput("vertical rollers demand speed", 0.0);
-        fieldsTable.recordOutput("horizontal rollers actual speed", 0.0);        
+        fieldsTable.recordOutput("horizontal rollers actual speed", 0.0);
         fieldsTable.recordOutput("vertical rollers actual speed", 0.0);
 
-        
         intakeIO.setHorizontalRollerSpeed(0);
         intakeIO.setVerticalRollerSpeed(0);
 
