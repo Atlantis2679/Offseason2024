@@ -4,27 +4,36 @@
 
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.math.controller.PIDController;
+import java.util.function.DoubleSupplier;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** Add your docs here. */
-public class ShooterCommands extends Command {
+public class ShooterCommands {
     private final Shooter shooter;
 
     public ShooterCommands(Shooter shooter) {
         this.shooter = shooter;
-        this.addRequirements(shooter);
     }
 
-    public Command reachSpeed(double targetSpeedRPM, PIDController pid) {
+    public Command reachSpeed(DoubleSupplier targetUpperSpeedRPM, DoubleSupplier targetLowerSpeedRPM) {
+        shooter.resetPID();
         return shooter.run(() -> {
+            Logger.recordOutput("Shooter/upperRollerTargetSpeedRPM", targetUpperSpeedRPM.getAsDouble());
+            Logger.recordOutput("Shooter/lowerRollerTargetSpeedRPM", targetLowerSpeedRPM.getAsDouble());
             shooter.setVoltage(
-                    pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM) / 437,
-                    pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM) / 437);
-        }).until(() -> ((shooter.getUpperRollerSpeedRPM() >= targetSpeedRPM - 10
-                && shooter.getUpperRollerSpeedRPM() <= targetSpeedRPM + 10)
-                && (shooter.getLowerRollerSpeedRPM() >= targetSpeedRPM - 10
-                        && shooter.getLowerRollerSpeedRPM() <= targetSpeedRPM + 10)));
+                    shooter.calculateVoltageForUpperSpeedRPM(shooter.getUpperRollerSpeedRPM(),
+                            targetUpperSpeedRPM.getAsDouble()),
+                    shooter.calculateLowerSpeedToVoltage(shooter.getLowerRollerSpeedRPM(),
+                            targetLowerSpeedRPM.getAsDouble()));
+        });
     }
 
+    public Command manualController(DoubleSupplier upperRollerVoltage, DoubleSupplier lowerRollerVoltage) {
+        return shooter.run(() -> {
+            shooter.setVoltage(upperRollerVoltage.getAsDouble(), lowerRollerVoltage.getAsDouble());
+        });
+    }
 }

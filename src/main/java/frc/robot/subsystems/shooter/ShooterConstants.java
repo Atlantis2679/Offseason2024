@@ -15,9 +15,13 @@ public final class ShooterConstants {
 
     public static final int ROLLER_CURRENT_LIMIT = 30;
 
-    public static final int kP = 1;
+    public static final int kP = 50;
     public static final int kD = 0;
     public static final int kI = 0;
+
+    public static final int kS = 0;
+    public static final int kV = 0;
+    public static final int kA = 0;
 
     // sim
     public static final double GERAING = 1;
@@ -25,4 +29,12 @@ public final class ShooterConstants {
 
     public static final LinearSystem<N1, N1, N1> LINEAR_SYSTEM = LinearSystemId.createFlywheelSystem(DCMotor.getNEO(1),
             kFlywheelMomentOfInertia, GERAING);
+
+    public static final int kPSim = 1;
+    public static final int kISim = 0;
+    public static final int kDSim = 0;
+
+    public static final int kSSim = 0;
+    public static final int kVSim = 1;
+    public static final int kASim = 0;
 }

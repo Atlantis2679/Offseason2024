@@ -18,6 +18,12 @@ public class ShooterIOSim extends ShooterIO {
     }
 
     @Override
+    protected void periodicBeforeFields() {
+        upperRollorSim.update(0.02);
+        lowerRollorSim.update(0.02);
+    }
+
+    @Override
     protected double getUpperRollerSpeedRPM() {
         return upperRollorSim.getAngularVelocityRPM();
     }
@@ -31,14 +37,12 @@ public class ShooterIOSim extends ShooterIO {
     public void setUpperRollerVoltage(double voltage) {
         fieldsTable.recordOutput("upperRollerSpeedRPMSim", getUpperRollerSpeedRPM());
         upperRollorSim.setInputVoltage(voltage);
-        upperRollorSim.update(0.02);
     }
 
     @Override
     public void setLowerRollerVoltage(double voltage) {
         fieldsTable.recordOutput("lowerRollerSpeedRPMSim", getLowerRollerSpeedRPM());
         lowerRollorSim.setInputVoltage(voltage);
-        lowerRollorSim.update(0.02);
     }
 
 }

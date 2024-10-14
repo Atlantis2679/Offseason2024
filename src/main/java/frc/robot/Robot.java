@@ -15,24 +15,15 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.logfields.LogFieldsTable;
 import frc.lib.tuneables.TuneablesManager;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterCommands;
 
 public class Robot extends LoggedRobot {
     private Command autonomousCommand;
     private RobotContainer robotContainer;
-
-    public Shooter shooter = new Shooter();
-    public ShooterCommands commandShooterCommands = new ShooterCommands(shooter);
-
-    public PIDController pidController = new PIDController(50, 0, 0);
 
     private String getLogPath() {
         if (isReal()) {
@@ -75,7 +66,7 @@ public class Robot extends LoggedRobot {
         }
 
         if (getIsReplay()) {
-            System.out.println("******* Starting replay mode! *******");
+            System.out.println("******************* Starting replay mode! *******************");
             setUseTiming(false);
             String logPath = LogFileUtil.findReplayLog();
             Logger.setReplaySource(new WPILOGReader(logPath));
@@ -106,6 +97,7 @@ public class Robot extends LoggedRobot {
     public void robotInit() {
         initializeAdvantageKit();
         enableLiveWindowInTest(false);
+        robotContainer = new RobotContainer();
     }
 
     @Override
@@ -165,7 +157,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void simulationInit() {
-        SmartDashboard.putData("test!", commandShooterCommands.reachSpeed(5000, pidController));
     }
 
     @Override
