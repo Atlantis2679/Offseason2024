@@ -5,17 +5,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.lib.tuneables.TuneablesManager;
 import frc.lib.tuneables.extensions.TuneableCommand;
-import frc.robot.subsystems.pivot.Pivot;
-import frc.robot.subsystems.pivot.PivotCommands;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveCommands;
 import frc.robot.utils.NaturalXboxController;
 
 public class RobotContainer {
     private final Swerve swerve = new Swerve();
-    private final Pivot pivot = new Pivot();
-    private final PivotCommands pivotCNDS = new PivotCommands(pivot);
-    private final NaturalXboxController operatorController = new NaturalXboxController(RobotMap.Controllers.OPERATOR_PORT);
+
     private final NaturalXboxController driverController = new NaturalXboxController(
             RobotMap.Controllers.DRIVER_PORT);
 
@@ -24,7 +20,6 @@ public class RobotContainer {
     public RobotContainer() {
 
         configureDriverBindings();
-        configureOperatorBindings();
     }
 
     private void configureDriverBindings() {
@@ -50,11 +45,5 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
-    }
-
-    private void configureOperatorBindings() {
-        pivot.setDefaultCommand(pivotCNDS.moveToAngle(() -> operatorController.getLeftY()*50+50));
-        operatorController.a().whileTrue(pivotCNDS.moveToAngle(20));
-        operatorController.b().whileTrue(pivotCNDS.moveToAngle(75));
     }
 }
