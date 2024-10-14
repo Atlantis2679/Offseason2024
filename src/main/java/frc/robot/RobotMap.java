@@ -14,6 +14,10 @@ public class RobotMap {
     }
        
     public static class CANBUS {
+        public final static int INTAKE_RIGHT_VERTICAL_ROLLER_ID = 12;
+        public final static int INTAKE_LEFT_VERTICAL_ROLLER_ID = 13;
+        public final static int INTAKE_HORIZONTAL_ROLLER_ID = 11;
+      
         public final static int PIVOT_LEFT_MOTOR_ID = 0;
         public final static int PIVOT_RIGHT_MOTOR_ID = 0;
       
