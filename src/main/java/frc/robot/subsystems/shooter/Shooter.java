@@ -5,24 +5,24 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.subsystems.shooter.io.ShooterIO;
 import frc.robot.subsystems.shooter.io.ShooterIOSim;
 import frc.robot.subsystems.shooter.io.ShooterIOSparkMax;
+import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 public class Shooter extends SubsystemBase {
   private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
-  private ShooterIO io;
+  private ShooterIO io = RobotBase.isReal() ? new ShooterIOSparkMax(fieldsTable) : new ShooterIOSim(fieldsTable);
+  private PIDController pid = new PIDController(RobotBase.isReal() ? kP : kPSim, RobotBase.isReal() ? kI : kISim, RobotBase.isReal() ? kD : kDSim)
 
-  public Shooter() {
+  public Shooter()
+  {
     fieldsTable.update();
-    if (RobotBase.isReal()) {
-      io = new ShooterIOSparkMax(fieldsTable);
-    } else {
-      io = new ShooterIOSim(fieldsTable);
-    }
   }
 
   @Override
@@ -50,5 +50,18 @@ public class Shooter extends SubsystemBase {
 
   public double getLowerRollerSpeedRPM() {
     return io.lowerRollerSpeedRPM.getAsDouble();
+  }
+
+  public boolean isAtSpeed(double targetSpeedRPM) {
+    return (getUpperRollerSpeedRPM() >= targetSpeedRPM - 10 && getUpperRollerSpeedRPM() <= targetSpeedRPM + 10)
+        && (getLowerRollerSpeedRPM() >= targetSpeedRPM - 10 && getLowerRollerSpeedRPM() <= targetSpeedRPM + 10);
+  }
+
+  public double calculateVoltageToSpeed(double currentSpeed, double targetSpeedRPM) {
+    return pid.calculate(currentSpeed, targetSpeedRPM) / 473;
+  }
+
+  public void resetPID() {
+    pid.reset();
   }
 }
