@@ -8,12 +8,8 @@ public abstract class IntakeIO extends IOBase{
 
     public IntakeIO(LogFieldsTable fieldsTable){
         super(fieldsTable);
-
     }
 
-    public abstract void setRollerSpeed(double rollersIntakeSpeed);
+    public abstract void setRollerSpeed(double rollersSpeed);
 
-    public abstract void setRollerSpeedVoltage(double rollersIntakeSpeedVoltage);
-
-    public abstract void stop();
 }
