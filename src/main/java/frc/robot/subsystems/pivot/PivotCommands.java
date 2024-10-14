@@ -14,7 +14,7 @@ public class PivotCommands extends Command {
         this.addRequirements(pivot);
     }
 
-    public Command MoveToAngle(DoubleSupplier desiredAngleDeg) {
+    public Command moveToAngle(DoubleSupplier desiredAngleDeg) {
         ValueHolder<TrapezoidProfile.State> referenceState = new ValueHolder<TrapezoidProfile.State>(null);
         return pivot.runOnce(() -> {
             pivot.resetPID();
@@ -29,9 +29,13 @@ public class PivotCommands extends Command {
                     referenceState.get().position,
                     referenceState.get().velocity,
                     true);
-    
+
             pivot.setPivotVoltage(voltage);
         }));
+    }
+
+    public Command moveToAngle(double angle) {
+        return moveToAngle(() -> angle);
     }
 
     public Command manualController(DoubleSupplier pivotSpeed) {
@@ -44,5 +48,4 @@ public class PivotCommands extends Command {
                     feedforwardResult + pivotSpeed.getAsDouble() * PivotConstants.MANUAL_SPEED_MULTIPLIER);
         });
     }
-
 }
