@@ -14,6 +14,7 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     private double currentTimeSec;
     private double previousTimeSec;
     private double deltaTime;
+    private double calculatedAngle;
 
     private boolean continousWrapEnabled;
     private double continousWrapUpperBound;
@@ -33,9 +34,10 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     public void update(double measuredAngle) {
         currentTimeSec = Timer.getFPGATimestamp();
         deltaTime = currentTimeSec - previousTimeSec;
-        previousAngle = getAngle();
+        previousAngle = calculatedAngle;
         this.measuredAngle = measuredAngle;
         previousTimeSec = Timer.getFPGATimestamp();
+        recalculateAngle();
     }
 
     public double getMeasuredAngle() {
@@ -50,21 +52,24 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
         }
     }
 
-    public double getAngle() {
-        double angle = measuredAngle - offset;
+    public void recalculateAngle() {
+        calculatedAngle = measuredAngle - offset;
         if (continousWrapEnabled) {
-            while (angle > continousWrapUpperBound) {
-                angle -= fullRotation;
+            while (calculatedAngle > continousWrapUpperBound) {
+                calculatedAngle -= fullRotation;
             }
-            while (angle < continousWrapLowerBound) {
-                angle += fullRotation;
+            while (calculatedAngle < continousWrapLowerBound) {
+                calculatedAngle += fullRotation;
             }
         }
-        return angle;
+    }
+
+    public double getAngle() {
+        return calculatedAngle;
     }
 
     public void resetAngle(double newAngle) {
-        offset = measuredAngle - newAngle;
+        setOffset(measuredAngle - newAngle);
     }
 
     public void enableContinousWrap(double upperBound, double fullRotation) {
@@ -72,10 +77,12 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
         this.fullRotation = fullRotation;
         continousWrapUpperBound = upperBound;
         continousWrapLowerBound = upperBound - fullRotation;
+        recalculateAngle();
     }
 
     public void setOffset(double offset) {
         this.offset = offset;
+        recalculateAngle();
     }
 
 
