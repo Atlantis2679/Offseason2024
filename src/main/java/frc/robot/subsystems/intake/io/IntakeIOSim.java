@@ -8,6 +8,10 @@ public class IntakeIOSim extends IntakeIO {
     }
 
     @Override
-    public void setRollerSpeed(double rollersSpeed) {
+    public void setHorizontalRollerSpeed(double rollersSpeed){
+    }
+
+    @Override
+    public void setVerticalRollerSpeed(double rollersSpeed){
     }
 }
