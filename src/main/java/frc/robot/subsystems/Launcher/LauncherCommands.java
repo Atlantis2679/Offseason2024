@@ -6,16 +6,15 @@ import static frc.robot.subsystems.Launcher.LauncherConstants.*;
 
 import java.util.function.DoubleSupplier;
 
-public class LauncherCommands extends Command {
+public class LauncherCommands {
     private final Launcher launcher;
 
     public LauncherCommands(Launcher launcher) {
         this.launcher = launcher;
-        this.addRequirements(launcher);
     }
 
     public Command load() {
-        return launcher.run(() -> launcher.setSpeed(LODING_SPEED_PRECENTAGE)).until(() -> launcher.getIsNoteInside())
+        return launcher.run(() -> launcher.setSpeed(LOADING_SPEED_PRECENTAGE)).until(() -> launcher.getIsNoteInside())
                 .finallyDo(() -> launcher.stop());
     }
 
