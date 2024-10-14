@@ -2,23 +2,46 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterCommands;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.lib.tuneables.TuneablesManager;
+import frc.lib.tuneables.extensions.TuneableCommand;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveCommands;
+import frc.robot.utils.NaturalXboxController;
 
 public class RobotContainer {
-    private final CommandXboxController controller = new CommandXboxController(0);
-    private final Shooter shooter = new Shooter();
-    private final ShooterCommands commands = new ShooterCommands(shooter);
+    private final Swerve swerve = new Swerve();
+
+    private final NaturalXboxController driverController = new NaturalXboxController(
+            RobotMap.Controllers.DRIVER_PORT);
+
+    private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
 
     public RobotContainer() {
-        configureBindings();
+
+        configureDriverBindings();
     }
 
-    private void configureBindings() {
-        controller.a().onTrue(
-                commands.reachSpeed(() -> (controller.getRightY() * 5676),
-                        () -> (controller.getLeftY() * 5676)));
+    private void configureDriverBindings() {
+        TuneableCommand driveCommand = swerveCommands.controller(
+                () -> driverController.getLeftY(),
+                () -> driverController.getLeftX(),
+                () -> driverController.getRightX(),
+                driverController.leftBumper().negate()::getAsBoolean,
+                driverController.rightBumper()::getAsBoolean);
+
+        swerve.setDefaultCommand(driveCommand);
+        TuneablesManager.add("Swerve/drive command", driveCommand.fullTuneable());
+        driverController.a().onTrue(new InstantCommand(swerve::resetYaw));
+        driverController.x().onTrue(swerveCommands.xWheelLock());
+
+        TuneablesManager.add("Swerve/modules control mode",
+                swerveCommands.controlModules(
+                        driverController::getLeftX,
+                        driverController::getLeftY,
+                        driverController::getRightY).fullTuneable());
+
     }
 
     public Command getAutonomousCommand() {
