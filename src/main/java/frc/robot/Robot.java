@@ -29,6 +29,11 @@ public class Robot extends LoggedRobot {
     private Command autonomousCommand;
     private RobotContainer robotContainer;
 
+    public Shooter shooter = new Shooter();
+    public ShooterCommands commandShooterCommands = new ShooterCommands(shooter);
+
+    public PIDController pidController = new PIDController(50, 0, 0);
+
     private String getLogPath() {
         if (isReal()) {
             try {
@@ -70,7 +75,7 @@ public class Robot extends LoggedRobot {
         }
 
         if (getIsReplay()) {
-            System.out.println("******************* Starting replay mode! *******************");
+            System.out.println("******* Starting replay mode! *******");
             setUseTiming(false);
             String logPath = LogFileUtil.findReplayLog();
             Logger.setReplaySource(new WPILOGReader(logPath));
@@ -101,7 +106,6 @@ public class Robot extends LoggedRobot {
     public void robotInit() {
         initializeAdvantageKit();
         enableLiveWindowInTest(false);
-        robotContainer = new RobotContainer();
     }
 
     @Override
@@ -161,9 +165,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void simulationInit() {
-        Shooter shooter = new Shooter();
-        ShooterCommands commands = new ShooterCommands(shooter);
-        SmartDashboard.putData("test!", commands.reachSpeed(50, new PIDController(1, 0, 0)));
+        SmartDashboard.putData("test!", commandShooterCommands.reachSpeed(5000, pidController));
     }
 
     @Override

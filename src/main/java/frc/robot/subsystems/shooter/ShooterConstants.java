@@ -19,10 +19,10 @@ public final class ShooterConstants {
     public static final int kD = 0;
     public static final int kI = 0;
 
-    // sim:
-    public static final double momentOfInertia = 0.00032;
+    // sim
     public static final double GERAING = 1;
-    public static final LinearSystem<N1, N1, N1> LINEAR_SYSTEM = LinearSystemId.createFlywheelSystem(DCMotor.getNEO(1),
-            momentOfInertia, GERAING);
+    public static final double kFlywheelMomentOfInertia = 0.00032; // kg * m^2
 
+    public static final LinearSystem<N1, N1, N1> LINEAR_SYSTEM = LinearSystemId.createFlywheelSystem(DCMotor.getNEO(1),
+            kFlywheelMomentOfInertia, GERAING);
 }

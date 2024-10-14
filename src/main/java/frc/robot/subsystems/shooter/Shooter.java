@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.shooter;
 
-import java.util.Random;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,17 +27,17 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    fieldsTable.recordOutput("Speed", getUpperRollerSpeedRPM());
-    fieldsTable.recordOutput("alive", Math.random());
   }
 
   public void setVoltage(double upperRollerVoltage, double lowerRollerVoltage) {
-    Random random = new Random();
-    fieldsTable.recordOutput("Random", random.nextInt());
+    fieldsTable.recordOutput("upperRollervoltage set", upperRollerVoltage);
+    fieldsTable.recordOutput("lowerRollervoltage set", upperRollerVoltage);
     io.setUpperRollerVoltage(
         MathUtil.clamp(upperRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
     io.setLowerRollerVoltage(
         MathUtil.clamp(lowerRollerVoltage, -ShooterConstants.MAX_VOLTAGE, ShooterConstants.MAX_VOLTAGE));
+    fieldsTable.recordOutput("upperRollerSpeed", getUpperRollerSpeedRPM());
+    fieldsTable.recordOutput("lowerRollerSpeed", getLowerRollerSpeedRPM());
   }
 
   public void stop() {

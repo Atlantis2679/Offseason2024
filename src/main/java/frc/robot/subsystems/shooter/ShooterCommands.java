@@ -4,12 +4,11 @@
 
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** Add your docs here. */
-public class ShooterCommands extends Command{
+public class ShooterCommands extends Command {
     private final Shooter shooter;
 
     public ShooterCommands(Shooter shooter) {
@@ -18,11 +17,14 @@ public class ShooterCommands extends Command{
     }
 
     public Command reachSpeed(double targetSpeedRPM, PIDController pid) {
-        double targetClampedSpeedRPM = MathUtil.clamp(targetSpeedRPM, ShooterConstants.MAX_VOLTAGE, -ShooterConstants.MAX_VOLTAGE);
         return shooter.run(() -> {
             shooter.setVoltage(
-                pid.calculate(shooter.getUpperRollerSpeedRPM(), targetClampedSpeedRPM),
-                pid.calculate(shooter.getLowerRollerSpeedRPM(), targetClampedSpeedRPM));
-        }).until(() -> shooter.getUpperRollerSpeedRPM() == targetClampedSpeedRPM && shooter.getLowerRollerSpeedRPM() == targetClampedSpeedRPM);
+                    pid.calculate(shooter.getUpperRollerSpeedRPM(), targetSpeedRPM) / 437,
+                    pid.calculate(shooter.getLowerRollerSpeedRPM(), targetSpeedRPM) / 437);
+        }).until(() -> ((shooter.getUpperRollerSpeedRPM() >= targetSpeedRPM - 10
+                && shooter.getUpperRollerSpeedRPM() <= targetSpeedRPM + 10)
+                && (shooter.getLowerRollerSpeedRPM() >= targetSpeedRPM - 10
+                        && shooter.getLowerRollerSpeedRPM() <= targetSpeedRPM + 10)));
     }
+
 }
