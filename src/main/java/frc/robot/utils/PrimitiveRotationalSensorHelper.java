@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.lib.tuneables.Tuneable;
 import frc.lib.tuneables.TuneableBuilder;
@@ -8,6 +10,10 @@ import frc.lib.valueholders.DoubleHolder;
 public class PrimitiveRotationalSensorHelper implements Tuneable {
     private double measuredAngle;
     private double offset;
+    private double previousAngle;
+    private double currentTimeSec;
+    private double previousTimeSec;
+    private double deltaTime;
 
     private boolean continousWrapEnabled;
     private double continousWrapUpperBound;
@@ -17,6 +23,7 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     public PrimitiveRotationalSensorHelper(double initialMeasuredAngle, double initialOffset) {
         measuredAngle = initialMeasuredAngle;
         offset = initialOffset;
+        previousTimeSec = Timer.getFPGATimestamp();
     }
 
     public PrimitiveRotationalSensorHelper(double initalMeasuredAngle) {
@@ -24,11 +31,23 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     }
 
     public void update(double measuredAngle) {
+        currentTimeSec = Timer.getFPGATimestamp();
+        deltaTime = currentTimeSec - previousTimeSec;
+        previousAngle = getAngle();
         this.measuredAngle = measuredAngle;
+        previousTimeSec = Timer.getFPGATimestamp();
     }
 
     public double getMeasuredAngle() {
         return measuredAngle;
+    }
+
+    public double getVelocity() {
+        if(deltaTime !=0) return (getAngle() - previousAngle) / deltaTime;
+        else {
+            DriverStation.reportWarning("You should not request velocity after no time passed", true);
+            return 0;
+        }
     }
 
     public double getAngle() {
@@ -37,7 +56,7 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
             while (angle > continousWrapUpperBound) {
                 angle -= fullRotation;
             }
-            while(angle < continousWrapLowerBound) {
+            while (angle < continousWrapLowerBound) {
                 angle += fullRotation;
             }
         }
@@ -59,25 +78,26 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
         this.offset = offset;
     }
 
+
     public double getOffset() {
         return offset;
     }
 
     @Override
     public void initTuneable(TuneableBuilder builder) {
-            DoubleHolder angleToResetDegrees = new DoubleHolder(0);
-            builder.addDoubleProperty("raw angle measurment",
-                    this::getMeasuredAngle, null);
+        DoubleHolder angleToResetDegrees = new DoubleHolder(0);
+        builder.addDoubleProperty("raw angle measurment",
+                this::getMeasuredAngle, null);
 
-            builder.addDoubleProperty("calculated angle", this::getAngle, null);
-            builder.addDoubleProperty("offset", this::getOffset,
-                    this::setOffset);
+        builder.addDoubleProperty("calculated angle", this::getAngle, null);
+        builder.addDoubleProperty("offset", this::getOffset,
+                this::setOffset);
 
-            builder.addDoubleProperty("angle to reset", angleToResetDegrees::get,
-                    angleToResetDegrees::set);
+        builder.addDoubleProperty("angle to reset", angleToResetDegrees::get,
+                angleToResetDegrees::set);
 
-            builder.addChild("reset!", new InstantCommand(() -> {
-                resetAngle(angleToResetDegrees.get());
-            }).ignoringDisable(true));
-        }   
+        builder.addChild("reset!", new InstantCommand(() -> {
+            resetAngle(angleToResetDegrees.get());
+        }).ignoringDisable(true));
+    }
 }

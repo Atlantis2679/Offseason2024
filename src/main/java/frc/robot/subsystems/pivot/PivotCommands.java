@@ -18,7 +18,7 @@ public class PivotCommands extends Command {
         ValueHolder<TrapezoidProfile.State> referenceState = new ValueHolder<TrapezoidProfile.State>(null);
         return pivot.runOnce(() -> {
             pivot.resetPID();
-            referenceState.set(new TrapezoidProfile.State(pivot.getAbsoluteAngleDegrees(), 0));
+            referenceState.set(new TrapezoidProfile.State(pivot.getAbsoluteAngleDegrees(), pivot.getVelocity()));
         }).andThen(pivot.run(() -> {
             referenceState.set(pivot.calculateTrapezoidProfile(
                     0.02,

@@ -59,6 +59,7 @@ public class Pivot extends SubsystemBase implements Tuneable {
     public void periodic() {
         pivotAngleDegreesHelper.update(io.pivotAngleDegrees.getAsDouble());
         fieldsTable.recordOutput("Pivot Angle Degrees", getAbsoluteAngleDegrees());
+        fieldsTable.recordOutput("Pivot velocity", getVelocity());
         pivotVisualizer.update(getAbsoluteAngleDegrees());
     }
 
@@ -86,6 +87,10 @@ public class Pivot extends SubsystemBase implements Tuneable {
 
         fieldsTable.recordOutput("feedforward result", voltage);
         return voltage;
+    }
+
+    public double getVelocity() {
+        return pivotAngleDegreesHelper.getVelocity();
     }
 
     public void resetPID() {
