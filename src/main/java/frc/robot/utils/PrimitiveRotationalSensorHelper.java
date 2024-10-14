@@ -11,9 +11,8 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     private double measuredAngle;
     private double offset;
     private double previousAngle;
-    private double currentTimeSec;
-    private double previousTimeSec;
-    private double deltaTime;
+    private double currTimeSec;
+    private double prevTimeSec;
     private double calculatedAngle;
 
     private boolean continousWrapEnabled;
@@ -24,7 +23,7 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     public PrimitiveRotationalSensorHelper(double initialMeasuredAngle, double initialOffset) {
         measuredAngle = initialMeasuredAngle;
         offset = initialOffset;
-        previousTimeSec = Timer.getFPGATimestamp();
+        prevTimeSec = Timer.getFPGATimestamp();
     }
 
     public PrimitiveRotationalSensorHelper(double initalMeasuredAngle) {
@@ -32,11 +31,10 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     }
 
     public void update(double measuredAngle) {
-        currentTimeSec = Timer.getFPGATimestamp();
-        deltaTime = currentTimeSec - previousTimeSec;
-        previousAngle = calculatedAngle;
         this.measuredAngle = measuredAngle;
-        previousTimeSec = Timer.getFPGATimestamp();
+        prevTimeSec = currTimeSec;
+        currTimeSec = Timer.getFPGATimestamp();
+        previousAngle = calculatedAngle;
         recalculateAngle();
     }
 
@@ -45,11 +43,13 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
     }
 
     public double getVelocity() {
-        if(deltaTime !=0) return (getAngle() - previousAngle) / deltaTime;
-        else {
-            DriverStation.reportWarning("You should not request velocity after no time passed", true);
+        double deltaTime = currTimeSec - prevTimeSec;
+        if (deltaTime == 0) {
+            DriverStation.reportWarning(
+                    "You should not request velocity after no time passed (probably called in initial loop).", true);
             return 0;
         }
+        return (getAngle() - previousAngle) / deltaTime;
     }
 
     public void recalculateAngle() {
@@ -85,7 +85,6 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
         recalculateAngle();
     }
 
-
     public double getOffset() {
         return offset;
     }
@@ -97,6 +96,7 @@ public class PrimitiveRotationalSensorHelper implements Tuneable {
                 this::getMeasuredAngle, null);
 
         builder.addDoubleProperty("calculated angle", this::getAngle, null);
+
         builder.addDoubleProperty("offset", this::getOffset,
                 this::setOffset);
 
