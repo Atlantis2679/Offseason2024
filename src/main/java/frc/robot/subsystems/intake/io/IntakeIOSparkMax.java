@@ -8,11 +8,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeIOSparkMax extends IntakeIO {
-    private final CANSparkMax rightVerticalRollerMotor = new CANSparkMax(Canbus.INTAKE_RIGHT_VERTICAL_ROLLER_ID,
+    private final CANSparkMax rightVerticalRollerMotor = new CANSparkMax(CANBUS.INTAKE_RIGHT_VERTICAL_ROLLER_ID,
             MotorType.kBrushless);
-    private final CANSparkMax leftVerticalRollerMotor = new CANSparkMax(Canbus.INTAKE_LEFT_VERTICAL_ROLLER_ID,
+    private final CANSparkMax leftVerticalRollerMotor = new CANSparkMax(CANBUS.INTAKE_LEFT_VERTICAL_ROLLER_ID,
             MotorType.kBrushless);
-    private final CANSparkMax horizontalRollerMotor = new CANSparkMax(Canbus.INTAKE_HORIZONTAL_ROLLER_ID,
+    private final CANSparkMax horizontalRollerMotor = new CANSparkMax(CANBUS.INTAKE_HORIZONTAL_ROLLER_ID,
             MotorType.kBrushless);
 
     public IntakeIOSparkMax(LogFieldsTable fieldsTable) {
