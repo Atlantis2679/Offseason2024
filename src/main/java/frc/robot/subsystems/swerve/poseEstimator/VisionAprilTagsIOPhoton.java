@@ -38,19 +38,20 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
 
     @Override
     protected double getCameraTimestampSeconds() {
-        return photonPipelineResult.getTimestampSeconds();
-
+        return photonPipelineResult != null ? photonPipelineResult.getTimestampSeconds() : 0;
     }
 
     @Override
     protected Pose3d getRobotPose() {
-        EstimatedRobotPose estimate = photonEstimatorResult.orElse(null);
+        EstimatedRobotPose estimate = photonEstimatorResult != null
+                ? photonEstimatorResult.orElse(null)
+                : null;
         return estimate != null ? estimate.estimatedPose : new Pose3d();
     }
 
     @Override
     protected boolean getHasNewRobotPose() {
-        return photonPipelineResult.hasTargets() && photonEstimatorResult.isPresent();
+        return photonPipelineResult != null && photonPipelineResult.hasTargets() && photonEstimatorResult.isPresent();
     }
 
 }
