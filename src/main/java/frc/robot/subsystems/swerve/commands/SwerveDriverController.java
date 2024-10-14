@@ -11,11 +11,11 @@ import frc.lib.tuneables.TuneablesTable;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.DoubleHolder;
 import frc.robot.subsystems.swerve.Swerve;
-import frc.robot.subsystems.swerve.SwerveContants;
 
+import static frc.robot.subsystems.swerve.SwerveContants.DriverController.*;
 import static frc.robot.subsystems.swerve.SwerveContants.*;
 
-public class SwerveController extends TuneableCommand {
+public class SwerveDriverController extends TuneableCommand {
     private final Swerve swerve;
     private TuneablesTable tuneablesTable = new TuneablesTable(SendableType.LIST);
 
@@ -26,14 +26,15 @@ public class SwerveController extends TuneableCommand {
     private BooleanSupplier isSensetiveMode;
 
     private DoubleHolder maxAngularVelocityRPS = tuneablesTable.addNumber("Max Angular Velocity RPS",
-            MAX_ANGULAR_VELOCITY_RPS);
+            DRIVER_MAX_ANGULAR_VELOCITY_RPS);
     private SendableChooser<Double> velocityMultiplierChooser = new SendableChooser<>();
 
     private final SlewRateLimiter forwardSlewRateLimiter = new SlewRateLimiter(DRIVER_ACCELERATION_LIMIT_MPS);
     private final SlewRateLimiter sidewaysSlewRateLimiter = new SlewRateLimiter(DRIVER_ACCELERATION_LIMIT_MPS);
     private final SlewRateLimiter rotationSlewRateLimiter = new SlewRateLimiter(DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS);
 
-    public SwerveController(Swerve swerve, DoubleSupplier forwardSupplier, DoubleSupplier sidewaysSupplier,
+
+    public SwerveDriverController(Swerve swerve, DoubleSupplier forwardSupplier, DoubleSupplier sidewaysSupplier,
             DoubleSupplier rotationsSupplier, BooleanSupplier isFieldRelative, BooleanSupplier isSensetiveMode) {
         this.swerve = swerve;
         addRequirements(swerve);
@@ -65,16 +66,17 @@ public class SwerveController extends TuneableCommand {
         double precentageRotation = rotationsSupplier.getAsDouble() * velocityMultiplier;
 
         if (isSensetiveMode.getAsBoolean()) {
-            precentageForward *= SwerveContants.SENSETIVE_TRANSLATION_MULTIPLIER;
-            precentageSideways *= SwerveContants.SENSETIVE_TRANSLATION_MULTIPLIER;
-            precentageRotation *= SwerveContants.SENSETIVE_ROTATION_MULTIPLIER;
+            precentageForward *= SENSETIVE_TRANSLATION_MULTIPLIER;
+            precentageSideways *= SENSETIVE_TRANSLATION_MULTIPLIER;
+            precentageRotation *= SENSETIVE_ROTATION_MULTIPLIER;
         }
 
         swerve.drive(
-                forwardSlewRateLimiter.calculate(precentageForward * MAX_SPEED_MPS),
-                sidewaysSlewRateLimiter.calculate(precentageSideways * MAX_SPEED_MPS),
+                forwardSlewRateLimiter.calculate(precentageForward * MAX_MODULE_SPEED_MPS),
+                sidewaysSlewRateLimiter.calculate(precentageSideways * MAX_MODULE_SPEED_MPS),
                 rotationSlewRateLimiter.calculate(precentageRotation * maxAngularVelocityRPS.get()),
-                isFieldRelative.getAsBoolean());
+                isFieldRelative.getAsBoolean(),
+                false);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.swerve;
 
+import static frc.robot.subsystems.swerve.SwerveContants.MAX_VOLTAGE;
+
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -21,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.BooleanHolder;
 import frc.robot.subsystems.swerve.SwerveContants.DriveToPose;
-import frc.robot.subsystems.swerve.commands.SwerveController;
+import frc.robot.subsystems.swerve.commands.SwerveDriverController;
 
 public class SwerveCommands {
     private final Swerve swerve;
@@ -30,11 +32,16 @@ public class SwerveCommands {
         this.swerve = swerve;
     }
 
-    public TuneableCommand controller(DoubleSupplier forwardSupplier, DoubleSupplier sidewaysSupplier,
+    public TuneableCommand driverController(DoubleSupplier forwardSupplier, DoubleSupplier sidewaysSupplier,
             DoubleSupplier rotationSupplier, BooleanSupplier isFieldRelativeSupplier, BooleanSupplier isSensetiveMode) {
 
-        return new SwerveController(swerve, forwardSupplier, sidewaysSupplier, rotationSupplier,
+        return new SwerveDriverController(swerve, forwardSupplier, sidewaysSupplier, rotationSupplier,
                 isFieldRelativeSupplier, isSensetiveMode);
+    }
+
+    // mostly for checking max module speed
+    public Command driveForwardVoltage(DoubleSupplier forwardPrecentageSupplier) {
+        return swerve.run(() -> swerve.drive(forwardPrecentageSupplier.getAsDouble() * MAX_VOLTAGE, 0, 0, false, true));
     }
 
     public TuneableCommand controlModules(DoubleSupplier steerXSupplier, DoubleSupplier steerYSupplier,
@@ -51,7 +58,7 @@ public class SwerveCommands {
                 SwerveModuleState[] moduleStates = new SwerveModuleState[4];
                 for (int i = 0; i < moduleStates.length; i++) {
                     moduleStates[i] = new SwerveModuleState(
-                            speed * SwerveContants.MAX_SPEED_MPS,
+                            speed * SwerveContants.MAX_MODULE_SPEED_MPS,
                             new Rotation2d(
                                     steerX != 0 || steerY != 0
                                             ? Math.atan2(steerY, steerX) - Math.toRadians(90)

@@ -112,10 +112,12 @@ public class Swerve extends SubsystemBase implements Tuneable {
 
         resetYaw();
 
+        Pathfinding.setPathfinder(new LocalADStarAK());
+
         HolonomicPathFollowerConfig pathFollowerConfigs = new HolonomicPathFollowerConfig(
                 new PIDConstants(PathPlanner.TRANSLATION_KP, PathPlanner.TRANSLATION_KI, PathPlanner.TRANSLATION_KD),
                 new PIDConstants(PathPlanner.ROTATION_KP, PathPlanner.ROTATION_KI, PathPlanner.ROTATION_KD),
-                MAX_MODULE_SPEED,
+                MAX_MODULE_SPEED_MPS,
                 TRACK_RADIUS_M,
                 new ReplanningConfig());
 
@@ -128,7 +130,6 @@ public class Swerve extends SubsystemBase implements Tuneable {
                 this::getIsRedAlliance,
                 this);
 
-        Pathfinding.setPathfinder(new LocalADStarAK());
         PathPlannerLogging.setLogActivePathCallback(
                 (activePath) -> {
                     fieldsTable.recordOutput(
@@ -191,7 +192,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
         }
     }
 
-    public void drive(double forward, double sidewaysRightPositive, double angularVelocityCW, boolean isFieldRelative) {
+    public void drive(double forward, double sidewaysRightPositive, double angularVelocityCW, boolean isFieldRelative, boolean useVoltage) {
         ChassisSpeeds desiredChassisSpeeds;
 
         double angularVelocityCCW = -angularVelocityCW;
@@ -210,17 +211,17 @@ public class Swerve extends SubsystemBase implements Tuneable {
                     angularVelocityCCW);
         }
 
-        driveChassisSpeed(desiredChassisSpeeds, false);
+        driveChassisSpeed(desiredChassisSpeeds, useVoltage);
     }
 
     public void stop() {
-        drive(0, 0, 0, false);
+        drive(0, 0, 0, false, false);
     }
 
     public void driveChassisSpeed(ChassisSpeeds speeds, boolean useVoltage) {
         SwerveModuleState[] swerveModuleStates = swerveKinematics.toSwerveModuleStates(speeds);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveContants.MAX_SPEED_MPS);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveContants.MAX_MODULE_SPEED_MPS);
 
         setModulesState(swerveModuleStates, true, true, useVoltage);
     }

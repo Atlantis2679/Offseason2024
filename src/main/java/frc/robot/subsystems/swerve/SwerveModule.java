@@ -65,7 +65,7 @@ public class SwerveModule implements Tuneable {
 
     public void setDesiredState(SwerveModuleState desiredState, boolean preventJittering, boolean optimizeState,
             boolean useVoltage) {
-        if (preventJittering && Math.abs(desiredState.speedMetersPerSecond) < MAX_SPEED_MPS * 0.01) {
+        if (preventJittering && Math.abs(desiredState.speedMetersPerSecond) < MAX_MODULE_SPEED_MPS * 0.01) {
             io.setDriveSpeedPrecentage(0);
             return;
         }
@@ -87,9 +87,9 @@ public class SwerveModule implements Tuneable {
         }
 
         if (useVoltage) {
-            io.setDriveSpeedVoltage((desiredState.speedMetersPerSecond / MAX_SPEED_MPS) * MAX_VOLTAGE);
+            io.setDriveSpeedVoltage((desiredState.speedMetersPerSecond / MAX_MODULE_SPEED_MPS) * MAX_VOLTAGE);
         } else {
-            io.setDriveSpeedPrecentage(desiredState.speedMetersPerSecond / MAX_SPEED_MPS);
+            io.setDriveSpeedPrecentage(desiredState.speedMetersPerSecond / MAX_MODULE_SPEED_MPS);
         }
         io.setAngleMotorPositionRotations(desiredState.angle.getRotations());
     }

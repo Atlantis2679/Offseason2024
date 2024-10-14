@@ -23,7 +23,7 @@ public class RobotContainer {
     }
 
     private void configureDriverBindings() {
-        TuneableCommand driveCommand = swerveCommands.controller(
+        TuneableCommand driveCommand = swerveCommands.driverController(
                 () -> driverController.getLeftY(),
                 () -> driverController.getLeftX(),
                 () -> driverController.getRightX(),
