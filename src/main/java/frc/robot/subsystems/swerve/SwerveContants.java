@@ -7,13 +7,8 @@ public class SwerveContants {
     public final static double GEAR_RATIO_ANGLE = 12.8;
     public final static double WHEEL_RADIUS_METERS = Units.inchesToMeters(2);
 
-    public final static double DRIVER_ACCELERATION_LIMIT_MPS = 4;
-    public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(540);
-
-    public final static double MAX_SPEED_MPS = 5;
-    public final static double MAX_VOLTAGE = 11.5;
-    public final static double MAX_ANGULAR_VELOCITY_RPS = 4.5;
-    public final static double MAX_MODULE_SPEED = 4.5;
+    public final static double MAX_VOLTAGE = 11;
+    public final static double MAX_MODULE_SPEED_MPS = 5; // for the max voltage
 
     public final static double TRACK_WIDTH_M = 0.575;
     public final static double TRACK_LENGTH_M = 0.575;
@@ -27,9 +22,14 @@ public class SwerveContants {
     public final static double MODULE_ANGLE_KP = 1.8 * 12;
     public final static double MODULE_ANGLE_KI = 0;
     public final static double MODULE_ANGLE_KD = 0;
-
-    public final static double SENSETIVE_TRANSLATION_MULTIPLIER = 0.3;
-    public final static double SENSETIVE_ROTATION_MULTIPLIER = 0.3;
+    
+    public static class DriverController {
+        public final static double DRIVER_ACCELERATION_LIMIT_MPS = 4;
+        public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
+        public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(540);
+        public final static double SENSETIVE_TRANSLATION_MULTIPLIER = 0.3;
+        public final static double SENSETIVE_ROTATION_MULTIPLIER = 0.3;
+    }
 
     public class PathPlanner {
         public final static double TRANSLATION_KP = 1;
