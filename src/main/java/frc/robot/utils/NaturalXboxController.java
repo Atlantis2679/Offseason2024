@@ -1,6 +1,9 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Extension of the standard CommandXboxController with the following features:
@@ -95,5 +98,13 @@ public class NaturalXboxController extends CommandXboxController {
 
     public double square(double value) {
         return Math.pow(value, 2) * (value >= 0 ? 1 : -1);
+    }
+
+    public Trigger axisLessThan(int axis, double threshold) {
+        return axisLessThan(axis, threshold, CommandScheduler.getInstance().getDefaultButtonLoop());
+    }
+
+    public Trigger axisLessThanLeftX(double threshold) {
+        return axisLessThan(Axis.kLeftX.value, threshold, CommandScheduler.getInstance().getDefaultButtonLoop());
     }
 }

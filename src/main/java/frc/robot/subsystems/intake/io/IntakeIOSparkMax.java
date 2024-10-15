@@ -1,6 +1,7 @@
 package frc.robot.subsystems.intake.io;
 
 import frc.lib.logfields.LogFieldsTable;
+import frc.robot.subsystems.intake.IntakeConstants;
 
 import static frc.robot.RobotMap.*;
 
@@ -18,6 +19,8 @@ public class IntakeIOSparkMax extends IntakeIO {
     public IntakeIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
         leftVerticalRollerMotor.follow(rightVerticalRollerMotor, true);
+        horizontalRollerMotor.setSmartCurrentLimit(IntakeConstants.HORIZONTAL_CURRENT_LIMIT);
+        rightVerticalRollerMotor.setSmartCurrentLimit(IntakeConstants.VERTICAL_CURRENT_LIMIT);
     }
 
     @Override

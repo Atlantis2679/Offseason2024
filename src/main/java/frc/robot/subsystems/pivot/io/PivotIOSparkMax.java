@@ -8,10 +8,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel;
 import static frc.robot.RobotMap.*;
-import static frc.robot.subsystems.pivot.PivotConstants.*;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.lib.logfields.LogFieldsTable;
+import frc.robot.subsystems.pivot.PivotConstants;
 
 /** Add your docs here. */
 public class PivotIOSparkMax extends PivotIO {
@@ -24,7 +24,7 @@ public class PivotIOSparkMax extends PivotIO {
     public PivotIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
         pivotMotorRight.follow(pivotMotorLeftLead);
-        pivotMotorLeftLead.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
+        pivotMotorLeftLead.setSmartCurrentLimit(PivotConstants.CURRENT_LIMIT_AMPS);
         pivotMotorLeftLead.setIdleMode(IdleMode.kBrake);
         pivotEncoder.setDistancePerRotation(360);
     }

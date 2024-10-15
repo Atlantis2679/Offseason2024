@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Launcher.io;
+package frc.robot.subsystems.launcher.io;
 
 import java.util.function.BooleanSupplier;
 

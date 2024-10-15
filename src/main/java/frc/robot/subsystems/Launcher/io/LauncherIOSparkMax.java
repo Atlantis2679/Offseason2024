@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Launcher.io;
+package frc.robot.subsystems.launcher.io;
 
 import com.revrobotics.CANSparkMax;
 
@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.CANSparkLowLevel;
 
 import frc.lib.logfields.LogFieldsTable;
-import static frc.robot.RobotMap.*;
+import frc.robot.RobotMap.CANBUS;
+import frc.robot.RobotMap.DIO;
+import frc.robot.subsystems.launcher.LauncherConstants;
 
 public class LauncherIOSparkMax extends LauncherIO {
 
@@ -17,6 +19,7 @@ public class LauncherIOSparkMax extends LauncherIO {
 
     public LauncherIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
+        launcherMotor.setSmartCurrentLimit(LauncherConstants.LAUNCHER_CURRENT_LIMIT);
     }
 
     @Override

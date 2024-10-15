@@ -1,16 +1,15 @@
-package frc.robot.subsystems.Launcher;
+package frc.robot.subsystems.launcher;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.Robot;
-import frc.robot.subsystems.Launcher.io.LauncherIO;
-import frc.robot.subsystems.Launcher.io.LauncherIOSim;
-import frc.robot.subsystems.Launcher.io.LauncherIOSparkMax;
+import frc.robot.subsystems.launcher.io.LauncherIO;
+import frc.robot.subsystems.launcher.io.LauncherIOSim;
+import frc.robot.subsystems.launcher.io.LauncherIOSparkMax;
 
 public class Launcher extends SubsystemBase {
     private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
-    private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSparkMax(fieldsTable)
-            : new LauncherIOSim(fieldsTable);
+    private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSim(fieldsTable) : new LauncherIOSparkMax(fieldsTable);
 
     public Launcher() {
         fieldsTable.update();
@@ -18,7 +17,8 @@ public class Launcher extends SubsystemBase {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("is node in launcher", getIsNoteInside());
+        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
+        fieldsTable.recordOutput("isNodeIn", getIsNoteInside());
     }
 
     public boolean getIsNoteInside() {

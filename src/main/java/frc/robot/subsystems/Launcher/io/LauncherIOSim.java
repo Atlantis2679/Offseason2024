@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Launcher.io;
+package frc.robot.subsystems.launcher.io;
 
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.lib.logfields.LogFieldsTable;

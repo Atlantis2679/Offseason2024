@@ -28,12 +28,12 @@ public class ShooterCommands {
                             targetUpperSpeedRPM.getAsDouble()),
                     shooter.calculateLowerSpeedToVoltage(shooter.getLowerRollerSpeedRPM(),
                             targetLowerSpeedRPM.getAsDouble()));
-        });
+        }).withName("shooterReachSpeed");
     }
 
     public Command manualController(DoubleSupplier upperRollerVoltage, DoubleSupplier lowerRollerVoltage) {
         return shooter.run(() -> {
             shooter.setVoltage(upperRollerVoltage.getAsDouble(), lowerRollerVoltage.getAsDouble());
-        });
+        }).withName("shooterManualController");
     }
 }
