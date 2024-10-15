@@ -33,10 +33,10 @@ public class PoseEstimatorWithVision {
                     .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
 
             if (Robot.isReal()) {
-                visionCameras.put(FRONT_LEFT_CAMERA_NAME + " Photon",
-                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_LEFT_CAMERA_NAME, tagsLayout));
-                visionCameras.put(FRONT_RIGHT_CAMERA_NAME + "Photon",
-                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_RIGHT_CAMERA_NAME, tagsLayout));
+                visionCameras.put(FRONT_CAMERA_NAME + "Photon Front",
+                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_CAMERA_NAME, tagsLayout));
+                visionCameras.put(BACK_CAMERA_NAME + "Limelight Back",
+                        new VisionAprilTagsIOLimelight(fieldsTable, BACK_CAMERA_NAME));
             }
         } catch (IOException e) {
             DriverStation.reportError("AprilTagFieldLayout blew up", e.getStackTrace());

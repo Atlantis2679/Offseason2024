@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 public class RobotMap {
     public static final ModuleType POWER_DISTRIBUATION_TYPE = ModuleType.kRev;
     public static final SPI.Port NAVX_PORT = SPI.Port.kMXP;
-    public static final String FRONT_LEFT_CAMERA_NAME = "FrontLeftCam";
-    public static final String FRONT_RIGHT_CAMERA_NAME = "FrontRightCam";
+    public static final String FRONT_CAMERA_NAME = "FrontCam";
+    public static final String BACK_CAMERA_NAME = "BackCam";
 
     public static class Controllers {
         public static final int DRIVER_PORT = 0;
