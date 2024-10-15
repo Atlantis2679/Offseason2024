@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.BooleanHolder;
 import frc.robot.subsystems.swerve.SwerveContants.DriveToPose;
@@ -90,5 +91,9 @@ public class SwerveCommands {
             return AutoBuilder.followPath(path);
 
         }, Set.of(swerve));
+    }
+
+    public Command stop() {
+        return swerve.run(swerve::stop).ignoringDisable(true).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 }

@@ -1,7 +1,5 @@
 package frc.lib.valueholders;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
-
 public class ValueHolder<T> {
     private T value;
 
@@ -15,10 +13,5 @@ public class ValueHolder<T> {
 
     public void set(T value) {
         this.value = value;
-    }
-
-    public Object calculate(double d, ValueHolder<State> referenceState, double desiredAngleDeg) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculate'");
     }
 }

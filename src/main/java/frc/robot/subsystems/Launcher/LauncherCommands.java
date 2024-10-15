@@ -15,15 +15,15 @@ public class LauncherCommands {
 
     public Command load() {
         return launcher.run(() -> launcher.setSpeed(LOADING_SPEED_PRECENTAGE)).until(() -> launcher.getIsNoteInside())
-                .finallyDo(() -> launcher.stop());
+                .finallyDo(() -> launcher.stop()).withName("launcherLoad");
     }
 
     public Command release() {
          return launcher.run(() -> launcher.setSpeed(RELEASING_SPEED_PRECENTAGE)).until(() -> !launcher.getIsNoteInside())
-                .finallyDo(() -> launcher.stop());
+                .finallyDo(() -> launcher.stop()).withName("launcherRelease");
     }
 
     public Command manualController(DoubleSupplier launcherSpeed){
-        return launcher.run(()-> launcher.setSpeed(launcherSpeed.getAsDouble()));
+        return launcher.run(()-> launcher.setSpeed(launcherSpeed.getAsDouble())).withName("launcherManualController");
     }
 }

@@ -44,6 +44,7 @@ public class Shooter extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
+        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("upper roller speed RPM", getUpperRollerSpeedRPM());
         fieldsTable.recordOutput("lower roller speed RPM", getLowerRollerSpeedRPM());
     }

@@ -15,8 +15,8 @@ import static frc.robot.RobotMap.CANBUS;
 
 /** Add your docs here. */
 public class ShooterIOSparkMax extends ShooterIO{
-    private final CANSparkMax upperRoller = new CANSparkMax(CANBUS.UPPER_ROLLER_ID, MotorType.kBrushless);
-    private final CANSparkMax lowerRoller = new CANSparkMax(CANBUS.LOWER_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax upperRoller = new CANSparkMax(CANBUS.SHOOTER_UPPER_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax lowerRoller = new CANSparkMax(CANBUS.SHOOTER_LOWER_ROLLER_ID, MotorType.kBrushless);
 
     private final RelativeEncoder upperRollerEncoder = upperRoller.getEncoder();
     private final RelativeEncoder lowerRollerEncoder = lowerRoller.getEncoder();

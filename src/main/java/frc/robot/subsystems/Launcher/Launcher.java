@@ -17,6 +17,7 @@ public class Launcher extends SubsystemBase {
 
     @Override
     public void periodic() {
+        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("isNodeIn", getIsNoteInside());
     }
 
