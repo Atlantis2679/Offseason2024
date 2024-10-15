@@ -54,4 +54,8 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
         return photonPipelineResult != null && photonPipelineResult.hasTargets() && photonEstimatorResult.isPresent();
     }
 
+    @Override
+    protected int getVisibleTargetCount(){
+        return photonPipelineResult.targets.size();
+    }
 }

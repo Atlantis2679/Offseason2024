@@ -7,6 +7,7 @@ package frc.robot.subsystems.swerve.poseEstimator;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose3d;
@@ -17,6 +18,7 @@ public abstract class VisionAprilTagsIO extends IOBase {
     public final Supplier<Pose3d> poseEstimate = fields.addObject("poseEstimate", this::getRobotPose);
     public final DoubleSupplier cameraTimestampSeconds = fields.addDouble("cameraTimestampSeconds", this::getCameraTimestampSeconds);
     public final BooleanSupplier hasNewRobotPose = fields.addBoolean("hasNewRobotPose", this::getHasNewRobotPose);
+    public final LongSupplier visibletargetCount = fields.addInteger("visibleTargetCount", this::getVisibleTargetCount);
     
     protected VisionAprilTagsIO(LogFieldsTable fieldsTable){
         super(fieldsTable);
@@ -27,4 +29,6 @@ public abstract class VisionAprilTagsIO extends IOBase {
     protected abstract Pose3d getRobotPose();
 
     protected abstract boolean getHasNewRobotPose();
+
+    protected abstract int getVisibleTargetCount();
 }
