@@ -32,8 +32,10 @@ public class AllCommands {
     private PivotCommands pivotCMDs;
     private ShooterCommands shooterCMDs;
 
-    private double desiredShooterUpperRollerSpeedRPM = 0;
-    private double desiredShooterLowerRollerSpeedRPM = 0;
+    private double targetShooterUpperRollerRPM = 0;
+    private double targetShooterLowerRollerRPM = 0;
+
+    private double targetPivotAngle = 0;
 
     public AllCommands(Intake intake, Launcher launcher, Pivot pivot, Shooter shooter) {
         this.intake = intake;
@@ -56,8 +58,8 @@ public class AllCommands {
 
     public Command shoot() {
         return Commands
-                .waitUntil(
-                        () -> shooter.isAtSpeed(desiredShooterUpperRollerSpeedRPM, desiredShooterLowerRollerSpeedRPM))
+                .waitUntil(() -> 
+                (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM) && pivot.isAtAngle(targetPivotAngle)))
                 .andThen(launcherCMDs.release()).withName("shoot");
     }
 
@@ -73,8 +75,9 @@ public class AllCommands {
     
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
             DoubleSupplier lowerRollerSpeed) {
-        desiredShooterUpperRollerSpeedRPM = upperRollerSpeed.getAsDouble();
-        desiredShooterLowerRollerSpeedRPM = lowerRollerSpeed.getAsDouble();
+        targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();
+        targetShooterLowerRollerRPM = lowerRollerSpeed.getAsDouble();
+        targetPivotAngle = angle.getAsDouble();
         return Commands.parallel(
                 pivotCMDs.moveToAngle(angle),
                 shooterCMDs.reachSpeed(upperRollerSpeed, lowerRollerSpeed)).withName("getReadyToShoot");

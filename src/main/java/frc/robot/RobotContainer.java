@@ -17,8 +17,6 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveCommands;
 import frc.robot.utils.NaturalXboxController;
 
-import static frc.robot.Constants.*;
-
 public class RobotContainer {
     private final Swerve swerve = new Swerve();
     private final Intake intake = new Intake();
@@ -70,28 +68,21 @@ public class RobotContainer {
         operatorController.b().whileTrue(allCommands.shoot());
         operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
         operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
-        operatorController.povRight().whileTrue(allCommands.getReadyToShootSubwoofer()); // getReadyToShootImage still does't exsist
         operatorController.povLeft().whileTrue(allCommands.getReadyToShootTuneable());
-        operatorController.leftBumper().whileTrue(allCommands.stopAll()); // maybe stop swerve to?
+        operatorController.leftBumper().whileTrue(allCommands.stopAll());
         operatorController.rightBumper().whileTrue(Commands.parallel(
             allCommands.manualIntakeLauncherController(() -> -operatorController.getLeftY()),
             allCommands.manualPivotController(() -> -operatorController.getRightY()),
             allCommands.manualShooterController(operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis)
         ));
-
-        operatorController.axisGreaterThan(1, LEFT_JOYSTICK_THRESHOLD)
-            .whileTrue(allCommands.manualIntakeLauncherController(() -> -operatorController.getLeftY()));
-        operatorController.axisLessThan(1, -LEFT_JOYSTICK_THRESHOLD)
-            .whileTrue(allCommands.manualIntakeLauncherController(() -> -operatorController.getLeftY()));
-        operatorController.axisGreaterThan(5, RIGHT_JOYSTICK_THRESHOLD)
-            .whileTrue(allCommands.manualPivotController(() -> -operatorController.getRightY()));
-        operatorController.axisLessThan(5, -RIGHT_JOYSTICK_THRESHOLD)
-            .whileTrue(allCommands.manualPivotController(() -> -operatorController.getRightY()));
-        (operatorController.axisGreaterThan(3, TRIGGER_AXIS_THRESHOLD).or(operatorController.axisGreaterThan(2, TRIGGER_AXIS_THRESHOLD)))
-            .whileTrue(allCommands.manualShooterController(() -> -operatorController.getRightTriggerAxis(), () -> -operatorController.getLeftTriggerAxis()));
     }
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
+    }
+
+    @SuppressWarnings("unused")
+    private Trigger isOutOfThreshold(double value, double threshold) {
+        return new Trigger(() -> (value > Math.abs(threshold)));
     }
 }
