@@ -24,7 +24,8 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
+        fieldsTable.recordOutput("current command",
+                getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         if (shouldStop) {
             setRollerSpeed(0, 0);
         }
@@ -40,16 +41,15 @@ public class Intake extends SubsystemBase {
         fieldsTable.recordOutput("horizontal rollers demand speed", horizontalSpeed);
         fieldsTable.recordOutput("vertical rollers demand speed", verticalSpeed);
 
-
-        horizontalSpeed = MathUtil.clamp(horizontalSpeed, 1, -1);
-        horizontalSpeed = speedLimiter.calculate(horizontalSpeed);
-        verticalSpeed = MathUtil.clamp(verticalSpeed, 1, -1);
-        verticalSpeed = speedLimiter.calculate(verticalSpeed);
+        horizontalSpeed = MathUtil.clamp(horizontalSpeed, -1, 1);
+        // horizontalSpeed = speedLimiter.calculate(horizontalSpeed);
+        verticalSpeed = MathUtil.clamp(verticalSpeed, -1, 1);
+        // verticalSpeed = speedLimiter.calculate(verticalSpeed);
 
         fieldsTable.recordOutput("horizontal rollers actual speed", horizontalSpeed);
         intakeIO.setHorizontalRollerSpeed(horizontalSpeed);
         fieldsTable.recordOutput("vertical rollers actual speed", verticalSpeed);
-        intakeIO.setHorizontalRollerSpeed(verticalSpeed);
+        intakeIO.setVerticalRollerSpeed(verticalSpeed);
     }
 
     public void stop() {

@@ -28,8 +28,13 @@ public class LauncherIOSparkMax extends LauncherIO {
     }
 
     @Override
+    public double getMotorCurrent() {
+        return launcherMotor.getOutputCurrent();
+    }
+
+    @Override
     public void setSpeed(double speed) {
-        launcherMotor.set(speed);
+        launcherMotor.setVoltage(speed * 12);
     }
 
 }

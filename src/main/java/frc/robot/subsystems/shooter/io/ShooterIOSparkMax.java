@@ -14,20 +14,19 @@ import frc.robot.subsystems.shooter.ShooterConstants;
 import static frc.robot.RobotMap.CANBUS;
 
 /** Add your docs here. */
-public class ShooterIOSparkMax extends ShooterIO{
+public class ShooterIOSparkMax extends ShooterIO {
     private final CANSparkMax upperRoller = new CANSparkMax(CANBUS.SHOOTER_UPPER_ROLLER_ID, MotorType.kBrushless);
     private final CANSparkMax lowerRoller = new CANSparkMax(CANBUS.SHOOTER_LOWER_ROLLER_ID, MotorType.kBrushless);
 
     private final RelativeEncoder upperRollerEncoder = upperRoller.getEncoder();
     private final RelativeEncoder lowerRollerEncoder = lowerRoller.getEncoder();
 
-
     public ShooterIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
-        upperRoller.setSmartCurrentLimit(ShooterConstants.ROLLER_CURRENT_LIMIT);
-        lowerRoller.setSmartCurrentLimit(ShooterConstants.ROLLER_CURRENT_LIMIT);
+        upperRoller.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
+        lowerRoller.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
     }
-    
+
     @Override
     protected double getUpperRollerSpeedRPM() {
         return -upperRollerEncoder.getVelocity();
