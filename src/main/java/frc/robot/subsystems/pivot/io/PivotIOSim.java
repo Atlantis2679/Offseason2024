@@ -35,4 +35,9 @@ public class PivotIOSim extends PivotIO {
     public PivotIOSim(LogFieldsTable logFieldsTable) {
         super(logFieldsTable);
     }
+
+    @Override
+    protected double getMotorCurrent() {
+        return pivotMotor.getCurrentDrawAmps();
+    }
 }

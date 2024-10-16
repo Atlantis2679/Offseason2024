@@ -3,8 +3,6 @@ package frc.robot.allcommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.lib.tuneables.Tuneable;
-import frc.lib.tuneables.TuneablesManager;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.DoubleHolder;
 import frc.robot.allcommands.AllCommandsConstants.GetReadyToShoot;
@@ -47,8 +45,6 @@ public class AllCommands {
         launcherCMDs = new LauncherCommands(this.launcher);
         pivotCMDs = new PivotCommands(this.pivot);
         shooterCMDs = new ShooterCommands(this.shooter);
-
-        TuneablesManager.add("allCommands", (Tuneable) this);
     }
 
     public Command collectToLauncher() {
@@ -58,8 +54,8 @@ public class AllCommands {
 
     public Command shoot() {
         return Commands
-                .waitUntil(() -> 
-                (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM) && pivot.isAtAngle(targetPivotAngle)))
+                .waitUntil(() -> (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM)
+                        && pivot.isAtAngle(targetPivotAngle)))
                 .andThen(launcherCMDs.release()).withName("shoot");
     }
 
@@ -72,7 +68,7 @@ public class AllCommands {
         }, intake, launcher, pivot, shooter).ignoringDisable(true)
                 .withInterruptBehavior(InterruptionBehavior.kCancelIncoming).withName("stopAll");
     }
-    
+
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
             DoubleSupplier lowerRollerSpeed) {
         targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();

@@ -23,19 +23,26 @@ public class PivotIOSparkMax extends PivotIO {
 
     public PivotIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
+        pivotMotorLeftLead.restoreFactoryDefaults();
         // pivotMotorRight.follow(pivotMotorLeftLead);
         pivotMotorLeftLead.setSmartCurrentLimit(PivotConstants.CURRENT_LIMIT_AMPS);
         pivotMotorLeftLead.setIdleMode(IdleMode.kBrake);
-        pivotEncoder.setDistancePerRotation(360);
+        pivotMotorLeftLead.setInverted(true);
+        pivotEncoder.setDistancePerRotation(1);
     }
 
     @Override
     public double getPivotAngleDegrees() {
-        return pivotEncoder.getAbsolutePosition();
+        return pivotEncoder.getAbsolutePosition() * 360;
     }
 
     @Override
     public void setVoltage(double voltage) {
         pivotMotorLeftLead.setVoltage(voltage);
+    }
+
+    @Override
+    protected double getMotorCurrent() {
+        return pivotMotorLeftLead.getOutputCurrent();
     }
 }

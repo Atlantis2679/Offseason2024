@@ -6,9 +6,9 @@ import frc.lib.logfields.LogFieldsTable;
 import frc.robot.subsystems.shooter.ShooterConstants;
 
 public class ShooterIOSim extends ShooterIO {
-    private final FlywheelSim upperRollorSim = new FlywheelSim(ShooterConstants.LINEAR_SYSTEM, DCMotor.getNEO(1),
+    private final FlywheelSim upperMotorSim = new FlywheelSim(ShooterConstants.LINEAR_SYSTEM, DCMotor.getNEO(1),
             ShooterConstants.GERAING);
-    private final FlywheelSim lowerRollorSim = new FlywheelSim(ShooterConstants.LINEAR_SYSTEM, DCMotor.getNEO(1),
+    private final FlywheelSim lowerMotorSim = new FlywheelSim(ShooterConstants.LINEAR_SYSTEM, DCMotor.getNEO(1),
             ShooterConstants.GERAING);
 
     public ShooterIOSim(LogFieldsTable fieldsTable) {
@@ -17,28 +17,37 @@ public class ShooterIOSim extends ShooterIO {
 
     @Override
     protected void periodicBeforeFields() {
-        upperRollorSim.update(0.02);
-        lowerRollorSim.update(0.02);
+        upperMotorSim.update(0.02);
+        lowerMotorSim.update(0.02);
     }
 
     @Override
     protected double getUpperRollerSpeedRPM() {
-        return upperRollorSim.getAngularVelocityRPM();
+        return upperMotorSim.getAngularVelocityRPM();
     }
 
     @Override
     protected double getLowerRollerSpeedRPM() {
-        return lowerRollorSim.getAngularVelocityRPM();
+        return lowerMotorSim.getAngularVelocityRPM();
     }
 
     @Override
     public void setUpperRollerVoltage(double voltage) {
-        upperRollorSim.setInputVoltage(voltage);
+        upperMotorSim.setInputVoltage(voltage);
     }
 
     @Override
     public void setLowerRollerVoltage(double voltage) {
-        lowerRollorSim.setInputVoltage(voltage);
+        lowerMotorSim.setInputVoltage(voltage);
     }
 
+    @Override
+    protected double getUpperMotorCurrent() {
+        return upperMotorSim.getCurrentDrawAmps();
+    }
+
+    @Override
+    protected double getLowerMotorCurrent() {
+        return lowerMotorSim.getCurrentDrawAmps();
+    }
 }

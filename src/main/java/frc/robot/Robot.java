@@ -82,7 +82,7 @@ public class Robot extends LoggedRobot {
                         super.putTable(table);
                 }
             });
-            LoggedPowerDistribution.getInstance(0, RobotMap.POWER_DISTRIBUATION_TYPE);
+            LoggedPowerDistribution.getInstance(1, RobotMap.POWER_DISTRIBUATION_TYPE);
         }
 
         Logger.start();

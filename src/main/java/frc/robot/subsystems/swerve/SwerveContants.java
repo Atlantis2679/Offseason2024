@@ -25,8 +25,10 @@ public class SwerveContants {
     
     public static class DriverController {
         public final static double DRIVER_ACCELERATION_LIMIT_MPS = 4;
-        public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
         public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(540);
+        
+        public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
+
         public final static double SENSETIVE_TRANSLATION_MULTIPLIER = 0.3;
         public final static double SENSETIVE_ROTATION_MULTIPLIER = 0.3;
     }

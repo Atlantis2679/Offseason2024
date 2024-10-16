@@ -6,10 +6,15 @@ public class PivotConstants {
     public static final double KI = 0;
     public static final double KD = 0;
 
-    public static final int CURRENT_LIMIT_AMPS = 25;
+    public static final double KS = 0;
+    public static final double KG = 0.5;
+    public static final double KV = 0;
+    public static final double KA = 0;
+
+    public static final int CURRENT_LIMIT_AMPS = 35;
 
     public class IsAtAngle {
-        public static final double MAX_PIVOT_ANGLE_DEVAITION = 10;
+        public static final double MAX_PIVOT_ANGLE_DEVIATION = 5;
         public static final double MIN_PIVOT_ANGLE_DEVAITION = -10;
     }
 
@@ -18,12 +23,7 @@ public class PivotConstants {
     
     public static final double UPPER_BOUND_WRAP = 180;
 
-    public static final double PIVOT_ANGLE_OFFSET_DEGREES = 0.5;
-
-    public static final double KS = 0;
-    public static final double KV = 0;
-    public static final double KA = 0;
-    public static final double KG = 0;
+    public static final double PIVOT_ANGLE_OFFSET_DEGREES = 121;
 
     public static final double SIM_KS = 0;
     public static final double SIM_KA = 0;

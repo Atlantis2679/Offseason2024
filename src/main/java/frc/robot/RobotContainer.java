@@ -14,20 +14,22 @@ import frc.robot.subsystems.intake.IntakeCommands;
 import frc.robot.subsystems.launcher.Launcher;
 import frc.robot.subsystems.launcher.LauncherCommands;
 import frc.robot.subsystems.pivot.Pivot;
+import frc.robot.subsystems.pivot.PivotCommands;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterCommands;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveCommands;
 import frc.robot.utils.NaturalXboxController;
 
 public class RobotContainer {
-    // private final Swerve swerve = new Swerve();
-    // private final Intake intake = new Intake();
+    private final Swerve swerve = new Swerve();
+    private final Intake intake = new Intake();
     private final Launcher launcher = new Launcher();
-    // private final Pivot pivot = new Pivot();
-    // private final Shooter shooter = new Shooter();
+    private final Pivot pivot = new Pivot();
+    private final Shooter shooter = new Shooter();
 
-    // private final AllCommands allCommands = new AllCommands(intake, launcher,
-    // pivot, shooter);
+    private final AllCommands allCommands = new AllCommands(intake, launcher,
+    pivot, shooter);
 
     private final NaturalXboxController driverController = new NaturalXboxController(
             RobotMap.Controllers.DRIVER_PORT);
@@ -35,47 +37,53 @@ public class RobotContainer {
     private final NaturalXboxController operatorController = new NaturalXboxController(
             RobotMap.Controllers.OPERATOR_PORT);
 
-    // private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
+    private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
 
     public RobotContainer() {
-        // new
-        // Trigger(DriverStation::isDisabled).onTrue(Commands.parallel(allCommands.stopAll(),
-        // swerveCommands.stop()));
+        new
+        Trigger(DriverStation::isDisabled).whileTrue(Commands.parallel(allCommands.stopAll(),
+        swerveCommands.stop()));
 
         configureDriverBindings();
         configureOperetorBindings();
     }
 
     private void configureDriverBindings() {
-        // TuneableCommand driveCommand = swerveCommands.driverController(
-        // () -> driverController.getLeftY(),
-        // () -> driverController.getLeftX(),
-        // () -> driverController.getRightX(),
-        // driverController.leftBumper().negate()::getAsBoolean,
-        // driverController.rightBumper()::getAsBoolean);
+        TuneableCommand driveCommand = swerveCommands.driverController(
+                () -> driverController.getLeftY(),
+                () -> driverController.getLeftX(),
+                () -> driverController.getRightX(),
+                driverController.leftBumper().negate()::getAsBoolean,
+                driverController.rightBumper()::getAsBoolean);
 
-        // swerve.setDefaultCommand(driveCommand);
-        // TuneablesManager.add("Swerve/drive command", driveCommand.fullTuneable());
-        // driverController.a().onTrue(new InstantCommand(swerve::resetYaw));
-        // driverController.x().onTrue(swerveCommands.xWheelLock());
+        swerve.setDefaultCommand(driveCommand);
+        TuneablesManager.add("Swerve/drive command", driveCommand.fullTuneable());
+        driverController.a().onTrue(new InstantCommand(swerve::resetYaw));
+        driverController.x().onTrue(swerveCommands.xWheelLock());
 
-        // TuneablesManager.add("Swerve/modules control mode",
-        // swerveCommands.controlModules(
-        // driverController::getLeftX,
-        // driverController::getLeftY,
-        // driverController::getRightY).fullTuneable());
+        TuneablesManager.add("Swerve/modules control mode",
+                swerveCommands.controlModules(
+                        driverController::getLeftX,
+                        driverController::getLeftY,
+                        driverController::getRightY).fullTuneable());
 
     }
 
     private void configureOperetorBindings() {
-        // intake.setDefaultCommand(new
-        // IntakeCommands(intake).manualController(operatorController::getLeftY,
-        // operatorController::getRightY));
+        // intake.setDefaultCommand(new IntakeCommands(intake).manualController(operatorController::getLeftY,
+        //         operatorController::getRightY));
 
-        launcher.setDefaultCommand(new LauncherCommands(launcher).manualController(operatorController::getRightY));
+        // launcher.setDefaultCommand(new
+        // LauncherCommands(launcher).manualController(operatorController::getRightY));
+
+        // pivot.setDefaultCommand(new
+        // PivotCommands(pivot).manualController(operatorController::getLeftY));
+        // shooter.setDefaultCommand(new
+        // ShooterCommands(shooter).manualController(operatorController::getRightY,
+        // operatorController::getLeftY));
 
         // pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
-        // operatorController.a().whileTrue(allCommands.collectToLauncher());
+        operatorController.a().whileTrue(allCommands.collectToLauncher());
         // operatorController.b().whileTrue(allCommands.shoot());
         // operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
         // operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());

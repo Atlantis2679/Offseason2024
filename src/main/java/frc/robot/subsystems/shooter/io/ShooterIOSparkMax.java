@@ -6,6 +6,7 @@ package frc.robot.subsystems.shooter.io;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.lib.logfields.LogFieldsTable;
@@ -15,16 +16,20 @@ import static frc.robot.RobotMap.CANBUS;
 
 /** Add your docs here. */
 public class ShooterIOSparkMax extends ShooterIO {
-    private final CANSparkMax upperRoller = new CANSparkMax(CANBUS.SHOOTER_UPPER_ROLLER_ID, MotorType.kBrushless);
-    private final CANSparkMax lowerRoller = new CANSparkMax(CANBUS.SHOOTER_LOWER_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax upperMotor = new CANSparkMax(CANBUS.SHOOTER_UPPER_ROLLER_ID, MotorType.kBrushless);
+    private final CANSparkMax lowerMotor = new CANSparkMax(CANBUS.SHOOTER_LOWER_ROLLER_ID, MotorType.kBrushless);
 
-    private final RelativeEncoder upperRollerEncoder = upperRoller.getEncoder();
-    private final RelativeEncoder lowerRollerEncoder = lowerRoller.getEncoder();
+    private final RelativeEncoder upperRollerEncoder = upperMotor.getEncoder();
+    private final RelativeEncoder lowerRollerEncoder = lowerMotor.getEncoder();
 
     public ShooterIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
-        upperRoller.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
-        lowerRoller.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
+        upperMotor.restoreFactoryDefaults();
+        lowerMotor.restoreFactoryDefaults();
+        upperMotor.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
+        lowerMotor.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
+        upperMotor.setIdleMode(IdleMode.kCoast);
+        lowerMotor.setIdleMode(IdleMode.kCoast);
     }
 
     @Override
@@ -39,11 +44,21 @@ public class ShooterIOSparkMax extends ShooterIO {
 
     @Override
     public void setUpperRollerVoltage(double voltage) {
-        upperRoller.setVoltage(voltage);
+        upperMotor.setVoltage(voltage);
     }
 
     @Override
     public void setLowerRollerVoltage(double voltage) {
-        lowerRoller.setVoltage(voltage);
+        lowerMotor.setVoltage(voltage);
+    }
+
+    @Override
+    protected double getUpperMotorCurrent() {
+        return upperMotor.getOutputCurrent();
+    }
+
+    @Override
+    protected double getLowerMotorCurrent() {
+        return lowerMotor.getOutputCurrent();
     }
 }

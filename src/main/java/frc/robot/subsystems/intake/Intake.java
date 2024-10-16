@@ -14,9 +14,9 @@ public class Intake extends SubsystemBase {
     private final IntakeIO intakeIO = Robot.isSimulation()
             ? new IntakeIOSim(fieldsTable)
             : new IntakeIOSparkMax(fieldsTable);
-    private boolean shouldStop = false;
 
-    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(IntakeConstants.INTAKE_SPEED_RATE_LIMIT);
+    private final SlewRateLimiter accelLimitHorizontal = new SlewRateLimiter(IntakeConstants.HORIZONTAL_ACCEL_LIMIT);
+    private final SlewRateLimiter accelLimitVertical = new SlewRateLimiter(IntakeConstants.HORIZONTAL_ACCEL_LIMIT);
 
     public Intake() {
         fieldsTable.update();
@@ -26,25 +26,16 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         fieldsTable.recordOutput("current command",
                 getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
-        if (shouldStop) {
-            setRollerSpeed(0, 0);
-        }
-    }
-
-    public void softStop() {
-        shouldStop = true;
     }
 
     public void setRollerSpeed(double horizontalSpeed, double verticalSpeed) {
-        shouldStop = false;
-
         fieldsTable.recordOutput("horizontal rollers demand speed", horizontalSpeed);
         fieldsTable.recordOutput("vertical rollers demand speed", verticalSpeed);
 
         horizontalSpeed = MathUtil.clamp(horizontalSpeed, -1, 1);
-        // horizontalSpeed = speedLimiter.calculate(horizontalSpeed);
+        horizontalSpeed = accelLimitHorizontal.calculate(horizontalSpeed);
         verticalSpeed = MathUtil.clamp(verticalSpeed, -1, 1);
-        // verticalSpeed = speedLimiter.calculate(verticalSpeed);
+        verticalSpeed = accelLimitVertical.calculate(verticalSpeed);
 
         fieldsTable.recordOutput("horizontal rollers actual speed", horizontalSpeed);
         intakeIO.setHorizontalRollerSpeed(horizontalSpeed);
@@ -53,8 +44,6 @@ public class Intake extends SubsystemBase {
     }
 
     public void stop() {
-        shouldStop = false;
-
         fieldsTable.recordOutput("horizontal rollers demand speed", 0.0);
         fieldsTable.recordOutput("vertical rollers demand speed", 0.0);
         fieldsTable.recordOutput("horizontal rollers actual speed", 0.0);

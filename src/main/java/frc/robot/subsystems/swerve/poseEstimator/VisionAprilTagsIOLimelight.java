@@ -23,7 +23,7 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
 
     @Override
     protected double getCameraTimestampSeconds() {
-        return limelightResults.timestampSeconds;
+        return limelightResults != null ? limelightResults.timestampSeconds : 0;
     }
 
     @Override
@@ -35,11 +35,11 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
 
     @Override
     protected boolean getHasNewRobotPose() {
-        return limelightPose3d != null && limelightResults.tagCount > 0;
+        return limelightResults != null && limelightResults.tagCount > 0;
     }
 
     @Override
     protected int getVisibleTargetCount(){
-        return limelightResults.tagCount;
+        return limelightResults != null ? limelightResults.tagCount : 0;
     }
 }

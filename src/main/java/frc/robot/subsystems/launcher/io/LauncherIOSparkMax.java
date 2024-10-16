@@ -1,6 +1,7 @@
 package frc.robot.subsystems.launcher.io;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -12,14 +13,16 @@ import frc.robot.RobotMap.DIO;
 import frc.robot.subsystems.launcher.LauncherConstants;
 
 public class LauncherIOSparkMax extends LauncherIO {
-
     private final DigitalInput beambreak = new DigitalInput(DIO.BEAM_BREAK_ID);
     private final CANSparkMax launcherMotor = new CANSparkMax(CANBUS.LAUNCHER_MOTOR_ID,
             CANSparkLowLevel.MotorType.kBrushless);
 
     public LauncherIOSparkMax(LogFieldsTable fieldsTable) {
         super(fieldsTable);
+        launcherMotor.restoreFactoryDefaults();
         launcherMotor.setSmartCurrentLimit(LauncherConstants.LAUNCHER_CURRENT_LIMIT);
+        launcherMotor.setIdleMode(IdleMode.kBrake);
+        launcherMotor.setInverted(true);
     }
 
     @Override

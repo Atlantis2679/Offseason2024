@@ -55,7 +55,7 @@ public class RobotMap {
     }
   
     public static class DIO {
-        public final static int PIVOT_ENCODER_ID = 0;
-        public static final int BEAM_BREAK_ID = 0;
+        public final static int PIVOT_ENCODER_ID = 1;
+        public static final int BEAM_BREAK_ID = 2;
     }
 }
