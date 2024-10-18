@@ -10,9 +10,9 @@ public class SwerveContants {
     public final static double MAX_VOLTAGE = 11;
     public final static double MAX_MODULE_SPEED_MPS = 5; // for the max voltage
 
-    public final static double TRACK_WIDTH_M = 0.575;
-    public final static double TRACK_LENGTH_M = 0.575;
-    public final static double TRACK_RADIUS_M = 0.407;
+    public final static double TRACK_WIDTH_M = 0.518;
+    public final static double TRACK_LENGTH_M = 0.518;
+    public final static double TRACK_RADIUS_M = 0.366;
 
     public final static double MODULE_BL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 129.1171875 - 180;
     public final static double MODULE_FL_ABSOLUTE_ANGLE_OFFSET_DEGREES = -25.89 + 180;
