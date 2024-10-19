@@ -44,7 +44,8 @@ public class Shooter extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
+        fieldsTable.recordOutput("current command",
+                getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("upper roller speed RPM", getUpperRollerSpeedRPM());
         fieldsTable.recordOutput("lower roller speed RPM", getLowerRollerSpeedRPM());
     }
@@ -71,18 +72,20 @@ public class Shooter extends SubsystemBase implements Tuneable {
     }
 
     public boolean isAtSpeed(double targetUpperSpeedRPM, double targetLowerSpeedRPM) {
-        return (getUpperRollerSpeedRPM() >= targetUpperSpeedRPM - 10
-                && getUpperRollerSpeedRPM() <= targetUpperSpeedRPM + 10)
-                && (getLowerRollerSpeedRPM() >= targetLowerSpeedRPM - 10
-                        && getLowerRollerSpeedRPM() <= targetLowerSpeedRPM + 10);
+        return Math.abs(targetUpperSpeedRPM - getUpperRollerSpeedRPM()) < SPEED_TOLERANCE
+                && Math.abs(targetLowerSpeedRPM - getLowerRollerSpeedRPM()) < SPEED_TOLERANCE;
     }
 
-    public double calculateVoltageForUpperSpeedRPM(double currentSpeed, double targetSpeedRPM) {
-        return (pidUpper.calculate(currentSpeed, targetSpeedRPM) + upperFeedforward.calculate(targetSpeedRPM)) / 473;
+    public double calculateVoltageForUpperSpeedRPM(double targetSpeedRPM) {
+        fieldsTable.recordOutput("target upper speed RPM", targetSpeedRPM);
+        return upperFeedforward.calculate(targetSpeedRPM)
+                + pidUpper.calculate(getUpperRollerSpeedRPM(), targetSpeedRPM);
     }
 
-    public double calculateLowerSpeedToVoltage(double currentSpeed, double targetSpeedRPM) {
-        return (pidLower.calculate(currentSpeed, targetSpeedRPM) + lowerFeedforward.calculate(targetSpeedRPM)) / 473;
+    public double calculateLowerSpeedToVoltage(double targetSpeedRPM) {
+        fieldsTable.recordOutput("target lower speed RPM", targetSpeedRPM);
+        return lowerFeedforward.calculate(targetSpeedRPM)
+                + pidLower.calculate(getLowerRollerSpeedRPM(), targetSpeedRPM);
     }
 
     public void resetPID() {

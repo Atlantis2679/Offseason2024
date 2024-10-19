@@ -30,11 +30,13 @@ public class ShooterIOSparkMax extends ShooterIO {
         lowerMotor.setSmartCurrentLimit(ShooterConstants.ROLLERS_CURRENT_LIMIT);
         upperMotor.setIdleMode(IdleMode.kCoast);
         lowerMotor.setIdleMode(IdleMode.kCoast);
+        upperMotor.setInverted(true);
+        lowerMotor.setInverted(true);
     }
 
     @Override
     protected double getUpperRollerSpeedRPM() {
-        return -upperRollerEncoder.getVelocity();
+        return upperRollerEncoder.getVelocity();
     }
 
     @Override

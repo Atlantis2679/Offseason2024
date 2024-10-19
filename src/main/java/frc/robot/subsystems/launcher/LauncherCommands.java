@@ -24,6 +24,6 @@ public class LauncherCommands {
     }
 
     public Command manualController(DoubleSupplier launcherSpeed){
-        return launcher.run(()-> launcher.setSpeed(launcherSpeed.getAsDouble())).withName("launcherManualController");
+        return launcher.run(()-> launcher.setSpeed(launcherSpeed.getAsDouble())).finallyDo(launcher::stop).withName("launcherManualController");
     }
 }

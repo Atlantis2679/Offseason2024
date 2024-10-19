@@ -3,6 +3,7 @@ package frc.robot.subsystems.pivot;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.lib.logfields.LogFieldsTable;
 
@@ -10,20 +11,21 @@ public class PivotVisualizer {
     private final LogFieldsTable fieldsTable;
     private final String name;
 
-    private final Mechanism2d pivotMech = new Mechanism2d(5, 5);
-    private final MechanismRoot2d root = pivotMech.getRoot("Pivot", 2.5, 2.5);
+    private final Mechanism2d pivotMech = new Mechanism2d(2, 2);
+    private final MechanismRoot2d root = pivotMech.getRoot("root", 0.75, 0);
+    private final MechanismLigament2d tower = root.append(new MechanismLigament2d("tower", 0.75, 90, 5, new Color8Bit(Color.kBrown)));
     private final MechanismLigament2d pivotLigament;
 
     public PivotVisualizer(LogFieldsTable fieldsTable, String name, Color8Bit color) {
         this.fieldsTable = fieldsTable;
         this.name = name;
 
-        pivotLigament = root
-                .append(new MechanismLigament2d("pivot", 2, 90, 6, color));
+        pivotLigament = tower
+                .append(new MechanismLigament2d("pivot", 0.5, -90, 6, color));
     }
 
     public void update(double angleDegrees) {
-        pivotLigament.setAngle(angleDegrees);
+        pivotLigament.setAngle(angleDegrees - 90);
         fieldsTable.recordOutput(name, pivotMech);
     }
 }

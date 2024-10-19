@@ -31,7 +31,7 @@ public class PivotCommands extends Command {
                     true);
 
             pivot.setPivotVoltage(voltage);
-        })).withName("pivotMoveToAngle");
+        })).finallyDo(pivot::stop).withName("pivotMoveToAngle");
     }
 
     public Command moveToAngle(double angle) {
@@ -46,6 +46,6 @@ public class PivotCommands extends Command {
                     false);
             pivot.setPivotVoltage(
                     feedforwardResult + pivotSpeed.getAsDouble() * PivotConstants.MANUAL_SPEED_MULTIPLIER);
-        }).withName("pivotManualController");
+        }).finallyDo(pivot::stop).withName("pivotManualController");
     }
 }
