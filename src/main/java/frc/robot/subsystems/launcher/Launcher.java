@@ -9,7 +9,8 @@ import frc.robot.subsystems.launcher.io.LauncherIOSparkMax;
 
 public class Launcher extends SubsystemBase {
     private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
-    private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSim(fieldsTable) : new LauncherIOSparkMax(fieldsTable);
+    private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSim(fieldsTable)
+            : new LauncherIOSparkMax(fieldsTable);
 
     public Launcher() {
         fieldsTable.update();
@@ -17,7 +18,8 @@ public class Launcher extends SubsystemBase {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
+        fieldsTable.recordOutput("current command",
+                getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("isNodeIn", getIsNoteInside());
     }
 
@@ -26,6 +28,7 @@ public class Launcher extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
+        fieldsTable.recordOutput("demand speed", speed);
         io.setSpeed(speed);
     }
 

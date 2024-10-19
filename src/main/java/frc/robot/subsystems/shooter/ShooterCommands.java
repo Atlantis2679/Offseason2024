@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.shooter;
 
 import java.util.function.DoubleSupplier;
@@ -10,7 +6,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** Add your docs here. */
+import static frc.robot.subsystems.shooter.ShooterConstants.*;
+
 public class ShooterCommands {
     private final Shooter shooter;
 
@@ -31,9 +28,9 @@ public class ShooterCommands {
         }).withName("shooterReachSpeed");
     }
 
-    public Command manualController(DoubleSupplier upperRollerVoltage, DoubleSupplier lowerRollerVoltage) {
+    public Command manualController(DoubleSupplier upperRoller, DoubleSupplier lowerRoller) {
         return shooter.run(() -> {
-            shooter.setVoltage(upperRollerVoltage.getAsDouble(), lowerRollerVoltage.getAsDouble());
+            shooter.setVoltage(upperRoller.getAsDouble() * MAX_VOLTAGE, lowerRoller.getAsDouble() * MAX_VOLTAGE);
         }).withName("shooterManualController");
     }
 }

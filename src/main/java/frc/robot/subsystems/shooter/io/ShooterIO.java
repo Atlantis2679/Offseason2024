@@ -16,6 +16,11 @@ public abstract class ShooterIO extends IOBase {
     public final DoubleSupplier lowerRollerSpeedRPM = fields.addDouble("lowerRollerSpeedRPM",
             () -> getLowerRollerSpeedRPM());
 
+    public final DoubleSupplier upperMotorCurrent = fields.addDouble("upperMotorCurrent",
+            () -> getUpperMotorCurrent());
+    public final DoubleSupplier lowerMotorCurrent = fields.addDouble("lowerMotorCurrent",
+            () -> getLowerMotorCurrent());
+
     public ShooterIO(LogFieldsTable fieldsTable) {
         super(fieldsTable);
     }
@@ -25,6 +30,10 @@ public abstract class ShooterIO extends IOBase {
     protected abstract double getUpperRollerSpeedRPM();
 
     protected abstract double getLowerRollerSpeedRPM();
+
+    protected abstract double getUpperMotorCurrent();
+
+    protected abstract double getLowerMotorCurrent();
 
     // OUTPUT
 

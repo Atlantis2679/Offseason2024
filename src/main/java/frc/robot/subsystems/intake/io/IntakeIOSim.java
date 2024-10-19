@@ -14,4 +14,19 @@ public class IntakeIOSim extends IntakeIO {
     @Override
     public void setVerticalRollerSpeed(double rollersSpeed){
     }
+
+    @Override
+    protected double getHorizontalMotorCurrent() {
+        return 0;
+    }
+
+    @Override
+    protected double getLeftVerticalMotorCurrent() {
+        return 0;
+    }
+
+    @Override
+    protected double getRightVerticalMotorCurrent() {
+        return 0;
+    }
 }

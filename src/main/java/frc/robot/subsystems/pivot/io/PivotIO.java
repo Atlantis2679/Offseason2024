@@ -12,6 +12,7 @@ import frc.lib.logfields.LogFieldsTable;
 /** Add your docs here. */
 public abstract class PivotIO extends IOBase {
     public final DoubleSupplier pivotAngleDegrees = fields.addDouble("pivotAngleDegrees", this::getPivotAngleDegrees);
+    public final DoubleSupplier motorCurrent = fields.addDouble("motorCurrent", this::getMotorCurrent);
 
     protected PivotIO(LogFieldsTable fieldsTable) {
         super(fieldsTable);
@@ -19,6 +20,8 @@ public abstract class PivotIO extends IOBase {
 
     // Inputs
     protected abstract double getPivotAngleDegrees();
+
+    protected abstract double getMotorCurrent();
 
     // Outputs
     public abstract void setVoltage(double voltage);

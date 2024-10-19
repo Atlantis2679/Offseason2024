@@ -2,7 +2,7 @@ package frc.robot.allcommands;
 
 
 public class AllCommandsConstants {
-    public static final double PIVOT_ANGLE_FOR_INTAKE = 0;
+    public static final double PIVOT_ANGLE_FOR_INTAKE = -25;
 
     public static final double INTAKE_VERTICAL_SPEED_MULTIPLAYER = 1;
     public static final double INTAKE_HORIZONTAL_SPEED_MULTIPLAYER = 1;
