@@ -1,10 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.swerve.poseEstimator;
-
-import static frc.robot.subsystems.swerve.poseEstimator.PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_PHOTON_FRONT;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +13,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import frc.lib.logfields.LogFieldsTable;
 
 public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
@@ -73,7 +66,6 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
         List<PhotonTrackedTarget> fiducials = photonPipelineResult.getTargets();
         Transform3d[] targetsArr = new Transform3d[fiducials.size()];
         for(int i = 0; i < fiducials.size(); i++){
-            Translation3d translation = ROBOT_TO_CAMERA_TRANSFORM_PHOTON_FRONT.getTranslation();
             targetsArr[i] = fiducials.get(i).getBestCameraToTarget();
         }
 

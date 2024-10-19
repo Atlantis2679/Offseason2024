@@ -35,11 +35,15 @@ public class AllCommands {
 
     private double targetPivotAngle = 0;
 
-    public AllCommands(Intake intake, Launcher launcher, Pivot pivot, Shooter shooter) {
+    private final ShootingCalculator shootingCalculator;
+
+    public AllCommands(Intake intake, Launcher launcher, Pivot pivot, Shooter shooter,
+            ShootingCalculator shootingCalculator) {
         this.intake = intake;
         this.launcher = launcher;
         this.pivot = pivot;
         this.shooter = shooter;
+        this.shootingCalculator = shootingCalculator;
 
         intakeCMDs = new IntakeCommands(this.intake);
         launcherCMDs = new LauncherCommands(this.launcher);
@@ -94,6 +98,13 @@ public class AllCommands {
                 () -> GetReadyToShoot.AMP_PIVOT_ANGLE,
                 () -> GetReadyToShoot.AMP_UPPER_ROLLER_SPEED,
                 () -> GetReadyToShoot.AMP_LOWER_ROLLER_SPEED).withName("getReadyToShootAmp");
+    }
+
+    public Command getReadyToShootVision() {
+        return getReadyToShoot(
+                () -> shootingCalculator.getUpperRollerSpeedRPM(),
+                () -> shootingCalculator.getUpperRollerSpeedRPM(),
+                () -> shootingCalculator.getLowerRollerSpeedRPM()).withName("getReadyToShootAmp");
     }
 
     public TuneableCommand getReadyToShootTuneable() {

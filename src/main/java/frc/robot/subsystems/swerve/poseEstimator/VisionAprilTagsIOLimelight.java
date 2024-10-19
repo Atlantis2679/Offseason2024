@@ -5,8 +5,6 @@ import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.LimelightResults;
 import frc.robot.utils.LimelightHelpers.LimelightTarget_Fiducial;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 
