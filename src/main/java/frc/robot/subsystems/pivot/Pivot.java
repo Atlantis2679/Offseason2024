@@ -105,7 +105,7 @@ public class Pivot extends SubsystemBase implements Tuneable {
 
     public boolean isAtAngle(double desiredAngle) {
         double deviation = desiredAngle - getAbsoluteAngleDegrees();
-        return Math.abs(deviation) < IsAtAngle.MAX_PIVOT_ANGLE_DEVIATION;
+        return Math.abs(deviation) < IsAtAngle.ANGLE_TOLERANCE;
     }
 
     public void stop() {

@@ -71,10 +71,12 @@ public class AllCommands {
 
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
             DoubleSupplier lowerRollerSpeed) {
-        targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();
-        targetShooterLowerRollerRPM = lowerRollerSpeed.getAsDouble();
-        targetPivotAngle = angle.getAsDouble();
         return Commands.parallel(
+                Commands.run(() -> {
+                    targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();
+                    targetShooterLowerRollerRPM = lowerRollerSpeed.getAsDouble();
+                    targetPivotAngle = angle.getAsDouble();
+                }),
                 pivotCMDs.moveToAngle(angle),
                 shooterCMDs.reachSpeed(upperRollerSpeed, lowerRollerSpeed)).withName("getReadyToShoot");
     }
@@ -112,9 +114,10 @@ public class AllCommands {
 
     public Command manualIntakeLauncherController(DoubleSupplier speed) {
         return Commands.parallel(
-                intakeCMDs.manualController(() -> speed.getAsDouble() * INTAKE_HORIZONTAL_SPEED_MULTIPLAYER,
-                        () -> speed.getAsDouble() * INTAKE_VERTICAL_SPEED_MULTIPLAYER),
-                launcherCMDs.manualController(() -> speed.getAsDouble() * LAUNCHER_SPEED_MULTIPLAYER))
+                intakeCMDs.manualController(
+                        () -> speed.getAsDouble() * ManualController.INTAKE_HORIZONTAL_SPEED_MULTIPLAYER,
+                        () -> speed.getAsDouble() * ManualController.INTAKE_VERTICAL_SPEED_MULTIPLAYER),
+                launcherCMDs.manualController(() -> speed.getAsDouble() * ManualController.LAUNCHER_SPEED_MULTIPLAYER))
                 .withName("manualIntakeLauncherController");
     }
 
@@ -125,7 +128,7 @@ public class AllCommands {
     public Command manualShooterController(DoubleSupplier upperRollerVoltagePercentage,
             DoubleSupplier lowerRollerVoltagePercentage) {
         return shooterCMDs.manualController(
-                () -> upperRollerVoltagePercentage.getAsDouble() * SHOOTER_VOLTAGE_MULTIPLAYER,
-                () -> lowerRollerVoltagePercentage.getAsDouble() * SHOOTER_VOLTAGE_MULTIPLAYER);
+                () -> upperRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER,
+                () -> lowerRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER);
     }
 }

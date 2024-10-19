@@ -16,8 +16,8 @@ public class RobotMap {
     }
        
     public static class CANBUS {
-        public static final int SHOOTER_UPPER_ROLLER_ID = 16;
-        public static final int SHOOTER_LOWER_ROLLER_ID = 17;
+        public static final int SHOOTER_UPPER_ROLLER_ID = 17;
+        public static final int SHOOTER_LOWER_ROLLER_ID = 16;
 
         public final static int INTAKE_RIGHT_VERTICAL_ROLLER_ID = 12;
         public final static int INTAKE_LEFT_VERTICAL_ROLLER_ID = 13;
@@ -55,7 +55,7 @@ public class RobotMap {
     }
   
     public static class DIO {
+        public static final int BEAM_BREAK_ID = 0;
         public final static int PIVOT_ENCODER_ID = 1;
-        public static final int BEAM_BREAK_ID = 2;
     }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.lib.tuneables.Tuneable;
 import frc.lib.tuneables.TuneablesManager;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.robot.allcommands.AllCommands;
@@ -14,7 +15,6 @@ import frc.robot.subsystems.intake.IntakeCommands;
 import frc.robot.subsystems.launcher.Launcher;
 import frc.robot.subsystems.launcher.LauncherCommands;
 import frc.robot.subsystems.pivot.Pivot;
-import frc.robot.subsystems.pivot.PivotCommands;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterCommands;
 import frc.robot.subsystems.swerve.Swerve;
@@ -29,7 +29,7 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
 
     private final AllCommands allCommands = new AllCommands(intake, launcher,
-    pivot, shooter);
+            pivot, shooter);
 
     private final NaturalXboxController driverController = new NaturalXboxController(
             RobotMap.Controllers.DRIVER_PORT);
@@ -40,9 +40,8 @@ public class RobotContainer {
     private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
 
     public RobotContainer() {
-        new
-        Trigger(DriverStation::isDisabled).whileTrue(Commands.parallel(allCommands.stopAll(),
-        swerveCommands.stop()));
+        new Trigger(DriverStation::isDisabled).whileTrue(Commands.parallel(allCommands.stopAll(),
+                swerveCommands.stop()));
 
         configureDriverBindings();
         configureOperetorBindings();
@@ -66,15 +65,13 @@ public class RobotContainer {
                         driverController::getLeftX,
                         driverController::getLeftY,
                         driverController::getRightY).fullTuneable());
-
     }
 
     private void configureOperetorBindings() {
-        // intake.setDefaultCommand(new IntakeCommands(intake).manualController(operatorController::getLeftY,
+        // intake.setDefaultCommand(new IntakeCommands(intake).manualController(operatorController::getRightY,
         //         operatorController::getRightY));
 
-        // launcher.setDefaultCommand(new
-        // LauncherCommands(launcher).manualController(operatorController::getRightY));
+        // launcher.setDefaultCommand(new LauncherCommands(launcher).manualController(operatorController::getLeftY));
 
         // pivot.setDefaultCommand(new
         // PivotCommands(pivot).manualController(operatorController::getLeftY));
@@ -82,21 +79,22 @@ public class RobotContainer {
         // ShooterCommands(shooter).manualController(operatorController::getRightY,
         // operatorController::getLeftY));
 
-        // pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
+        pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
         operatorController.a().whileTrue(allCommands.collectToLauncher());
-        // operatorController.b().whileTrue(allCommands.shoot());
+        operatorController.b().whileTrue(allCommands.shoot());
         // operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
         // operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
-        // operatorController.povLeft().whileTrue(allCommands.getReadyToShootTuneable());
+        TuneableCommand tuneableReadyToShoot = allCommands.getReadyToShootTuneable();
+        operatorController.povLeft().whileTrue(tuneableReadyToShoot);
+        TuneablesManager.add("ready to shoot command", (Tuneable) tuneableReadyToShoot);
         // operatorController.leftBumper().whileTrue(allCommands.stopAll());
-        // operatorController.rightBumper().whileTrue(Commands.parallel(
-        // allCommands.manualIntakeLauncherController(() ->
-        // -operatorController.getLeftY()),
-        // allCommands.manualPivotController(() -> -operatorController.getRightY()),
-        // allCommands.manualShooterController(operatorController::getRightTriggerAxis,
-        // operatorController::getLeftTriggerAxis)
-        // ));
+        operatorController.rightBumper().whileTrue(Commands.parallel(
+                allCommands.manualIntakeLauncherController(() -> operatorController.getLeftY()),
+                allCommands.manualPivotController(() -> operatorController.getRightY()),
+                allCommands.manualShooterController(operatorController::getRightTriggerAxis,
+                        operatorController::getLeftTriggerAxis)));
 
+        // shooter.setDefaultCommand(new ShooterCommands(shooter).reachSpeed(() -> operatorController.getLeftTriggerAxis() * 3000, () -> operatorController.getRightTriggerAxis() * 3000));
     }
 
     public Command getAutonomousCommand() {

@@ -112,6 +112,8 @@ public class Swerve extends SubsystemBase implements Tuneable {
 
         resetYaw();
 
+        queueResetModulesToAbsolute();
+
         Pathfinding.setPathfinder(new LocalADStarAK());
 
         HolonomicPathFollowerConfig pathFollowerConfigs = new HolonomicPathFollowerConfig(
@@ -341,7 +343,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
             }).ignoringDisable(true));
         });
 
-        builder.addChild("coast mode", new RunCommand(() -> {
+        builder.addChild("coast mode", run(() -> {
             for (SwerveModule module : modules) {
                 module.enableCoastMode();
             }

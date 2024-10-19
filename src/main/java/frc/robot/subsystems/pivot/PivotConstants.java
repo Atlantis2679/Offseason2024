@@ -2,20 +2,19 @@ package frc.robot.subsystems.pivot;
 
 public class PivotConstants {
     // Angle PID
-    public static final double KP = 0;
+    public static final double KP = 0.15;
     public static final double KI = 0;
     public static final double KD = 0;
 
     public static final double KS = 0;
     public static final double KG = 0.5;
-    public static final double KV = 0;
+    public static final double KV = 0.04;
     public static final double KA = 0;
 
     public static final int CURRENT_LIMIT_AMPS = 35;
 
     public class IsAtAngle {
-        public static final double MAX_PIVOT_ANGLE_DEVIATION = 5;
-        public static final double MIN_PIVOT_ANGLE_DEVAITION = -10;
+        public static final double ANGLE_TOLERANCE = 3;
     }
 
     public static final double PIVOT_MAX_VELOCITY_DEG_PER_SEC = 90;

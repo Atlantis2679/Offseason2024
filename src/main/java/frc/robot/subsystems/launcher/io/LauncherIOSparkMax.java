@@ -27,7 +27,7 @@ public class LauncherIOSparkMax extends LauncherIO {
 
     @Override
     public boolean getIsNoteInside() {
-        return beambreak.get();
+        return !beambreak.get();
     }
 
     @Override

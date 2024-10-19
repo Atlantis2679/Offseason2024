@@ -6,17 +6,18 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
 public final class ShooterConstants {
-    public static final int MAX_VOLTAGE = 12;
-
+    public static final int MAX_VOLTAGE = 7;
+    public static final double SPEED_TOLERANCE = 50;
+    
     public static final int ROLLERS_CURRENT_LIMIT = 30;
-
-    public static final int kP = 0;
-    public static final int kD = 0;
-    public static final int kI = 0;
-
-    public static final int kS = 0;
-    public static final int kV = 0;
-    public static final int kA = 0;
+    
+    public static final double kP = 0.002;
+    public static final double kD = 0;
+    public static final double kI = 0;
+    
+    public static final double kS = 0;
+    public static final double kV = 0.0022;
+    public static final double kA = 0;
 
     // sim
     public static final double GERAING = 1;
@@ -25,11 +26,11 @@ public final class ShooterConstants {
     public static final LinearSystem<N1, N1, N1> LINEAR_SYSTEM = LinearSystemId.createFlywheelSystem(DCMotor.getNEO(1),
             kFlywheelMomentOfInertia, GERAING);
 
-    public static final int kPSim = 1;
-    public static final int kISim = 0;
-    public static final int kDSim = 0;
+    public static final double kPSim = 1;
+    public static final double kISim = 0;
+    public static final double kDSim = 0;
 
-    public static final int kSSim = 0;
-    public static final int kVSim = 1;
-    public static final int kASim = 0;
+    public static final double kSSim = 0;
+    public static final double kVSim = 1;
+    public static final double kASim = 0;
 }

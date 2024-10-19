@@ -1,5 +1,6 @@
 package frc.robot.subsystems.launcher;
 
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.Robot;
@@ -11,6 +12,8 @@ public class Launcher extends SubsystemBase {
     private final LogFieldsTable fieldsTable = new LogFieldsTable(getName());
     private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSim(fieldsTable)
             : new LauncherIOSparkMax(fieldsTable);
+
+    // private final Debouncer isNodeInsideDebouner = new Debouncer(0.1);
 
     public Launcher() {
         fieldsTable.update();
