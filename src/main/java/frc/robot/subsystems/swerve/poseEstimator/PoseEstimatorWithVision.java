@@ -42,10 +42,14 @@ public class PoseEstimatorWithVision {
                     .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
 
             if (Robot.isReal()) {
-                visionCameras.put(FRONT_CAMERA_NAME + "Photon Front",
-                        new VisionAprilTagsIOPhoton(fieldsTable, FRONT_CAMERA_NAME, tagsLayout));
-                visionCameras.put(BACK_CAMERA_NAME + "Limelight Back",
-                        new VisionAprilTagsIOLimelight(fieldsTable, BACK_CAMERA_NAME));
+                visionCameras.put("Front Photon",
+                        new VisionAprilTagsIOPhoton(
+                                fieldsTable.getSubTable("Front Photon"),
+                                FRONT_PHOTON_CAMERA_NAME, tagsLayout));
+                visionCameras.put("Back Limelight",
+                        new VisionAprilTagsIOLimelight(
+                                fieldsTable.getSubTable("Back Limelight"),
+                                BACK_LIMELIGHT_CAMERA_NAME));
             }
         } catch (IOException e) {
             DriverStation.reportError("AprilTagFieldLayout blew up", e.getStackTrace());
@@ -74,8 +78,8 @@ public class PoseEstimatorWithVision {
 
                 Transform3d[] targetsTransforms = visionIO.targetsPosesInRobotSpace.get();
                 Pose3d[] targetPoses = new Pose3d[targetsTransforms.length];
-                for (int i = 0; i < modulesPositions.length; i++) {
-                    targetPoses[i] = poseEstimate.plus(targetsTransforms[i]);
+                for (int i = 0; i < targetsTransforms.length; i++) {
+                    targetPoses[i] = poseEstimate.plus(new Transform3d(targetsTransforms[i].getTranslation(), targetsTransforms[i].getRotation().unaryMinus()));
                 }
                 fieldsTable.recordOutput(cameraName + "/targetPoses", targetPoses);
 
@@ -83,7 +87,8 @@ public class PoseEstimatorWithVision {
                         visionIO.poseEstimate.get().toPose2d(),
                         poseEstimator.getEstimatedPosition());
 
-                if (!ignoreFarEstimates || visionToEstimateDifference < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M) {
+                if (!ignoreFarEstimates
+                        || visionToEstimateDifference < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M) {
                     poseEstimator.addVisionMeasurement(
                             visionIO.poseEstimate.get().toPose2d(),
                             visionIO.cameraTimestampSeconds.getAsDouble());

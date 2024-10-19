@@ -5,6 +5,8 @@ import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.LimelightResults;
 import frc.robot.utils.LimelightHelpers.LimelightTarget_Fiducial;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 
@@ -21,9 +23,9 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
             PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getTranslation().getX(),
             PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getTranslation().getY(),
             PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getTranslation().getZ(),
-            PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getX(),
-            PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getY(),
-            PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getZ());
+            Math.toDegrees(PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getX()),
+            Math.toDegrees(PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getY()),
+            Math.toDegrees(PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK.getRotation().getZ()));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
     protected Pose3d getRobotPose() {
         //Pose3d estimate = new Pose3d(limelightResults.pose);
         //return estimate != null ? estimate : new Pose3d();
-        return limelightResults.getBotPose3d() != null ? limelightResults.getBotPose3d()  : new Pose3d();
+        return limelightResults.getBotPose3d() != null ? limelightResults.getBotPose3d_wpiBlue()  : new Pose3d();
     }
 
     @Override
@@ -55,10 +57,13 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
 
     @Override
     protected Transform3d[] getTargetsPosesInRobotSpace(){
-        LimelightTarget_Fiducial[] fiducials = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials;
+        if(limelightResults == null) {
+            return new Transform3d[]{};
+        }
+        LimelightTarget_Fiducial[] fiducials = limelightResults.targets_Fiducials;
         Transform3d[] targetsArr = new Transform3d[(int) limelightResults.botpose_tagcount];
         for (int i = 0; i < (int)limelightResults.botpose_tagcount; i++) {
-            targetsArr[i] = fiducials[i].getTargetPose_RobotSpace().minus(getRobotPose());
+            targetsArr[i] = new Transform3d(new Pose3d(), fiducials[i].getTargetPose_RobotSpace());
         }
 
         return targetsArr;

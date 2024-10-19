@@ -19,11 +19,12 @@ public class LauncherCommands {
     }
 
     public Command release() {
-         return launcher.run(() -> launcher.setSpeed(RELEASING_SPEED_PRECENTAGE)).until(() -> !launcher.getIsNoteInside())
+        return launcher.run(() -> launcher.setSpeed(RELEASING_SPEED_PRECENTAGE))
                 .finallyDo(() -> launcher.stop()).withName("launcherRelease");
     }
 
-    public Command manualController(DoubleSupplier launcherSpeed){
-        return launcher.run(()-> launcher.setSpeed(launcherSpeed.getAsDouble())).finallyDo(launcher::stop).withName("launcherManualController");
+    public Command manualController(DoubleSupplier launcherSpeed) {
+        return launcher.run(() -> launcher.setSpeed(launcherSpeed.getAsDouble())).finallyDo(launcher::stop)
+                .withName("launcherManualController");
     }
 }

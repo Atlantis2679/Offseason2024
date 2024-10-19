@@ -79,16 +79,16 @@ public class RobotContainer {
         pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
         operatorController.a().whileTrue(allCommands.collectToLauncher());
         operatorController.b().whileTrue(allCommands.shoot());
-        // operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
-        // operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
+        operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
+        operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
         TuneableCommand tuneableReadyToShoot = allCommands.getReadyToShootTuneable();
         operatorController.povLeft().whileTrue(tuneableReadyToShoot);
         TuneablesManager.add("ready to shoot command", (Tuneable) tuneableReadyToShoot);
-        // operatorController.leftBumper().whileTrue(allCommands.stopAll());
+        operatorController.leftBumper().whileTrue(allCommands.stopAll());
         operatorController.rightBumper().whileTrue(Commands.parallel(
                 allCommands.manualIntakeLauncherController(() -> operatorController.getLeftY()),
                 allCommands.manualPivotController(() -> operatorController.getRightY()),
-                allCommands.manualShooterController(operatorController::getRightTriggerAxis,
+                allCommands.manualShooterController(operatorController::getLeftTriggerAxis,
                         operatorController::getLeftTriggerAxis)));
 
         // shooter.setDefaultCommand(new ShooterCommands(shooter).reachSpeed(() -> operatorController.getLeftTriggerAxis() * 3000, () -> operatorController.getRightTriggerAxis() * 3000));

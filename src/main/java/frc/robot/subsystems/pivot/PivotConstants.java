@@ -14,7 +14,7 @@ public class PivotConstants {
     public static final int CURRENT_LIMIT_AMPS = 35;
 
     public class IsAtAngle {
-        public static final double ANGLE_TOLERANCE = 3;
+        public static final double ANGLE_TOLERANCE = 1.5;
     }
 
     public static final double PIVOT_MAX_VELOCITY_DEG_PER_SEC = 90;
@@ -22,7 +22,7 @@ public class PivotConstants {
 
     public static final double UPPER_BOUND_WRAP = 180;
     public static final double MIN_ANGLE_DEGREE = -24;
-    public static final double MAX_ANGLE_DEGREE = 90;
+    public static final double MAX_ANGLE_DEGREE = 120;
 
     public static final double PIVOT_ANGLE_OFFSET_DEGREES = 121;
 
@@ -33,7 +33,7 @@ public class PivotConstants {
 
     public static final double PIVOT_VOLTAGE_LIMIT = 10;
 
-    public static final double MANUAL_SPEED_MULTIPLIER = 10;
+    public static final double MANUAL_SPEED_MULTIPLIER = 7;
 
     // Sim
     public static final double PIVOT_JKG_METERS_SQUARED = 10;
