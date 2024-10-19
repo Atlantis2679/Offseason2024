@@ -1,6 +1,6 @@
 package frc.robot.subsystems.swerve;
 
-import static frc.robot.subsystems.swerve.SwerveContants.MAX_VOLTAGE;
+import static frc.robot.subsystems.swerve.SwerveContants.*;
 
 import java.util.Set;
 import java.util.function.BooleanSupplier;
@@ -14,6 +14,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.GeometryUtil;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.BooleanHolder;
 import frc.robot.subsystems.swerve.SwerveContants.DriveToPose;
+import frc.robot.subsystems.swerve.SwerveContants.RotateToAngle;
 import frc.robot.subsystems.swerve.commands.SwerveDriverController;
 
 public class SwerveCommands {
@@ -43,6 +45,16 @@ public class SwerveCommands {
     // mostly for checking max module speed
     public Command driveForwardVoltage(DoubleSupplier forwardPrecentageSupplier) {
         return swerve.run(() -> swerve.drive(forwardPrecentageSupplier.getAsDouble() * MAX_VOLTAGE, 0, 0, false, true));
+    }
+
+    public Command rotateToAngle(DoubleSupplier targetAngleDegreesCCW) {
+        @SuppressWarnings({ "resource" })
+        PIDController pidController = new PIDController(RotateToAngle.KP, RotateToAngle.KI, RotateToAngle.KD);
+        return swerve.runOnce(() -> {
+            pidController.reset();
+        }).andThen(swerve.run(() -> {
+            swerve.drive(0, 0, pidController.calculate(swerve.getYawCCW().getDegrees(), targetAngleDegreesCCW.getAsDouble()), false, true);
+        }));
     }
 
     public TuneableCommand controlModules(DoubleSupplier steerXSupplier, DoubleSupplier steerYSupplier,
@@ -101,6 +113,7 @@ public class SwerveCommands {
     }
 
     public Command stop() {
-        return swerve.run(swerve::stop).ignoringDisable(true).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        return swerve.run(swerve::stop).ignoringDisable(true)
+                .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 }

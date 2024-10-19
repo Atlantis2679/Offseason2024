@@ -60,6 +60,7 @@ public class RobotContainer {
                 TuneablesManager.add("Swerve/drive command", driveCommand.fullTuneable());
                 driverController.a().onTrue(new InstantCommand(swerve::resetYaw));
                 driverController.x().onTrue(swerveCommands.xWheelLock());
+                driverController.y().whileTrue(swerveCommands.rotateToAngle(shootingCalculator::getRobotYawDegreesCCW));
 
                 TuneablesManager.add("Swerve/modules control mode",
                                 swerveCommands.controlModules(

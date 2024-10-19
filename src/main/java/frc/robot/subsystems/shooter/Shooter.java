@@ -72,8 +72,8 @@ public class Shooter extends SubsystemBase implements Tuneable {
     }
 
     public boolean isAtSpeed(double targetUpperSpeedRPM, double targetLowerSpeedRPM) {
-        return Math.abs(targetUpperSpeedRPM - getUpperRollerSpeedRPM()) < SPEED_TOLERANCE
-                && Math.abs(targetLowerSpeedRPM - getLowerRollerSpeedRPM()) < SPEED_TOLERANCE;
+        return Math.abs(targetUpperSpeedRPM - getUpperRollerSpeedRPM()) < SPEED_TOLERANCE_RPM
+                && Math.abs(targetLowerSpeedRPM - getLowerRollerSpeedRPM()) < SPEED_TOLERANCE_RPM;
     }
 
     public double calculateVoltageForUpperSpeedRPM(double targetSpeedRPM) {

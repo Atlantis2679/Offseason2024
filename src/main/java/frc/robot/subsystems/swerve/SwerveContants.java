@@ -22,11 +22,11 @@ public class SwerveContants {
     public final static double MODULE_ANGLE_KP = 1.8 * 12;
     public final static double MODULE_ANGLE_KI = 0;
     public final static double MODULE_ANGLE_KD = 0;
-    
+
     public static class DriverController {
         public final static double DRIVER_ACCELERATION_LIMIT_MPS = 1000;
         public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(10000);
-        
+
         public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
 
         public final static double SENSETIVE_TRANSLATION_MULTIPLIER = 0.3;
@@ -41,6 +41,12 @@ public class SwerveContants {
         public final static double ROTATION_KP = 0.1;
         public final static double ROTATION_KI = 0;
         public final static double ROTATION_KD = 0.001;
+    }
+
+    public class RotateToAngle {
+        public final static double KP = 0;
+        public final static double KI = 0;
+        public final static double KD = 0;
     }
 
     public class DriveToPose {

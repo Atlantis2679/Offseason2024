@@ -240,7 +240,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
         }
     }
 
-    private Rotation2d getYawCCW() {
+    public Rotation2d getYawCCW() {
         return gyroYawHelperCCW.getAngle();
     }
 
