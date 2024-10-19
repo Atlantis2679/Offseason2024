@@ -17,7 +17,7 @@ public class PoseEstimatorConstants {
             new Translation3d(-40, 0, 27),
             new Rotation3d(0, Math.toRadians(-32.2), 0));
             
-    public final static double VISION_THRESHOLD_DISTANCE_M = 1.5;
+    public final static double VISION_THRESHOLD_DISTANCE_M = 3;
 
     public final static double STATE_TRUST_LEVEL_X = 0.1;
     public final static double STATE_TRUST_LEVEL_Y = 0.1;

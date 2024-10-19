@@ -5,13 +5,10 @@
 package frc.robot.subsystems.swerve.poseEstimator;
 
 
-import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
-
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -23,7 +20,7 @@ public abstract class VisionAprilTagsIO extends IOBase {
     public final DoubleSupplier cameraTimestampSeconds = fields.addDouble("cameraTimestampSeconds", this::getCameraTimestampSeconds);
     public final BooleanSupplier hasNewRobotPose = fields.addBoolean("hasNewRobotPose", this::getHasNewRobotPose);
     public final LongSupplier visibletargetCount = fields.addInteger("visibleTargetCount", this::getVisibleTargetCount);
-    public final Supplier<Transform3d[]> apriltagArrInRobotSpace = fields.addObjectArray("apriltagArrInCameraSpace", this::getApriltagArrInRobotSpace);
+    public final Supplier<Transform3d[]> targetsPosesInRobotSpace = fields.addObjectArray("targetsPosesInRobotSpace", this::getTargetsPosesInRobotSpace);
     
     protected VisionAprilTagsIO(LogFieldsTable fieldsTable){
         super(fieldsTable);
@@ -37,5 +34,5 @@ public abstract class VisionAprilTagsIO extends IOBase {
 
     protected abstract int getVisibleTargetCount();
 
-    protected abstract Transform3d[] getApriltagArrInRobotSpace();
+    protected abstract Transform3d[] getTargetsPosesInRobotSpace();
 }

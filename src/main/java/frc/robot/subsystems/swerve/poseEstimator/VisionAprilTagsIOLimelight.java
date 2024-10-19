@@ -4,11 +4,6 @@ import frc.lib.logfields.LogFieldsTable;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.LimelightResults;
 import frc.robot.utils.LimelightHelpers.LimelightTarget_Fiducial;
-import frc.robot.utils.LimelightHelpers.RawFiducial;
-
-import java.util.List;
-
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -59,7 +54,7 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
     }
 
     @Override
-    protected Transform3d[] getApriltagArrInRobotSpace(){
+    protected Transform3d[] getTargetsPosesInRobotSpace(){
         LimelightTarget_Fiducial[] fiducials = LimelightHelpers.getLatestResults(limelightName).targets_Fiducials;
         Transform3d[] targetsArr = new Transform3d[(int) limelightResults.botpose_tagcount];
         for (int i = 0; i < (int)limelightResults.botpose_tagcount; i++) {

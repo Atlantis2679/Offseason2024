@@ -18,7 +18,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.lib.logfields.LogFieldsTable;
-import frc.robot.Constants;
 
 public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     PhotonPoseEstimator photonPoseEstimator;
@@ -64,7 +63,7 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     }
 
     @Override
-    protected Transform3d[] getApriltagArrInRobotSpace(){
+    protected Transform3d[] getTargetsPosesInRobotSpace(){
         List<PhotonTrackedTarget> fiducials = photonPipelineResult.getTargets();
         Transform3d[] targetsArr = new Transform3d[fiducials.size()];
         for(int i = 0; i < fiducials.size(); i++){

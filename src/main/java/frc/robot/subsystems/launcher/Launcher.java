@@ -1,6 +1,9 @@
 package frc.robot.subsystems.launcher;
 
+import static frc.robot.subsystems.launcher.LauncherConstants.DEBOUNCE_SEC;
+
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.Robot;
@@ -13,7 +16,8 @@ public class Launcher extends SubsystemBase {
     private final LauncherIO io = Robot.isSimulation() ? new LauncherIOSim(fieldsTable)
             : new LauncherIOSparkMax(fieldsTable);
 
-    // private final Debouncer isNodeInsideDebouner = new Debouncer(0.1);
+    private final Debouncer isNoteInsideDebouner = new Debouncer(DEBOUNCE_SEC, DebounceType.kBoth);
+    private boolean isNoteInside = false;
 
     public Launcher() {
         fieldsTable.update();
@@ -23,11 +27,13 @@ public class Launcher extends SubsystemBase {
     public void periodic() {
         fieldsTable.recordOutput("current command",
                 getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
-        fieldsTable.recordOutput("isNodeIn", getIsNoteInside());
+        fieldsTable.recordOutput("is Node Inside", getIsNoteInside());
+
+        isNoteInside = isNoteInsideDebouner.calculate(io.getIsNoteInside());
     }
 
     public boolean getIsNoteInside() {
-        return io.getIsNoteInside();
+        return isNoteInside;
     }
 
     public void setSpeed(double speed) {
