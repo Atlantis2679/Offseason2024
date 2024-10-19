@@ -41,7 +41,7 @@ public class ShootingCalculator {
 
         pivotAngleDegreesLinearInterpolation = new LinearInterpolation(pivotAngleDegreesPoints);
         upperRollerSpeedRPMLinearInterpolation = new LinearInterpolation(upperRollerSpeedRPMPoints);
-        lowerRollerSpeedRPMLinearInterpolation = new LinearInterpolation(pivotAngleDegreesPoints);
+        lowerRollerSpeedRPMLinearInterpolation = new LinearInterpolation(lowerRollerSpeedRPMPoints);
     }
 
     public void update(Pose2d robotPose, boolean isRedAlliance) {
@@ -60,6 +60,7 @@ public class ShootingCalculator {
         upperRollerSpeedRPM = upperRollerSpeedRPMLinearInterpolation.calculate(distanceFromTarget);
         lowerRollerSpeedRPM = lowerRollerSpeedRPMLinearInterpolation.calculate(distanceFromTarget);
 
+        fieldsTable.recordOutput("distanceFromTarget", distanceFromTarget);
         fieldsTable.recordOutput("robotYawDegreesCCW", robotYawDegreesCCW);
         fieldsTable.recordOutput("pivotAngleDegrees", pivotAngleDegrees);
         fieldsTable.recordOutput("upperRollerSpeedRPM", upperRollerSpeedRPM);

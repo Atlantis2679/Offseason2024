@@ -33,7 +33,7 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
 
     @Override
     protected double getCameraTimestampSeconds() {
-        return limelightResults != null ? limelightResults.timestamp_LIMELIGHT_publish : 0;
+        return limelightResults != null ? LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName).timestampSeconds : 0;
     }
 
     @Override

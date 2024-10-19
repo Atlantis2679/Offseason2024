@@ -60,7 +60,10 @@ public class RobotContainer {
                 TuneablesManager.add("Swerve/drive command", driveCommand.fullTuneable());
                 driverController.a().onTrue(new InstantCommand(swerve::resetYaw));
                 driverController.x().onTrue(swerveCommands.xWheelLock());
-                driverController.y().whileTrue(swerveCommands.rotateToAngle(shootingCalculator::getRobotYawDegreesCCW));
+                TuneableCommand rotateToSpeaker = swerveCommands
+                                .rotateToAngle(shootingCalculator::getRobotYawDegreesCCW);
+                driverController.y().whileTrue(rotateToSpeaker);
+                TuneablesManager.add("Rotate to speaker", (Tuneable) rotateToSpeaker);
 
                 TuneablesManager.add("Swerve/modules control mode",
                                 swerveCommands.controlModules(
@@ -73,6 +76,8 @@ public class RobotContainer {
                 pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
                 operatorController.a().whileTrue(allCommands.collectToLauncher());
                 operatorController.b().whileTrue(allCommands.shoot());
+                operatorController.y().whileTrue(allCommands.delivery());
+
                 operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
                 operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
                 operatorController.povLeft().whileTrue(allCommands.getReadyToShootVision());

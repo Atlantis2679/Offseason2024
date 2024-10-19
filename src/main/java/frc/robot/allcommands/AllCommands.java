@@ -53,14 +53,20 @@ public class AllCommands {
 
     public Command collectToLauncher() {
         return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
-                .andThen(Commands.deadline(launcherCMDs.load(), intakeCMDs.collect())).withName("collectToLauncher");
+                .andThen(Commands.deadline(launcherCMDs.spin(LAUNCHER_COLLECT_SPEED), intakeCMDs.collect()))
+                .until(launcher::getIsNoteInside).withName("collectToLauncher");
     }
 
     public Command shoot() {
         return Commands
                 .waitUntil(() -> (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM)
                         && pivot.isAtAngle(targetPivotAngle)))
-                .andThen(launcherCMDs.release()).withName("shoot");
+                .andThen(launcherCMDs.spin(LAUNCHER_SHOOT_SPEED)).withName("shoot");
+    }
+
+    public Command delivery() {
+        return pivotCMDs.moveToAngle(DELIVERY_PIVOT_ANGLE).until(() -> pivot.isAtAngle(DELIVERY_PIVOT_ANGLE))
+                .andThen(launcherCMDs.spin(DELIVERY_LAUNCHER_SPEED)).withName("delivery");
     }
 
     public Command stopAll() {
@@ -102,7 +108,7 @@ public class AllCommands {
 
     public Command getReadyToShootVision() {
         return getReadyToShoot(
-                () -> shootingCalculator.getUpperRollerSpeedRPM(),
+                () -> shootingCalculator.getPivotAngleDegrees(),
                 () -> shootingCalculator.getUpperRollerSpeedRPM(),
                 () -> shootingCalculator.getLowerRollerSpeedRPM()).withName("getReadyToShootAmp");
     }

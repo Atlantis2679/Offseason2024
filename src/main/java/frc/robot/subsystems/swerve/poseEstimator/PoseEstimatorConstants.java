@@ -10,16 +10,12 @@ import edu.wpi.first.math.geometry.Translation3d;
 
 public class PoseEstimatorConstants {
     public final static Transform3d ROBOT_TO_CAMERA_TRANSFORM_PHOTON_FRONT = new Transform3d(
-            new Translation3d(0.245, 0.13, 0.51),
+            new Translation3d(0.245 + 0.1, 0.13, 0.51),
             new Rotation3d(0, Math.toRadians(-28.6), 0));
 
     public final static Transform3d ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK = new Transform3d(
-            new Translation3d(0.40, 0, 0.27),
-            new Rotation3d(0, Math.toRadians(32.2), 0));
-
-    // public final static Transform3d ROBOT_TO_CAMERA_TRANSFORM_LIMELIGHT_BACK = new Transform3d(
-    //         new Translation3d(0, 0, 0),
-    //         new Rotation3d(0, 180, 0));
+            new Translation3d(-0.40, 0, 0.27),
+            new Rotation3d(0, Math.toRadians(32.2), Math.toRadians(180)));
 
             
     public final static double VISION_THRESHOLD_DISTANCE_M = 3;

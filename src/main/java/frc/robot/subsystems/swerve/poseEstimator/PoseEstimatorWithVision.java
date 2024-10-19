@@ -34,8 +34,8 @@ public class PoseEstimatorWithVision {
 
     public PoseEstimatorWithVision(LogFieldsTable fieldsTable, Rotation2d currentAngle,
             SwerveModulePosition[] positions, SwerveDriveKinematics swerveKinematics) {
-        new Trigger(DriverStation::isDisabled).onTrue(Commands.runOnce(() -> ignoreFarEstimates = false));
-        new Trigger(DriverStation::isEnabled).whileTrue(Commands.runOnce(() -> ignoreFarEstimates = true));
+        new Trigger(DriverStation::isDisabled).onTrue(Commands.runOnce(() -> ignoreFarEstimates = false).ignoringDisable(true));
+        new Trigger(DriverStation::isEnabled).whileTrue(Commands.runOnce(() -> ignoreFarEstimates = true).ignoringDisable(true));
 
         try {
             AprilTagFieldLayout tagsLayout = AprilTagFieldLayout
@@ -79,7 +79,8 @@ public class PoseEstimatorWithVision {
                 Transform3d[] targetsTransforms = visionIO.targetsPosesInRobotSpace.get();
                 Pose3d[] targetPoses = new Pose3d[targetsTransforms.length];
                 for (int i = 0; i < targetsTransforms.length; i++) {
-                    targetPoses[i] = poseEstimate.plus(new Transform3d(targetsTransforms[i].getTranslation(), targetsTransforms[i].getRotation().unaryMinus()));
+                    targetPoses[i] = poseEstimate.plus(new Transform3d(targetsTransforms[i].getTranslation(),
+                            targetsTransforms[i].getRotation().unaryMinus()));
                 }
                 fieldsTable.recordOutput(cameraName + "/targetPoses", targetPoses);
 

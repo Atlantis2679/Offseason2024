@@ -3,6 +3,13 @@ package frc.robot.allcommands;
 public class AllCommandsConstants {
     public static final double PIVOT_ANGLE_FOR_INTAKE = -25;
 
+    public static final double DELIVERY_PIVOT_ANGLE = 10;
+    public static final double DELIVERY_LAUNCHER_SPEED = -1;
+
+    public static final double LAUNCHER_SHOOT_SPEED = 1;
+    
+    public static final double LAUNCHER_COLLECT_SPEED = 0.5;
+
     public static class ManualController {
         public static final double INTAKE_VERTICAL_SPEED_MULTIPLAYER = 1;
         public static final double INTAKE_HORIZONTAL_SPEED_MULTIPLAYER = 1;

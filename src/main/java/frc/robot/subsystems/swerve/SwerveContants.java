@@ -14,18 +14,18 @@ public class SwerveContants {
     public final static double TRACK_LENGTH_M = 0.518;
     public final static double TRACK_RADIUS_M = 0.366;
 
-    public final static double MODULE_FL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 59.58984375 + 90;
-    public final static double MODULE_FR_ABSOLUTE_ANGLE_OFFSET_DEGREES = -142.734375 - 90;
-    public final static double MODULE_BL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 36.650390625 - 90;
-    public final static double MODULE_BR_ABSOLUTE_ANGLE_OFFSET_DEGREES = -100.810546875 - 90;
+    public final static double MODULE_FL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 159.697265625;
+    public final static double MODULE_FR_ABSOLUTE_ANGLE_OFFSET_DEGREES = 125.33203125;
+    public final static double MODULE_BL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 127.880859375 + 180;
+    public final static double MODULE_BR_ABSOLUTE_ANGLE_OFFSET_DEGREES = 172.705078125;
 
     public final static double MODULE_ANGLE_KP = 1.8 * 12;
     public final static double MODULE_ANGLE_KI = 0;
     public final static double MODULE_ANGLE_KD = 0;
 
     public static class DriverController {
-        public final static double DRIVER_ACCELERATION_LIMIT_MPS = 1000;
-        public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(10000);
+        public final static double DRIVER_ACCELERATION_LIMIT_MPS = 8;
+        public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(720);
 
         public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
 

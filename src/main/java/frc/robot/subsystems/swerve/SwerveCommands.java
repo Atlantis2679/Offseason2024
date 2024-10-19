@@ -47,14 +47,16 @@ public class SwerveCommands {
         return swerve.run(() -> swerve.drive(forwardPrecentageSupplier.getAsDouble() * MAX_VOLTAGE, 0, 0, false, true));
     }
 
-    public Command rotateToAngle(DoubleSupplier targetAngleDegreesCCW) {
-        @SuppressWarnings({ "resource" })
+    public TuneableCommand rotateToAngle(DoubleSupplier targetAngleDegreesCCW) {
         PIDController pidController = new PIDController(RotateToAngle.KP, RotateToAngle.KI, RotateToAngle.KD);
-        return swerve.runOnce(() -> {
+        pidController.enableContinuousInput(-180, 180);
+        return TuneableCommand.wrap(swerve.runOnce(() -> {
             pidController.reset();
         }).andThen(swerve.run(() -> {
             swerve.drive(0, 0, pidController.calculate(swerve.getYawCCW().getDegrees(), targetAngleDegreesCCW.getAsDouble()), false, true);
-        }));
+        })), (builder) -> {
+            builder.addChild("PIDController", pidController);
+        });
     }
 
     public TuneableCommand controlModules(DoubleSupplier steerXSupplier, DoubleSupplier steerYSupplier,
