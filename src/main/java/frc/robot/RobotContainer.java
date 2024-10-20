@@ -49,6 +49,9 @@ public class RobotContainer {
         private final LoggedDashboardChooser<Pose2d> startPosChooser = new LoggedDashboardChooser<>("Start Position");
         private final Field2d field2d = new Field2d();
 
+        private final LoggedDashboardChooser<Boolean> autoShootSpeaker = new LoggedDashboardChooser<>(
+                        "auto shoot speaker");
+
         public RobotContainer() {
                 new Trigger(DriverStation::isDisabled).whileTrue(Commands.parallel(allCommands.stopAll(),
                                 swerveCommands.stop()));
@@ -67,8 +70,12 @@ public class RobotContainer {
                 startPosChooser.addDefaultOption("subwoofer", new Pose2d(1.28, 5.55, Rotation2d.fromDegrees(0)));
                 startPosChooser.addOption("next to amp", new Pose2d(0.45, 7.23, Rotation2d.fromDegrees(0)));
                 startPosChooser.addOption("next to source", new Pose2d(0.45, 2.01, Rotation2d.fromDegrees(0)));
-                startPosChooser.addOption("right to subwoofer", new Pose2d(0.66, 4.45, Rotation2d.fromDegrees(-58.78)));
-                startPosChooser.addOption("right to subwoofer", new Pose2d(0.66, 6.66, Rotation2d.fromDegrees(58.78)));
+                startPosChooser.addOption("subwoofer source side",
+                                new Pose2d(0.66, 4.45, Rotation2d.fromDegrees(-58.78)));
+                startPosChooser.addOption("subwoofer amp side", new Pose2d(0.66, 6.66, Rotation2d.fromDegrees(58.78)));
+
+                autoShootSpeaker.addDefaultOption("no", false);
+                autoShootSpeaker.addOption("yes", true);
         }
 
         private void configureDriverBindings() {
@@ -125,7 +132,9 @@ public class RobotContainer {
         }
 
         public Command getAutonomousCommand() {
-                return Commands.runOnce(() -> swerve.resetPose(getStartPosition()));
+                return Commands.runOnce(() -> swerve.resetPose(getStartPosition()))
+                                .andThen(allCommands.autoShootSpeaker().unless(
+                                                () -> autoShootSpeaker.get() != null ? !autoShootSpeaker.get() : true));
         }
 
         @SuppressWarnings("unused")

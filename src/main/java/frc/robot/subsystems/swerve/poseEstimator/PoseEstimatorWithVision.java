@@ -35,8 +35,8 @@ public class PoseEstimatorWithVision {
     public PoseEstimatorWithVision(LogFieldsTable fieldsTable, Rotation2d currentAngle,
             SwerveModulePosition[] positions, SwerveDriveKinematics swerveKinematics) {
         new Trigger(DriverStation::isDisabled).onTrue(Commands.runOnce(() -> ignoreFarEstimates = false).ignoringDisable(true));
-        new Trigger(DriverStation::isEnabled).whileTrue(Commands.runOnce(() -> ignoreFarEstimates = true).ignoringDisable(true));
-
+         new Trigger(DriverStation::isEnabled).whileTrue(Commands.runOnce(() -> ignoreFarEstimates = false).ignoringDisable(true));
+        //above edit
         try {
             AprilTagFieldLayout tagsLayout = AprilTagFieldLayout
                     .loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
@@ -88,8 +88,12 @@ public class PoseEstimatorWithVision {
                         visionIO.poseEstimate.get().toPose2d(),
                         poseEstimator.getEstimatedPosition());
 
+                    fieldsTable.recordOutput("aliveBefore", Math.random());
+                    fieldsTable.recordOutput("diff", PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M - visionToEstimateDifference);
+
                 if (!ignoreFarEstimates
                         || visionToEstimateDifference < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M) {
+                    fieldsTable.recordOutput("alive", Math.random());
                     poseEstimator.addVisionMeasurement(
                             visionIO.poseEstimate.get().toPose2d(),
                             visionIO.cameraTimestampSeconds.getAsDouble());

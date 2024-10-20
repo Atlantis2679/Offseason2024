@@ -1,7 +1,6 @@
 package frc.robot.allcommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.DoubleHolder;
@@ -75,8 +74,7 @@ public class AllCommands {
             launcher.stop();
             pivot.stop();
             shooter.stop();
-        }, intake, launcher, pivot, shooter).ignoringDisable(true)
-                .withInterruptBehavior(InterruptionBehavior.kCancelIncoming).withName("stopAll");
+        }, intake, launcher, pivot, shooter).ignoringDisable(true).withName("stopAll");
     }
 
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
@@ -147,5 +145,10 @@ public class AllCommands {
         return shooterCMDs.manualController(
                 () -> upperRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER,
                 () -> lowerRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER);
+    }
+
+    public Command autoShootSpeaker() {
+
+        return getReadyToShootSubwoofer().alongWith(shoot()).withTimeout(8);
     }
 }

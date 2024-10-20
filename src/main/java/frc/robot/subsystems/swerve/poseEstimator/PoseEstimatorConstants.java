@@ -20,11 +20,11 @@ public class PoseEstimatorConstants {
             
     public final static double VISION_THRESHOLD_DISTANCE_M = 3;
 
-    public final static double STATE_TRUST_LEVEL_X = 0.1;
-    public final static double STATE_TRUST_LEVEL_Y = 0.1;
-    public final static double STATE_TRUST_LEVEL_Z = 0.1;
-
-    public final static double VISION_TRUST_LEVEL_X = 0.9;
-    public final static double VISION_TRUST_LEVEL_Y = 0.9;
-    public final static double VISION_TRUST_LEVEL_Z = 0.9;
+    public final static double STATE_TRUST_LEVEL_X = 0.9;
+    public final static double STATE_TRUST_LEVEL_Y = 0.9;
+    public final static double STATE_TRUST_LEVEL_Z = 0.9;
+//was 0.1, 0.9
+    public final static double VISION_TRUST_LEVEL_X = 0.05;
+    public final static double VISION_TRUST_LEVEL_Y = 0.05;
+    public final static double VISION_TRUST_LEVEL_Z = 0.05;
 }
