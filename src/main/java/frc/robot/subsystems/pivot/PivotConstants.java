@@ -29,7 +29,7 @@ public class PivotConstants {
     public static final double SIM_KS = 0;
     public static final double SIM_KA = 0;
     public static final double SIM_KV = 0.035;
-    public static final double SIM_KG = 3.355;
+    public static final double SIM_KG = 0.355;
 
     public static final double PIVOT_VOLTAGE_LIMIT = 10;
 
@@ -38,7 +38,7 @@ public class PivotConstants {
     // Sim
     public static final double PIVOT_JKG_METERS_SQUARED = 10;
     public static final double JOINT_GEAR_RATIO = 50;
-    public static final double PIVOT_TURNING_MIN_DEGREES = 0;
-    public static final double PIVOT_TURNING_MAX_DEGREES = 100;
+    public static final double PIVOT_TURNING_MIN_DEGREES = -25;
+    public static final double PIVOT_TURNING_MAX_DEGREES = 190;
 
 }

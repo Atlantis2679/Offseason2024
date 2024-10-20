@@ -4,6 +4,7 @@ import static frc.robot.subsystems.launcher.LauncherConstants.DEBOUNCE_SEC;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.Robot;
@@ -28,6 +29,7 @@ public class Launcher extends SubsystemBase {
         fieldsTable.recordOutput("current command",
                 getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("is Node Inside", getIsNoteInside());
+        SmartDashboard.putBoolean("is Node Inside", getIsNoteInside());
 
         isNoteInside = isNoteInsideDebouner.calculate(io.getIsNoteInside());
     }

@@ -1,6 +1,14 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import com.pathplanner.lib.util.GeometryUtil;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -38,6 +46,9 @@ public class RobotContainer {
 
         private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
 
+        private final LoggedDashboardChooser<Pose2d> startPosChooser = new LoggedDashboardChooser<>("Start Position");
+        private final Field2d field2d = new Field2d();
+
         public RobotContainer() {
                 new Trigger(DriverStation::isDisabled).whileTrue(Commands.parallel(allCommands.stopAll(),
                                 swerveCommands.stop()));
@@ -45,7 +56,19 @@ public class RobotContainer {
                 configureDriverBindings();
                 configureOperetorBindings();
 
+                SmartDashboard.putData("field2d", field2d);
+
                 swerve.registerCallbackOnPoseUpdate(shootingCalculator::update);
+                swerve.registerCallbackOnPoseUpdate((pose, isRedAlliance) -> {
+                        field2d.setRobotPose(pose);
+                        field2d.getObject("startPos").setPose(getStartPosition());
+                });
+
+                startPosChooser.addDefaultOption("subwoofer", new Pose2d(1.28, 5.55, Rotation2d.fromDegrees(0)));
+                startPosChooser.addOption("next to amp", new Pose2d(0.45, 7.23, Rotation2d.fromDegrees(0)));
+                startPosChooser.addOption("next to source", new Pose2d(0.45, 2.01, Rotation2d.fromDegrees(0)));
+                startPosChooser.addOption("right to subwoofer", new Pose2d(0.66, 4.45, Rotation2d.fromDegrees(-58.78)));
+                startPosChooser.addOption("right to subwoofer", new Pose2d(0.66, 6.66, Rotation2d.fromDegrees(58.78)));
         }
 
         private void configureDriverBindings() {
@@ -88,12 +111,21 @@ public class RobotContainer {
                 operatorController.rightBumper().whileTrue(Commands.parallel(
                                 allCommands.manualIntakeLauncherController(() -> operatorController.getLeftY()),
                                 allCommands.manualPivotController(() -> operatorController.getRightY()),
-                                allCommands.manualShooterController(operatorController::getLeftTriggerAxis,
-                                                operatorController::getLeftTriggerAxis)));
+                                allCommands.manualShooterController(operatorController::getSquaredLeftTriggerAxis,
+                                                operatorController::getSquaredLeftTriggerAxis)));
+        }
+
+        private Pose2d getStartPosition() {
+                Pose2d startPose = startPosChooser.get();
+                if (startPose == null)
+                        return new Pose2d(1.28, 5.55, Rotation2d.fromDegrees(0));
+                return swerve.getIsRedAlliance()
+                                ? GeometryUtil.flipFieldPose(startPosChooser.get())
+                                : startPosChooser.get();
         }
 
         public Command getAutonomousCommand() {
-                return Commands.print("No autonomous command configured");
+                return Commands.runOnce(() -> swerve.resetPose(getStartPosition()));
         }
 
         @SuppressWarnings("unused")

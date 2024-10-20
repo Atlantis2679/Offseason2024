@@ -6,6 +6,7 @@ package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.logfields.LogFieldsTable;
 import frc.lib.tuneables.Tuneable;
@@ -72,8 +73,11 @@ public class Shooter extends SubsystemBase implements Tuneable {
     }
 
     public boolean isAtSpeed(double targetUpperSpeedRPM, double targetLowerSpeedRPM) {
-        return Math.abs(targetUpperSpeedRPM - getUpperRollerSpeedRPM()) < SPEED_TOLERANCE_RPM
+        boolean isAtSpeed = Math.abs(targetUpperSpeedRPM - getUpperRollerSpeedRPM()) < SPEED_TOLERANCE_RPM
                 && Math.abs(targetLowerSpeedRPM - getLowerRollerSpeedRPM()) < SPEED_TOLERANCE_RPM;
+        SmartDashboard.putBoolean("Shooter At Speed", isAtSpeed);
+        fieldsTable.recordOutput("shooter at speed", isAtSpeed);
+        return isAtSpeed;
     }
 
     public double calculateVoltageForUpperSpeedRPM(double targetSpeedRPM) {
