@@ -20,7 +20,7 @@ public class PivotConstants {
     public static final double PIVOT_MAX_VELOCITY_DEG_PER_SEC = 90;
     public static final double PIVOT_MAX_ACCELERATION_DEG_PER_SEC = 90;
 
-    public static final double UPPER_BOUND_WRAP = 180;
+    public static final double UPPER_BOUND_WRAP = 310;
     public static final double MIN_ANGLE_DEGREE = -24;
     public static final double MAX_ANGLE_DEGREE = 120;
 

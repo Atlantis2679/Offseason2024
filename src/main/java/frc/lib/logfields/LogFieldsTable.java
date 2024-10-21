@@ -79,7 +79,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<byte[]> valueSupplier,
             byte[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, defaultValue));
     }
 
     public Supplier<byte[]> addRaw(String name, Supplier<byte[]> valueSupplier) {
@@ -134,7 +134,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<String> valueSupplier,
             String defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, defaultValue));
     }
 
     public Supplier<String> addString(String name, Supplier<String> valueSupplier) {
@@ -145,7 +145,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<boolean[]> valueSupplier,
             boolean[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, new boolean[] {}));
     }
 
     public Supplier<boolean[]> addBooleanArray(String name, Supplier<boolean[]> valueSupplier) {
@@ -156,7 +156,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<long[]> valueSupplier,
             long[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, new long[] {}));
     }
 
     public Supplier<long[]> addIntegerArray(String name, Supplier<long[]> valueSupplier) {
@@ -167,7 +167,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<float[]> valueSupplier,
             float[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, new float[] {}));
     }
 
     public Supplier<float[]> addFloatArray(String name, Supplier<float[]> valueSupplier) {
@@ -178,7 +178,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<double[]> valueSupplier,
             double[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, new double[] {}));
     }
 
     public Supplier<double[]> addDoubleArray(String name, Supplier<double[]> valueSupplier) {
@@ -189,7 +189,7 @@ public class LogFieldsTable implements LoggableInputs {
             String name,
             Supplier<String[]> valueSupplier,
             String[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, new String[] {}));
     }
 
     public Supplier<String[]> addStringArray(String name, Supplier<String[]> valueSupplier) {
@@ -199,25 +199,16 @@ public class LogFieldsTable implements LoggableInputs {
     public <T extends WPISerializable> Supplier<T> addObject(
             String name,
             Supplier<T> valueSupplier,
-            String[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
-    }
-
-    public <T extends WPISerializable> Supplier<T> addObject(String name, Supplier<T> valueSupplier) {
-        return addObject(name, valueSupplier, new String[] {});
+            T defaultValue) {
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, defaultValue));
     }
 
     @SuppressWarnings("unchecked")
     public <T extends StructSerializable> Supplier<T[]> addObjectArray(
             String name,
             Supplier<T[]> valueSupplier,
-            String[] defaultValue) {
-        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put));
-    }
-
-    // @SuppressWarnings("unchecked")
-    public <T extends StructSerializable> Supplier<T[]> addObjectArray(String name, Supplier<T[]> valueSupplier) {
-        return addObjectArray(name, valueSupplier, new String[] {});
+            T[] defaultValue) {
+        return registerField(new LogField<>(name, valueSupplier, LogTable::get, LogTable::put, defaultValue));
     }
 
     public void recordOutput(String name, byte[] value) {
