@@ -51,15 +51,16 @@ public class AllCommands {
         TuneablesManager.add("allCommands", (Tuneable) this);
     }
 
-    public Command collectToLauncher() {
-        return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
-                .andThen(Commands.deadline(launcherCMDs.load(), intakeCMDs.collect())).withName("collectToLauncher");
-    }
+    // public Command collectToLauncher() {
+    // return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
+    // .andThen(Commands.deadline(launcherCMDs.load(),
+    // intakeCMDs.collect())).withName("collectToLauncher");
+    // }
 
     public Command shoot() {
         return Commands
-                .waitUntil(() -> 
-                (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM) && pivot.isAtAngle(targetPivotAngle)))
+                .waitUntil(() -> (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM)
+                        && pivot.isAtAngle(targetPivotAngle)))
                 .andThen(launcherCMDs.release()).withName("shoot");
     }
 
@@ -72,7 +73,7 @@ public class AllCommands {
         }, intake, launcher, pivot, shooter).ignoringDisable(true)
                 .withInterruptBehavior(InterruptionBehavior.kCancelIncoming).withName("stopAll");
     }
-    
+
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
             DoubleSupplier lowerRollerSpeed) {
         targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();

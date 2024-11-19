@@ -14,11 +14,14 @@ public class IntakeCommands {
     public IntakeCommands(Intake intake) {
         this.intake = intake;
     }
-
-    public Command collect() {
-        return intake.runEnd(() -> intake.setRollerSpeed(IntakeConstants.COLLECT_HORIZONTAL_ROLLER_SPEED,
-                IntakeConstants.COLLECT_VERTICAL_ROLLER_SPEED), intake::softStop).withName("intakeCollect");
-    }
+    /*
+     * public Command collect() {
+     * return intake.runEnd(() ->
+     * intake.setRollerSpeed(IntakeConstants.COLLECT_HORIZONTAL_ROLLER_SPEED,
+     * IntakeConstants.COLLECT_VERTICAL_ROLLER_SPEED),
+     * intake::softStop).withName("intakeCollect");
+     * }
+     */
 
     public Command manualController(DoubleSupplier horizontalSpeed, DoubleSupplier verticalSpeed) {
         return intake.runEnd(
