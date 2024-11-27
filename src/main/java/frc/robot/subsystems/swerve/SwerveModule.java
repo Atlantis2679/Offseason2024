@@ -180,7 +180,8 @@ public class SwerveModule implements Tuneable {
         builder.addDoubleProperty("Tuneable Offset",
                 absoluteAngleHelperDegrees::getOffset,
                 val -> {
-                    absoluteAngleHelperDegrees.setOffset(val);;
+                    absoluteAngleHelperDegrees.setOffset(val);
+                    ;
                     queueResetToAbsolute();
                 });
     }
