@@ -132,4 +132,10 @@ public class SwerveModuleIOSim extends SwerveModuleIO {
         pidControllerAngle.setD(d);
     }
 
+    @Override
+    protected String getstatusAngelMotorName() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getstatusAngelMotorName'");
+    }
+
 }

@@ -1,5 +1,8 @@
 package frc.robot.subsystems.pivot;
 
+import static frc.robot.subsystems.pivot.PivotConstants.MAX_ANGLE_DEGREE;
+import static frc.robot.subsystems.pivot.PivotConstants.MIN_ANGLE_DEGREE;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -44,8 +47,13 @@ public class PivotCommands extends Command {
                     pivot.getAbsoluteAngleDegrees(),
                     0,
                     false);
+            double demandPivotSpeed = pivotSpeed.getAsDouble();
+            if ((pivot.getAbsoluteAngleDegrees() > MAX_ANGLE_DEGREE && demandPivotSpeed > 0)
+                    || (pivot.getAbsoluteAngleDegrees() < MIN_ANGLE_DEGREE && demandPivotSpeed < 0)) {
+                demandPivotSpeed = 0;
+            }
             pivot.setPivotVoltage(
-                    feedforwardResult + pivotSpeed.getAsDouble() * PivotConstants.MANUAL_SPEED_MULTIPLIER);
+                    feedforwardResult + demandPivotSpeed * PivotConstants.MANUAL_SPEED_MULTIPLIER);
         }).finallyDo(pivot::stop).withName("pivotManualController");
     }
 }

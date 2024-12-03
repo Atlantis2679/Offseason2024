@@ -14,19 +14,19 @@ public class SwerveContants {
     public final static double TRACK_LENGTH_M = 0.518;
     public final static double TRACK_RADIUS_M = 0.366;
 
-    public final static double MODULE_FL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 59.58984375 + 90;
-    public final static double MODULE_FR_ABSOLUTE_ANGLE_OFFSET_DEGREES = -142.734375 - 90;
-    public final static double MODULE_BL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 36.650390625 - 90;
-    public final static double MODULE_BR_ABSOLUTE_ANGLE_OFFSET_DEGREES = -100.810546875 - 90;
+    public final static double MODULE_FL_ABSOLUTE_ANGLE_OFFSET_DEGREES = 149.94140625;
+    public final static double MODULE_FR_ABSOLUTE_ANGLE_OFFSET_DEGREES = 123.662109375;
+    public final static double MODULE_BL_ABSOLUTE_ANGLE_OFFSET_DEGREES = -53.96484375;
+    public final static double MODULE_BR_ABSOLUTE_ANGLE_OFFSET_DEGREES = -10.8984375 + 180;
 
     public final static double MODULE_ANGLE_KP = 1.8 * 12;
     public final static double MODULE_ANGLE_KI = 0;
     public final static double MODULE_ANGLE_KD = 0;
-    
+
     public static class DriverController {
-        public final static double DRIVER_ACCELERATION_LIMIT_MPS = 1000;
-        public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(10000);
-        
+        public final static double DRIVER_ACCELERATION_LIMIT_MPS = 8;
+        public final static double DRIVER_ANGULAR_ACCELERATION_LIMIT_RPS = Math.toRadians(720);
+
         public final static double DRIVER_MAX_ANGULAR_VELOCITY_RPS = 4.5;
 
         public final static double SENSETIVE_TRANSLATION_MULTIPLIER = 0.3;
@@ -41,6 +41,12 @@ public class SwerveContants {
         public final static double ROTATION_KP = 0.1;
         public final static double ROTATION_KI = 0;
         public final static double ROTATION_KD = 0.001;
+    }
+
+    public class RotateToAngle {
+        public final static double KP = 0;
+        public final static double KI = 0;
+        public final static double KD = 0;
     }
 
     public class DriveToPose {

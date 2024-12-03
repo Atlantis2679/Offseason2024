@@ -7,8 +7,8 @@ public class RobotMap {
     public static final ModuleType POWER_DISTRIBUATION_TYPE = ModuleType.kRev;
 
     public static final SPI.Port NAVX_PORT = SPI.Port.kMXP;
-    public static final String FRONT_CAMERA_NAME = "FrontCam";
-    public static final String BACK_CAMERA_NAME = "BackCam";
+    public static final String FRONT_PHOTON_CAMERA_NAME = "FrontCam";
+    public static final String BACK_LIMELIGHT_CAMERA_NAME = "limelight-back";
 
     public static class Controllers {
         public static final int DRIVER_PORT = 0;
@@ -23,8 +23,8 @@ public class RobotMap {
         public final static int INTAKE_LEFT_VERTICAL_ROLLER_ID = 13;
         public final static int INTAKE_HORIZONTAL_ROLLER_ID = 11;
       
-        public final static int PIVOT_LEFT_MOTOR_ID = 14;
-        public final static int PIVOT_RIGHT_MOTOR_ID = 0; //?
+        public final static int PIVOT_MOTOR_ID = 14;
+
         public final static int LAUNCHER_MOTOR_ID = 15;
       
         public class ModuleFL {

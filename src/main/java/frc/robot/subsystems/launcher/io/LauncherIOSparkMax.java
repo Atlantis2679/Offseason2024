@@ -23,6 +23,8 @@ public class LauncherIOSparkMax extends LauncherIO {
         launcherMotor.setSmartCurrentLimit(LauncherConstants.LAUNCHER_CURRENT_LIMIT);
         launcherMotor.setIdleMode(IdleMode.kBrake);
         launcherMotor.setInverted(true);
+
+        launcherMotor.burnFlash();
     }
 
     @Override

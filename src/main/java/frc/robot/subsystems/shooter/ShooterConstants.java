@@ -7,7 +7,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 
 public final class ShooterConstants {
     public static final int MAX_VOLTAGE = 7;
-    public static final double SPEED_TOLERANCE = 50;
+    public static final double SPEED_TOLERANCE_RPM = 50;
     
     public static final int ROLLERS_CURRENT_LIMIT = 30;
     

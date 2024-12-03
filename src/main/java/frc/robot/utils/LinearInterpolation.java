@@ -10,10 +10,14 @@ public class LinearInterpolation {
     }
 
     public double calculate(double x) {
-        for (int i = 0; i < points.size() - 1; i++) {
-            if (points.get(i).x <= x) {
-                Point startPoint = points.get(i);
-                Point endPoint = points.get(i + 1);
+
+        if (x <= points.get(0).x) {
+            return points.get(0).y;
+        }
+        for (int i = 0; i < points.size(); i++) {
+            if (x <= points.get(i).x) {
+                Point startPoint = points.get(i - 1);
+                Point endPoint = points.get(i);
 
                 return ((x - startPoint.x) / (endPoint.x - startPoint.x))
                         * (endPoint.y - startPoint.y)

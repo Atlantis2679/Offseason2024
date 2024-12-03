@@ -32,6 +32,10 @@ public class IntakeIOSparkMax extends IntakeIO {
         horizontalRollerMotor.setIdleMode(IdleMode.kCoast);
         leftVerticalRollerMotor.setIdleMode(IdleMode.kCoast);
         rightVerticalRollerMotor.setIdleMode(IdleMode.kCoast);
+
+        horizontalRollerMotor.burnFlash();
+        leftVerticalRollerMotor.burnFlash();
+        rightVerticalRollerMotor.burnFlash();
     }
 
     @Override

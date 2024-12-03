@@ -1,7 +1,6 @@
 package frc.robot.allcommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.DoubleHolder;
@@ -35,11 +34,15 @@ public class AllCommands {
 
     private double targetPivotAngle = 0;
 
-    public AllCommands(Intake intake, Launcher launcher, Pivot pivot, Shooter shooter) {
+    private final ShootingCalculator shootingCalculator;
+
+    public AllCommands(Intake intake, Launcher launcher, Pivot pivot, Shooter shooter,
+            ShootingCalculator shootingCalculator) {
         this.intake = intake;
         this.launcher = launcher;
         this.pivot = pivot;
         this.shooter = shooter;
+        this.shootingCalculator = shootingCalculator;
 
         intakeCMDs = new IntakeCommands(this.intake);
         launcherCMDs = new LauncherCommands(this.launcher);
@@ -49,14 +52,20 @@ public class AllCommands {
 
     public Command collectToLauncher() {
         return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
-                .andThen(Commands.deadline(launcherCMDs.load(), intakeCMDs.collect())).withName("collectToLauncher");
+                .andThen(Commands.deadline(launcherCMDs.spin(LAUNCHER_COLLECT_SPEED), intakeCMDs.collect()))
+                .until(launcher::getIsNoteInside).withName("collectToLauncher");
     }
 
     public Command shoot() {
         return Commands
                 .waitUntil(() -> (shooter.isAtSpeed(targetShooterUpperRollerRPM, targetShooterLowerRollerRPM)
                         && pivot.isAtAngle(targetPivotAngle)))
-                .andThen(launcherCMDs.release()).withName("shoot");
+                .andThen(launcherCMDs.spin(LAUNCHER_SHOOT_SPEED)).withName("shoot");
+    }
+
+    public Command delivery() {
+        return pivotCMDs.moveToAngle(DELIVERY_PIVOT_ANGLE).until(() -> pivot.isAtAngle(DELIVERY_PIVOT_ANGLE))
+                .andThen(launcherCMDs.spin(DELIVERY_LAUNCHER_SPEED)).withName("delivery");
     }
 
     public Command stopAll() {
@@ -65,8 +74,7 @@ public class AllCommands {
             launcher.stop();
             pivot.stop();
             shooter.stop();
-        }, intake, launcher, pivot, shooter).ignoringDisable(true)
-                .withInterruptBehavior(InterruptionBehavior.kCancelIncoming).withName("stopAll");
+        }, intake, launcher, pivot, shooter).ignoringDisable(true).withName("stopAll");
     }
 
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
@@ -94,6 +102,13 @@ public class AllCommands {
                 () -> GetReadyToShoot.AMP_PIVOT_ANGLE,
                 () -> GetReadyToShoot.AMP_UPPER_ROLLER_SPEED,
                 () -> GetReadyToShoot.AMP_LOWER_ROLLER_SPEED).withName("getReadyToShootAmp");
+    }
+
+    public Command getReadyToShootVision() {
+        return getReadyToShoot(
+                () -> shootingCalculator.getPivotAngleDegrees(),
+                () -> shootingCalculator.getUpperRollerSpeedRPM(),
+                () -> shootingCalculator.getLowerRollerSpeedRPM()).withName("getReadyToShootAmp");
     }
 
     public TuneableCommand getReadyToShootTuneable() {
@@ -130,5 +145,10 @@ public class AllCommands {
         return shooterCMDs.manualController(
                 () -> upperRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER,
                 () -> lowerRollerVoltagePercentage.getAsDouble() * ManualController.SHOOTER_VOLTAGE_MULTIPLAYER);
+    }
+
+    public Command autoShootSpeaker() {
+
+        return getReadyToShootSubwoofer().alongWith(shoot()).withTimeout(8);
     }
 }

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 
@@ -23,6 +24,7 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
     private final PositionVoltage angleVoltagePositionControl = new PositionVoltage(0).withSlot(0);
     private final VoltageOut driveVoltageControl = new VoltageOut(0);
     private final DutyCycleOut drivePrecentageControl = new DutyCycleOut(0);
+    private final StatusCode statusAngelMotor;
 
     private final Slot0Configs slot0ConfigsAngle;
 
@@ -47,7 +49,7 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
         driveMotor.getVelocity().setUpdateFrequency(100);
         driveMotor.getPosition().setUpdateFrequency(100);
         driveMotor.getConfigurator().apply(driveMotorConfiguration);
-        
+
         // angle motor configs
         TalonFXConfiguration angleMotorConfiguration = new TalonFXConfiguration();
 
@@ -65,9 +67,9 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
         slot0ConfigsAngle.kP = MODULE_ANGLE_KP;
         slot0ConfigsAngle.kI = MODULE_ANGLE_KI;
         slot0ConfigsAngle.kD = MODULE_ANGLE_KD;
-        
+
         angleMotor.getPosition().setUpdateFrequency(100);
-        angleMotor.getConfigurator().apply(angleMotorConfiguration);
+        statusAngelMotor = angleMotor.getConfigurator().apply(angleMotorConfiguration);
 
         // cancoder configs
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
@@ -107,6 +109,11 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
     @Override
     protected double getD() {
         return slot0ConfigsAngle.kD;
+    }
+
+    @Override
+    protected String getstatusAngelMotorName() {
+        return statusAngelMotor.getName();
     }
 
     @Override

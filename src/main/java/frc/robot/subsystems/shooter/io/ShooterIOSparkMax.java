@@ -32,6 +32,9 @@ public class ShooterIOSparkMax extends ShooterIO {
         lowerMotor.setIdleMode(IdleMode.kCoast);
         upperMotor.setInverted(true);
         lowerMotor.setInverted(true);
+
+        lowerMotor.burnFlash();
+        upperMotor.burnFlash();
     }
 
     @Override
