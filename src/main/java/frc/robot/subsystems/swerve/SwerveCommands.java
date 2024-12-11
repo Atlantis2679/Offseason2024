@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
@@ -53,7 +54,9 @@ public class SwerveCommands {
         return TuneableCommand.wrap(swerve.runOnce(() -> {
             pidController.reset();
         }).andThen(swerve.run(() -> {
-            swerve.drive(0, 0, pidController.calculate(swerve.getYawCCW().getDegrees(), targetAngleDegreesCCW.getAsDouble()), false, true);
+            swerve.drive(0, 0,
+                    pidController.calculate(swerve.getYawCCW().getDegrees(), targetAngleDegreesCCW.getAsDouble()),
+                    false, true);
         })), (builder) -> {
             builder.addChild("PIDController", pidController);
         });

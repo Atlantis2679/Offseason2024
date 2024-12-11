@@ -105,7 +105,8 @@ public class Swerve extends SubsystemBase implements Tuneable {
         gyroYawHelperCCW = new RotationalSensorHelper(
                 Rotation2d.fromDegrees(gyroIO.isConnected.getAsBoolean() ? -gyroIO.yawDegreesCW.getAsDouble() : 0));
 
-        poseEstimator = new PoseEstimatorWithVision(fieldsTable.getSubTable("poseEstimator"), getYawCCW(), getModulesPositions(), swerveKinematics);
+        poseEstimator = new PoseEstimatorWithVision(fieldsTable.getSubTable("poseEstimator"), getYawCCW(),
+                getModulesPositions(), swerveKinematics);
 
         TuneablesManager.add("Swerve", (Tuneable) this);
 
@@ -177,7 +178,6 @@ public class Swerve extends SubsystemBase implements Tuneable {
                 modules[1].getModuleStateIntegreated(),
                 modules[2].getModuleStateIntegreated(),
                 modules[3].getModuleStateIntegreated());
-
         fieldsTable.recordOutput("Robot Yaw Radians CCW", getYawCCW().getRadians());
         fieldsTable.recordOutput("Yaw Degrees CW", -getYawCCW().getDegrees());
         SmartDashboard.putBoolean("isRedAlliance", getIsRedAlliance());
@@ -193,7 +193,8 @@ public class Swerve extends SubsystemBase implements Tuneable {
         }
     }
 
-    public void drive(double forward, double sidewaysRightPositive, double angularVelocityCW, boolean isFieldRelative, boolean useVoltage) {
+    public void drive(double forward, double sidewaysRightPositive, double angularVelocityCW, boolean isFieldRelative,
+            boolean useVoltage) {
         ChassisSpeeds desiredChassisSpeeds;
 
         double angularVelocityCCW = -angularVelocityCW;
