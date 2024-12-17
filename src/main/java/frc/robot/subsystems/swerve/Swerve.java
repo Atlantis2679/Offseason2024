@@ -105,7 +105,7 @@ public class Swerve extends SubsystemBase implements Tuneable {
         gyroYawHelperCCW = new RotationalSensorHelper(
                 Rotation2d.fromDegrees(gyroIO.isConnected.getAsBoolean() ? -gyroIO.yawDegreesCW.getAsDouble() : 0));
 
-        poseEstimator = new PoseEstimatorWithVision(fieldsTable.getSubTable("poseEstimator"), getYawCCW(), getModulesPositions(), swerveKinematics);
+        poseEstimator = new PoseEstimatorWithVision(fieldsTable.getSubTable("poseEstimator"), getYawCCW(), getModulesPositions(), swerveKinematics, new Pose2d());
 
         TuneablesManager.add("Swerve", (Tuneable) this);
 

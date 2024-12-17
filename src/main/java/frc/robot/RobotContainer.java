@@ -37,7 +37,7 @@ public class RobotContainer {
         private final ShootingCalculator shootingCalculator = new ShootingCalculator();
         private final AllCommands allCommands = new AllCommands(intake, launcher,
                         pivot, shooter, shootingCalculator);
-
+        
         private final NaturalXboxController driverController = new NaturalXboxController(
                         RobotMap.Controllers.DRIVER_PORT);
 

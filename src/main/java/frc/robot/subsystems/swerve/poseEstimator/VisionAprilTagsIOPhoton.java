@@ -1,7 +1,6 @@
 package frc.robot.subsystems.swerve.poseEstimator;
 
 import java.util.Optional;
-import java.util.OptionalInt;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -11,21 +10,18 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import frc.lib.logfields.LogFieldsTable;
 
 public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
-    private final AprilTagFieldLayout aprilTagFieldLayout;
     private final PhotonCamera camera;
     private final PhotonPoseEstimator poseEstimator;
     private Optional<EstimatedRobotPose> estimatedRobotPose;
     private PhotonPipelineResult pipline;
 
-    protected VisionAprilTagsIOPhoton(LogFieldsTable fieldsTable, PhotonCamera camera, AprilTagFieldLayout aprilTagFieldLayout, Transform3d robotToCamTransform) {
+    protected VisionAprilTagsIOPhoton(LogFieldsTable fieldsTable, PhotonCamera camera, AprilTagFieldLayout aprilTagFieldLayout) {
         super(fieldsTable);
-        this.aprilTagFieldLayout = aprilTagFieldLayout;
         this.camera = camera;
-        this.poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCamTransform);
+        this.poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, PoseEstimatorConstants.ROBOT_TO_CAMERA_TRANSFORM_PHOTON_FRONT);
     }
 
     @Override
@@ -52,7 +48,5 @@ public class VisionAprilTagsIOPhoton extends VisionAprilTagsIO {
     @Override
     protected Pose3d getRobotPose() {
         return estimatedRobotPose.isPresent()? estimatedRobotPose.get().estimatedPose: new Pose3d();
-    }
-
-    
+    }    
 }
