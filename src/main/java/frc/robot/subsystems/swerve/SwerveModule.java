@@ -86,11 +86,16 @@ public class SwerveModule implements Tuneable {
                     Rotation2d.fromDegrees(currentAngleDegrees));
         }
 
-        if (useVoltage) {
-            io.setDriveSpeedVoltage((desiredState.speedMetersPerSecond / MAX_MODULE_SPEED_MPS) * MAX_VOLTAGE);
-        } else {
-            io.setDriveSpeedPrecentage(desiredState.speedMetersPerSecond / MAX_MODULE_SPEED_MPS);
-        }
+        io.setDriveSpeedVoltage((desiredState.speedMetersPerSecond / MAX_MODULE_SPEED_MPS) * MAX_VOLTAGE);
+        /*
+         * if (useVoltage) {
+         * io.setDriveSpeedVoltage((desiredState.speedMetersPerSecond /
+         * MAX_MODULE_SPEED_MPS) * MAX_VOLTAGE);
+         * } else {
+         * io.setDriveSpeedPrecentage(desiredState.speedMetersPerSecond /
+         * MAX_MODULE_SPEED_MPS);
+         * }
+         */
         io.setAngleMotorPositionRotations(desiredState.angle.getRotations());
     }
 

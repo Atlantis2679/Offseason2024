@@ -138,4 +138,16 @@ public class SwerveModuleIOSim extends SwerveModuleIO {
         throw new UnsupportedOperationException("Unimplemented method 'getstatusAngelMotorName'");
     }
 
+    @Override
+    protected double getMotorVoltage() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMotorVoltage'");
+    }
+
+    @Override
+    protected double getDemandVoltage() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDemandVoltage'");
+    }
+
 }

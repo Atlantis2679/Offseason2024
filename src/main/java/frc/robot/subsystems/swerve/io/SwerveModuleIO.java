@@ -16,9 +16,12 @@ public abstract class SwerveModuleIO extends IOBase {
                         this::getIntegratedAngleEncoderRotations);
         public final Supplier statusAngelMotorName = fields.addString("module status angle error",
                         this::getstatusAngelMotorName);
+        public final DoubleSupplier MotorVoltage = fields.addDouble("motor voltage", this::getMotorVoltage);
         public final DoubleSupplier driveSpeedRPS = fields.addDouble("driveSpeedRPS", this::getDriveSpeedRPS);
         public final DoubleSupplier driveMotorRotations = fields.addDouble("driveMotorRotations",
                         this::getDriveMotorRotations);
+        public final DoubleSupplier motorDemandVoltage = fields.addDouble("motor demand voltage",
+                        this::getDemandVoltage);
         public final DoubleSupplier kP = fields.addDouble("kP", this::getP);
         public final DoubleSupplier kI = fields.addDouble("kI", this::getI);
         public final DoubleSupplier kD = fields.addDouble("kD", this::getD);
@@ -38,6 +41,10 @@ public abstract class SwerveModuleIO extends IOBase {
         protected abstract double getIntegratedAngleEncoderRotations();
 
         protected abstract double getDriveMotorRotations();
+
+        protected abstract double getDemandVoltage();
+
+        protected abstract double getMotorVoltage();
 
         protected abstract double getP();
 

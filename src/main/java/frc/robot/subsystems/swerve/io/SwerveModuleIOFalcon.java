@@ -26,6 +26,8 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
     private final DutyCycleOut drivePrecentageControl = new DutyCycleOut(0);
     private final StatusCode statusAngelMotor;
 
+    private double voltageDemand;
+
     private final Slot0Configs slot0ConfigsAngle;
 
     public SwerveModuleIOFalcon(LogFieldsTable fieldsTable, int driveMotorID, int angleMotorID, int encoderID) {
@@ -74,6 +76,8 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
         // cancoder configs
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
         canCoder.getConfigurator().apply(canCoderConfiguration);
+
+        voltageDemand = 0.0;
     }
 
     @Override
@@ -94,6 +98,11 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
     @Override
     protected double getIntegratedAngleEncoderRotations() {
         return angleMotor.getPosition().getValueAsDouble();
+    }
+
+    @Override
+    protected double getMotorVoltage() {
+        return driveMotor.getMotorVoltage().getValueAsDouble();
     }
 
     @Override
@@ -123,6 +132,7 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
 
     @Override
     public void setDriveSpeedVoltage(double voltage) {
+        voltageDemand = voltage;
         driveMotor.setControl(driveVoltageControl.withOutput(voltage));
     }
 
@@ -158,5 +168,10 @@ public class SwerveModuleIOFalcon extends SwerveModuleIO {
     public void setD(double d) {
         slot0ConfigsAngle.kD = d;
         angleMotor.getConfigurator().apply(slot0ConfigsAngle);
+    }
+
+    @Override
+    protected double getDemandVoltage() {
+        return voltageDemand;
     }
 }
