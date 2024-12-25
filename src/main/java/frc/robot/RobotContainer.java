@@ -30,14 +30,14 @@ public class RobotContainer {
                         RobotMap.Controllers.DRIVER_PORT);
 
         private final NaturalXboxController operatorController = new NaturalXboxController(
-                        RobotMap.Controllers.DRIVER_PORT);
+                        RobotMap.Controllers.OPERATOR_PORT);
 
         // private final SwerveCommands swerveCommands = new SwerveCommands(swerve);
 
         public RobotContainer() {
                 // new Trigger(DriverStation::isDisabled)
                 // .onTrue(Commands.parallel(allCommands.stopAll(), swerveCommands.stop()));
-
+                new Trigger(DriverStation::isDisabled).onTrue(allCommands.stopAll());
                 // configureDriverBindings();
                 configureOperetorBindings();
         }
@@ -64,44 +64,22 @@ public class RobotContainer {
          * }
          */
 
-        private void configureOperetorBindings() {/*
-                                                   * pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
-                                                   * operatorController.a().whileTrue(allCommands.collectToLauncher());
-                                                   * operatorController.b().whileTrue(allCommands.shoot());
-                                                   * operatorController.povUp().whileTrue(allCommands.
-                                                   * getReadyToShootSubwoofer());
-                                                   * operatorController.povDown().whileTrue(allCommands.
-                                                   * getReadyToShootAmp());
-                                                   * operatorController.povLeft().whileTrue(allCommands.
-                                                   * getReadyToShootTuneable());
-                                                   * operatorController.leftBumper().whileTrue(allCommands.stopAll());
-                                                   */
+        private void configureOperetorBindings() {
+                pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
+                operatorController.a().whileTrue(allCommands.collectToLauncher());
+                operatorController.b().whileTrue(allCommands.shoot());
+                // add intake stop!!!!!!!!!!!!!!
+                operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
+                operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());
+                operatorController.povLeft().whileTrue(allCommands.getReadyToShootTuneable());
+                operatorController.leftBumper().whileTrue(allCommands.stopAll());
+
                 operatorController.rightBumper().whileTrue(Commands.parallel(
-                                allCommands.manualIntakeLauncherController(() -> -operatorController.getLeftY())));/*
-                                                                                                                    * allCommands
-                                                                                                                    * .
-                                                                                                                    * manualPivotController
-                                                                                                                    * ((
-                                                                                                                    * )
-                                                                                                                    * ->
-                                                                                                                    * -operatorController
-                                                                                                                    * .
-                                                                                                                    * getRightY
-                                                                                                                    * ()
-                                                                                                                    * ),
-                                                                                                                    * allCommands
-                                                                                                                    * .
-                                                                                                                    * manualShooterController
-                                                                                                                    * (
-                                                                                                                    * operatorController
-                                                                                                                    * ::
-                                                                                                                    * getRightTriggerAxis,
-                                                                                                                    * operatorController
-                                                                                                                    * ::
-                                                                                                                    * getLeftTriggerAxis
-                                                                                                                    * ))
-                                                                                                                    * );
-                                                                                                                    */
+                                allCommands.manualIntakeLauncherController(() -> -operatorController.getLeftY()),
+                                allCommands.manualPivotController(() -> -operatorController.getRightY()),
+                                allCommands.manualShooterController(operatorController::getRightTriggerAxis,
+                                                operatorController::getLeftTriggerAxis)));
+
         }
 
         public Command getAutonomousCommand() {

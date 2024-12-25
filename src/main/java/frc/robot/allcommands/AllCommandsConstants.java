@@ -1,12 +1,11 @@
 package frc.robot.allcommands;
 
-
 public class AllCommandsConstants {
     public static final double PIVOT_ANGLE_FOR_INTAKE = 0;
 
     public static final double INTAKE_VERTICAL_SPEED_MULTIPLAYER = 1;
     public static final double INTAKE_HORIZONTAL_SPEED_MULTIPLAYER = 1;
-    public static final double LAUNCHER_SPEED_MULTIPLAYER = 0;
+    public static final double LAUNCHER_SPEED_MULTIPLAYER = 1; // TODO: claibrate.
     public static final int SHOOTER_VOLTAGE_MULTIPLAYER = 12;
 
     public static class GetReadyToShoot {

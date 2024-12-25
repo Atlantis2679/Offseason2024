@@ -52,11 +52,10 @@ public class AllCommands implements Tuneable {
         TuneablesManager.add("allCommands", (Tuneable) this);
     }
 
-    // public Command collectToLauncher() {
-    // return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
-    // .andThen(Commands.deadline(launcherCMDs.load(),
-    // intakeCMDs.collect())).withName("collectToLauncher");
-    // }
+    public Command collectToLauncher() {
+        return Commands.waitUntil(() -> pivot.isAtAngle(PIVOT_ANGLE_FOR_INTAKE))
+                .andThen(Commands.deadline(launcherCMDs.load(), intakeCMDs.collect())).withName("collectToLauncher");
+    }
 
     public Command shoot() {
         return Commands

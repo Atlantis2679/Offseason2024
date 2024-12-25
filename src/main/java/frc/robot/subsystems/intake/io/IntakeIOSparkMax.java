@@ -21,6 +21,7 @@ public class IntakeIOSparkMax extends IntakeIO {
         leftVerticalRollerMotor.follow(rightVerticalRollerMotor, true);
         horizontalRollerMotor.setSmartCurrentLimit(IntakeConstants.HORIZONTAL_CURRENT_LIMIT);
         rightVerticalRollerMotor.setSmartCurrentLimit(IntakeConstants.VERTICAL_CURRENT_LIMIT);
+        leftVerticalRollerMotor.setSmartCurrentLimit(IntakeConstants.VERTICAL_CURRENT_LIMIT);
     }
 
     @Override
