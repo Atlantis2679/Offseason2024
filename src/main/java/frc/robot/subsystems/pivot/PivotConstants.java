@@ -26,16 +26,16 @@ public class PivotConstants {
 
     public static final double PIVOT_MAX_VELOCITY_DEG_PER_SEC = 90;
     public static final double PIVOT_MAX_ACCELERATION_DEG_PER_SEC = 90;
-    
+
     public static final double UPPER_BOUND_WRAP = 180;
 
     public static final double PIVOT_ANGLE_OFFSET_DEGREES = 0.5;
 
     public static final double KS = 0;
     // We suggest to keep KS at 0
-    public static final double KA = 3;
-    public static final double KV = 2;
-    public static final double KG = 5;
+    public static final double KA = 0;
+    public static final double KV = 0;
+    public static final double KG = 0;
 
     public static final double SIM_KS = 0;
     // We suggest to keep KS at 0
