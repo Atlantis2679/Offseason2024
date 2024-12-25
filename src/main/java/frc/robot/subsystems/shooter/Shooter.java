@@ -44,7 +44,8 @@ public class Shooter extends SubsystemBase implements Tuneable {
 
     @Override
     public void periodic() {
-        fieldsTable.recordOutput("current command", getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
+        fieldsTable.recordOutput("current command",
+                getCurrentCommand() != null ? getCurrentCommand().getName() : "none");
         fieldsTable.recordOutput("upper roller speed RPM", getUpperRollerSpeedRPM());
         fieldsTable.recordOutput("lower roller speed RPM", getLowerRollerSpeedRPM());
     }
@@ -81,8 +82,16 @@ public class Shooter extends SubsystemBase implements Tuneable {
         return (pidUpper.calculate(currentSpeed, targetSpeedRPM) + upperFeedforward.calculate(targetSpeedRPM)) / 473;
     }
 
+    public double calculateVoltageForLowerSpeedRPM(double currentSpeed, double targetSpeedRPM) {
+        return (pidUpper.calculate(currentSpeed, targetSpeedRPM) + lowerFeedforward.calculate(targetSpeedRPM)) / 473;
+    }
+
     public double calculateLowerSpeedToVoltage(double currentSpeed, double targetSpeedRPM) {
         return (pidLower.calculate(currentSpeed, targetSpeedRPM) + lowerFeedforward.calculate(targetSpeedRPM)) / 473;
+    }
+
+    public double calculateUpperSpeedToVoltage(double currentSpeed, double targetSpeedRPM) {
+        return (pidUpper.calculate(currentSpeed, targetSpeedRPM) + lowerFeedforward.calculate(targetSpeedRPM)) / 473;
     }
 
     public void resetPID() {
