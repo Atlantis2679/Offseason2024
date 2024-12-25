@@ -137,7 +137,5 @@ public class AllCommands implements Tuneable {
 
     @Override
     public void initTuneable(TuneableBuilder builder) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initTuneable'");
     }
 }
