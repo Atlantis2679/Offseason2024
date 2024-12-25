@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.lib.tuneables.Tuneable;
+import frc.lib.tuneables.TuneableBuilder;
 import frc.lib.tuneables.TuneablesManager;
 import frc.lib.tuneables.extensions.TuneableCommand;
 import frc.lib.valueholders.DoubleHolder;
@@ -21,7 +22,7 @@ import static frc.robot.allcommands.AllCommandsConstants.*;
 
 import java.util.function.DoubleSupplier;
 
-public class AllCommands {
+public class AllCommands implements Tuneable {
     private Intake intake;
     private Launcher launcher;
     private Pivot pivot;
@@ -132,5 +133,11 @@ public class AllCommands {
         return shooterCMDs.manualController(
                 () -> upperRollerVoltagePercentage.getAsDouble() * SHOOTER_VOLTAGE_MULTIPLAYER,
                 () -> lowerRollerVoltagePercentage.getAsDouble() * SHOOTER_VOLTAGE_MULTIPLAYER);
+    }
+
+    @Override
+    public void initTuneable(TuneableBuilder builder) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initTuneable'");
     }
 }
