@@ -37,7 +37,7 @@ public class RobotContainer {
         public RobotContainer() {
                 // new Trigger(DriverStation::isDisabled)
                 // .onTrue(Commands.parallel(allCommands.stopAll(), swerveCommands.stop()));
-                new Trigger(DriverStation::isDisabled).onTrue(allCommands.stopAll());
+                new Trigger(DriverStation::isDisabled).onTrue(allCommands.stopAllInterrupt());
                 // configureDriverBindings();
                 configureOperetorBindings();
         }
@@ -68,6 +68,7 @@ public class RobotContainer {
                 pivot.setDefaultCommand(allCommands.pivotReadyToCollect());
                 operatorController.a().whileTrue(allCommands.collectToLauncher());
                 operatorController.b().whileTrue(allCommands.shoot());
+                operatorController.y().onTrue(allCommands.stopAllInterrupt());
                 // add intake stop!!!!!!!!!!!!!!
                 operatorController.povUp().whileTrue(allCommands.getReadyToShootSubwoofer());
                 operatorController.povDown().whileTrue(allCommands.getReadyToShootAmp());

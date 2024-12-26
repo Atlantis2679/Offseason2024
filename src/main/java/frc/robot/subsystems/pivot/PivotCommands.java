@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.valueholders.ValueHolder;
+import frc.robot.subsystems.pivot.PivotConstants;
 
 public class PivotCommands extends Command {
     private final Pivot pivot;
@@ -44,8 +45,15 @@ public class PivotCommands extends Command {
                     pivot.getAbsoluteAngleDegrees(),
                     0,
                     false);
+            double demandPivotSpeed = pivotSpeed.getAsDouble();
+            if ((pivot.getAbsoluteAngleDegrees() < PivotConstants.PIVOT_TURNING_MIN_DEGREES
+            && demandPivotSpeed < 0)
+            || (pivot.getAbsoluteAngleDegrees() > PivotConstants.PIVOT_TURNING_MAX_DEGREES
+            && demandPivotSpeed > 0)) {
+                demandPivotSpeed = 0;
+            }
             pivot.setPivotVoltage(
-                    feedforwardResult + pivotSpeed.getAsDouble() * PivotConstants.MANUAL_SPEED_MULTIPLIER);
+                    feedforwardResult + demandPivotSpeed * PivotConstants.MANUAL_SPEED_MULTIPLIER);
         }).withName("pivotManualController");
     }
 }

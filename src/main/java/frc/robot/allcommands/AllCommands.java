@@ -74,6 +74,16 @@ public class AllCommands implements Tuneable {
                 .withInterruptBehavior(InterruptionBehavior.kCancelIncoming).withName("stopAll");
     }
 
+    public Command stopAllInterrupt() {
+        return Commands.run(() -> {
+            intake.stop();
+            launcher.stop();
+            pivot.stop();
+            shooter.stop();
+        }, intake, launcher, pivot, shooter).ignoringDisable(true).withName("stopAllInterrupt");
+
+    }
+
     public Command getReadyToShoot(DoubleSupplier angle, DoubleSupplier upperRollerSpeed,
             DoubleSupplier lowerRollerSpeed) {
         targetShooterUpperRollerRPM = upperRollerSpeed.getAsDouble();
