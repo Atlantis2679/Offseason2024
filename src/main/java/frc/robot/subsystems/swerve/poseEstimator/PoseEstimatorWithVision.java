@@ -21,31 +21,33 @@ public class PoseEstimatorWithVision {
     private final SwerveDrivePoseEstimator swervePoseEstimator;
     private final LogFieldsTable fieldsTable; // not sure needed
 
-    private final static boolean ignoreFarVisionEstimate = false; // fix this!
-
     private final Map<String, VisionAprilTagsIO> cameras = new HashMap<String, VisionAprilTagsIO>();
 
-    public PoseEstimatorWithVision(LogFieldsTable fieldsTable, Rotation2d gyroCurrentAngle, SwerveModulePosition[] modulePositions, SwerveDriveKinematics kinematics, Pose2d initialPose) {
+    public PoseEstimatorWithVision(LogFieldsTable fieldsTable, Rotation2d gyroCurrentAngle,
+            SwerveModulePosition[] modulePositions, SwerveDriveKinematics kinematics, Pose2d initialPose) {
         this.fieldsTable = fieldsTable;
         swervePoseEstimator = new SwerveDrivePoseEstimator(kinematics, gyroCurrentAngle, modulePositions, initialPose);
         AprilTagFieldLayout fieldLayout;
         try {
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
         } catch (IOException e) {
-            e.printStackTrace(); // maybe need to be changed
+            e.printStackTrace();
             throw new RuntimeException();
         }
-        
-        cameras.put(FRONT_PHOTON_CAMERA_NAME, new VisionAprilTagsIOPhoton(fieldsTable, new PhotonCamera(FRONT_PHOTON_CAMERA_NAME), fieldLayout));
-        cameras.put(BACK_LIMELIGHT_CAMERA_NAME, new VisionAprilTagsIOLimelight(fieldsTable, BACK_LIMELIGHT_CAMERA_NAME));        
+
+        cameras.put(FRONT_PHOTON_CAMERA_NAME,
+                new VisionAprilTagsIOPhoton(fieldsTable, new PhotonCamera(FRONT_PHOTON_CAMERA_NAME), fieldLayout));
+        cameras.put(BACK_LIMELIGHT_CAMERA_NAME,
+                new VisionAprilTagsIOLimelight(fieldsTable, BACK_LIMELIGHT_CAMERA_NAME));
     }
 
     public void update(Rotation2d gyroCurrentAngle, SwerveModulePosition[] modulePositions) {
         swervePoseEstimator.update(gyroCurrentAngle, modulePositions);
 
         cameras.forEach((String cameraName, VisionAprilTagsIO io) -> {
-            fieldsTable.recordOutput("Diffrence between swerve and vision estimate", getSwerveToVisionDiff(io));
-            if(getSwerveToVisionDiff(io) < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M || ignoreFarVisionEstimate) {
+            fieldsTable.recordOutput("Diff between swerve and vision estimate", getSwerveToVisionDiff(io));
+            if (getSwerveToVisionDiff(io) < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M
+                    || PoseEstimatorConstants.IGNORE_VISION_THRESHHOLD) {
                 swervePoseEstimator.addVisionMeasurement(io.getRobotPose().toPose2d(), io.getCameraTimestampSeconds());
             }
         });
