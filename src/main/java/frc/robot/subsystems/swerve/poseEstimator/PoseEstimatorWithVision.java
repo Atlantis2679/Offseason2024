@@ -20,6 +20,7 @@ import static frc.robot.RobotMap.*;
 public class PoseEstimatorWithVision {
     private final SwerveDrivePoseEstimator swervePoseEstimator;
     private final LogFieldsTable fieldsTable; // not sure needed
+    private double vision_threshold = PoseEstimatorConstants.STARTING_VISION_THRESHOLD_DISTANCE_M;
 
     private final Map<String, VisionAprilTagsIO> cameras = new HashMap<String, VisionAprilTagsIO>();
 
@@ -46,7 +47,7 @@ public class PoseEstimatorWithVision {
 
         cameras.forEach((String cameraName, VisionAprilTagsIO io) -> {
             fieldsTable.recordOutput("Diff between swerve and vision estimate", getSwerveToVisionDiff(io));
-            if (getSwerveToVisionDiff(io) < PoseEstimatorConstants.VISION_THRESHOLD_DISTANCE_M
+            if (getSwerveToVisionDiff(io) < vision_threshold
                     || PoseEstimatorConstants.IGNORE_VISION_THRESHHOLD) {
                 swervePoseEstimator.addVisionMeasurement(io.getRobotPose().toPose2d(), io.getCameraTimestampSeconds());
             }
