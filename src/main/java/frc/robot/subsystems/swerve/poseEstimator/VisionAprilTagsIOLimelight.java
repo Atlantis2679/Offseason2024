@@ -11,7 +11,6 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
     String cameraName;
     LimelightResults results;
 
-
     protected VisionAprilTagsIOLimelight(LogFieldsTable fieldsTable, String cameraName) {
         super(fieldsTable);
         this.cameraName = cameraName;
@@ -28,9 +27,8 @@ public class VisionAprilTagsIOLimelight extends VisionAprilTagsIO {
     }
 
     @Override
-    protected double getCameraTimestampSeconds() {
-        PoseEstimate tempEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(cameraName);
-        return tempEstimate != null && results != null? tempEstimate.timestampSeconds: 0;
+    protected double getCameraTimestampSeconds() { // Maybe need to change to LIMELIGHT
+        return results != null? results.timestamp_RIOFPGA_capture: 0;
     }
 
     @Override
