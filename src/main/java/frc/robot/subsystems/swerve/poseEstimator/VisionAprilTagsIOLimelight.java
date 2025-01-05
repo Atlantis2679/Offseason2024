@@ -3,7 +3,6 @@ package frc.robot.subsystems.swerve.poseEstimator;
 import frc.lib.logfields.LogFieldsTable;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.LimelightResults;
-import frc.robot.utils.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 
